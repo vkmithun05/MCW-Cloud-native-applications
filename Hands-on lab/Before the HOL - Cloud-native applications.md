@@ -112,22 +112,17 @@ In this task, you use `git` to copy the lab content to your cloud shell so that 
 1. Type the following command and press `<ENTER>`:
 
    ```bash
-   git clone https://github.com/microsoft/AzureTrailblazerAcademy.git
+   git clone https://github.com/microsoft/MCW-Cloud-native-applications.git
    ```
 
 2. The lab files download.
 
    ![In this screenshot of a Bash window, git clone has been typed and run at the command prompt. The output from git clone is shown.](media/b4-2019-09-30_21-25-06.png)
 
-3. We'll move this lab to its own directory. Run this command:
+3. We do not need the `.git` folder, and later steps will be less complex if we remove it. Run this command:
 
    ```bash
-   mv AzureTrailblazerAcademy/month5/labs/app_modenization/ ~/MCW-Cloud-native-applications
-   ```
-4. We can remove the AzureTrailblazerAcademy folder. Run this command:   
-
-```bash
-   rm -rf ~/AzureTrailblazerAcademy/
+   rm -rf MCW-Cloud-native-applications/.git
    ```
 
 ### Task 3: Resource Group
