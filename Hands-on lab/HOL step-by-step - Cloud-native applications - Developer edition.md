@@ -38,9 +38,8 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 4: Create Docker images](#task-4-create-docker-images)
     - [Task 5: Run a containerized application](#task-5-run-a-containerized-application)
     - [Task 6: Setup environment variables](#task-6-setup-environment-variables)
-    - [Task 7: Run several containers with Docker compose](#task-7-run-several-containers-with-docker-compose)
-    - [Task 8: Push images to Azure Container Registry](#task-8-push-images-to-azure-container-registry)
-    - [Task 9: Setup CI Pipeline to Push Images](#task-9-setup-ci-pipeline-to-push-images)
+    - [Task 7: Push images to Azure Container Registry](#task-7-push-images-to-azure-container-registry)
+    - [Task 8: Setup CI Pipeline to Push Images](#task-8-setup-ci-pipeline-to-push-images)
   - [Exercise 2: Deploy the solution to Azure Kubernetes Service](#exercise-2-deploy-the-solution-to-azure-kubernetes-service)
     - [Task 1: Tunnel into the Azure Kubernetes Service cluster](#task-1-tunnel-into-the-azure-kubernetes-service-cluster)
     - [Task 2: Deploy a service using the Kubernetes management dashboard](#task-2-deploy-a-service-using-the-kubernetes-management-dashboard)
@@ -716,146 +715,7 @@ In this task, you will configure the **web** container to communicate with the A
 
     Enter credentials if prompted.
 
-### Task 7: Run several containers with Docker compose
-
-Managing several containers with all their command line options can become
-difficult as the solution grows. `docker-compose` allows us to declare options
-for several containers and run them together.
-
-1. First, cleanup the existing containers.
-
-   ```bash
-   docker container stop web && docker container rm web
-   docker container stop api && docker container rm api
-   docker container stop mongo && docker container rm mongo
-   ```
-
-2. Navigate to your home directory (where you checked out the content repositories) and create a docker compose file.
-
-   ```bash
-   cd ~
-   vi docker-compose.yml
-   <i>
-   ```
-
-   Type the following as the contents of `docker-compose.yml`:
-
-   ```yaml
-   version: "3.4"
-
-   services:
-     mongo:
-       image: mongo
-       restart: always
-
-     api:
-       build: ./Fabmedical/content-api
-       image: content-api
-       depends_on:
-         - mongo
-       environment:
-         MONGODB_CONNECTION: mongodb://mongo:27017/contentdb
-
-     web:
-       build: ./Fabmedical/content-web
-       image: content-web
-       depends_on:
-         - api
-       environment:
-         CONTENT_API_URL: http://api:3001
-       ports:
-         - "3000:3000"
-   ```
-
-   Press the Escape key and type `:wq` and then press the Enter key to save and close the file.
-
-   ```text
-   <Esc>
-   :wq
-   <Enter>
-   ```
-
-3. Start the applications with the `up` command.
-
-   ```bash
-   docker-compose -f docker-compose.yml -p fabmedical up -d
-   ```
-
-   ![This screenshot of the console window shows the creation of the network and three containers: mongo, api and web.](media/Ex1-Task6.17.png)
-
-4. Visit the website in the browser; notice that we no longer have any data on the speakers or sessions pages.
-
-   ![Browser view of the web site.](media/Ex1-Task6.18.png)
-
-5. We stopped and removed our previous mongodb container; all the data contained in it has been removed. Docker compose has created a new, empty mongodb instance that must be reinitialized. If we care to persist our data between container instances, docker has several mechanisms to do so. First, we will update our compose file to persist mongodb data to a directory on the build agent.
-
-   ```bash
-   mkdir data
-   vi docker-compose.yml
-   ```
-
-   Update the mongo service to mount the local data directory onto to the `/data/db` volume in the docker container.
-
-   ```yaml
-   mongo:
-     image: mongo
-     restart: always
-     volumes:
-       - ./data:/data/db
-   ```
-
-   The result should look similar to the following screenshot:
-
-   ![A screenshot of the VIM edit window shows the resulting compose file.](media/Ex1-Task6.19.png)
-
-6. Next, we will add a second file to our composition so that we can initialize the mongodb data when needed.
-
-   ```bash
-   vi docker-compose.init.yml
-   ```
-
-   Add the following as the content:
-
-   ```yaml
-   version: "3.4"
-
-   services:
-     init:
-       build: ./Fabmedical/content-init
-       image: content-init
-       depends_on:
-         - mongo
-       environment:
-         MONGODB_CONNECTION: mongodb://mongo:27017/contentdb
-   ```
-
-7. To reconfigure the mongodb volume, we need to bring down the mongodb service first.
-
-   ```bash
-   docker-compose -f docker-compose.yml -p fabmedical down
-   ```
-
-   ![This screenshot of the console window shows the running containers stopping.](media/Ex1-Task6.21.png)
-
-8. Now run `up` again with both files to update the mongodb configuration and run the initialization script.
-
-   ```bash
-   docker-compose -f docker-compose.yml -f docker-compose.init.yml -p fabmedical up -d
-   ```
-
-9. Check the data folder to see that mongodb is now writing data files to the host.
-
-   ```bash
-   ls ./data/
-   ```
-
-   ![This screenshot of the console window shows the output of the data folder.](media/hol-2019-10-12_09-42-16.png)
-
-10. Check the results in the browser. The speaker and session data are now available.
-
-    ![A screenshot of the sessions page.](media/Ex1-Task6.24.png)
-
-### Task 8: Push images to Azure Container Registry
+### Task 7: Push images to Azure Container Registry
 
 To run containers in a remote environment, you will typically push images to a Docker registry, where you can store and distribute images. Each service will have a repository that can be pushed to and pulled from with Docker commands. Azure Container Registry (ACR) is a managed private Docker registry service based on Docker Registry v2.
 
@@ -945,7 +805,7 @@ In this task, you will push images to your ACR account, version images with tagg
     docker image pull [LOGINSERVER]/content-web:v1
     ```
 
-### Task 9: Setup CI Pipeline to Push Images
+### Task 8: Setup CI Pipeline to Push Images
 
 In this task, you will use YAML to define a GitHub Actions workflow that builds your Docker
 image and pushes it to your ACR instance automatically.
