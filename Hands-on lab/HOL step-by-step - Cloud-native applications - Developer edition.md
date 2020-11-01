@@ -1432,7 +1432,7 @@ In this task, you will deploy the web service using a [Helm](https://helm.sh/) c
             rollme: {{ randAlphaNum 5 | quote }}
     ```
 
-18. Search for the `containers` definition and update the values so that they match the following. You are changing the containerPort, livenessProbe port and adding the env variable:
+18. Search for the `containers` definition and update the values so that they match the following. You are changing the `containerPort`, `livenessProbe` port and adding the `env` variable:
 
     ```yaml
     containers:
@@ -2027,7 +2027,7 @@ In this task, you will edit the web application source code to add Application I
 
    ```javascript
    const appInsights = require("applicationinsights");
-   appInsights.setup("3324847d-625d-47cf-994b-386644d34a9a");
+   appInsights.setup("[YOUR APPINSIGHTS KEY]");
    appInsights.start();
    ```
 
@@ -2149,7 +2149,7 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
    kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.1/cert-manager.yaml
    ```
 
-11. Cert manager will need a custom ClusterIssuer resource to handle requesting SSL certificates.
+10. Cert manager will need a custom ClusterIssuer resource to handle requesting SSL certificates.
 
     ```bash
     code clusterissuer.yml
@@ -2178,15 +2178,15 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
               class: nginx
     ```
 
-12. Save changes and close the editor.
+11. Save changes and close the editor.
 
-13. Create the issuer using `kubectl`.
+12. Create the issuer using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f clusterissuer.yml
     ```
 
-14. Now you can create a certificate object.
+13. Now you can create a certificate object.
 
     > **Note**:
     >
@@ -2216,9 +2216,9 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
         kind: ClusterIssuer
     ```
 
-15. Save changes and close the editor.
+14. Save changes and close the editor.
 
-16. Create the certificate using `kubectl`.
+15. Create the certificate using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f certificate.yml
@@ -2238,7 +2238,7 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
 
     It can take between 5 and 30 minutes before the tls-secret becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 
-17. Now you can create an ingress resource for the content applications.
+16. Now you can create an ingress resource for the content applications.
 
     ```bash
     code content.ingress.yml
@@ -2274,21 +2274,21 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
                   servicePort: 3001
     ```
 
-18. Save changes and close the editor.
+17. Save changes and close the editor.
 
-19. Create the ingress using `kubectl`.
+18. Create the ingress using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f content.ingress.yml
     ```
 
-20. Refresh the ingress endpoint in your browser. You should be able to visit the speakers and sessions pages and see all the content.
+19. Refresh the ingress endpoint in your browser. You should be able to visit the speakers and sessions pages and see all the content.
 
-21. Visit the api directly, by navigating to `/content-api/sessions` at the ingress endpoint.
+20. Visit the api directly, by navigating to `/content-api/sessions` at the ingress endpoint.
 
     ![A screenshot showing the output of the sessions content in the browser.](media/Ex4-Task5.19.png)
 
-22. Test TLS termination by visiting both services again using `https`.
+21. Test TLS termination by visiting both services again using `https`.
 
     > It can take between 5 and 30 minutes before the SSL site becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 
