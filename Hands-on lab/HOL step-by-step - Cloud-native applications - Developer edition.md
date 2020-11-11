@@ -1074,9 +1074,9 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
    ![This is a screenshot of the Kubernetes management dashboard. Overview is highlighted on the left, and at right, a red arrow points to the api deployment.](media/image80.png)
 
-5. Kubernetes indicates a problem with the api Replica Set after some seconds. Select the log icon to investigate.
+5. Kubernetes indicates a problem with the `api` **Replica Set** after some seconds. Select the ellipsis icon, then select **Logs** to investigate.
 
-   ![This screenshot of the Kubernetes management dashboard shows an error with the replica set.](media/Ex2-Task1.5.png)
+   ![This screenshot of the Kubernetes management dashboard shows an error with the replica set, and ellipse menu with Logs option highlighted.](media/Ex2-Task1.5.png)
 
 6. The log indicates that the content-api application is once again failing because it cannot find a mongodb api to communicate with. You will resolve this issue by connecting to Cosmos DB.
 
