@@ -815,7 +815,7 @@ image and pushes it to your ACR instance automatically.
 
 2. From the left menu, select **Secrets**.
 
-3. Select the **New secret** button.
+3. Select the **New repository secret** button.
 
     ![Settings link, Secrets link, and New secret button are highlighted.](media/2020-08-24-21-45-42.png "GitHub Repository secrets")
 
@@ -869,11 +869,6 @@ image and pushes it to your ACR instance automatically.
 
       # Configure workflow to also support triggering manually
       workflow_dispatch:
-        inputs:
-          logLevel:
-            description: 'Log level'
-            required: true
-            default: 'warning'
 
     # Environment variables are defined so that they can be used throughout the job definitions.
     env:
@@ -888,10 +883,10 @@ image and pushes it to your ACR instance automatically.
     jobs:
 
       build-and-publish-docker-image:
-         name: Build and Push Docker Image
-         runs-on: ubuntu-latest
-         steps:
-         # Checkout the repo
+        name: Build and Push Docker Image
+        runs-on: ubuntu-latest
+        steps:
+        # Checkout the repo
         - uses: actions/checkout@master
 
         - name: Set up Docker Buildx
