@@ -1152,11 +1152,11 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ```yaml
       env:
-        - name: MONGODB_CONNECTION
-          valueFrom:
-            secretKeyRef:
-              name: cosmosdb
-              key: db
+      - name: MONGODB_CONNECTION
+        valueFrom:
+          secretKeyRef:
+            name: cosmosdb
+            key: db
     ```
 
     ![A screenshot of the Kubernetes management dashboard showing part of the deployment file.](media/Ex2-Task1.17.png)
