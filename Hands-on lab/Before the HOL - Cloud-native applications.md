@@ -422,13 +422,6 @@ In this task, you update the packages and install the Docker engine.
    sudo apt-get upgrade -y
    ```
 
-7. Install `docker-compose`
-
-   ```bash
-   sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-   sudo chmod +x /usr/local/bin/docker-compose
-   ```
-
 8. When the command has completed, check the Docker version installed by executing this command. The output may look something like that shown in the following screenshot. Note that the server version is not shown yet, because you didn't run the command with elevated privileges (to be addressed shortly).
 
    ```bash
