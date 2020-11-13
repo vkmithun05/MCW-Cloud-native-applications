@@ -1737,6 +1737,122 @@ In this task, you will access and review the various logs and dashboards made av
 
    ![The container log query results are displayed, one log entry is expanded in the results view with its details shown.](media/monitor_7.png)
 
+## Exercise ?: Migrate MongoDB to CosmosDB using Azure Database Migration Service
+
+**Duration**: ?? minutes
+
+At this point, you have the web and API applications running in Azure Kubernetes Service. The next, step is to migrate the MongoDB database data over to Azure Cosmos DB. This exercise will use the Azure Database Migration Service to migrate the data from the MongoDB database into Azure Cosmos DB.
+
+### Task 1: Enable Microsoft.DataMigration resource provider
+
+In this task, you will enable the use of the Azure Database Migration Service within your Azure subscription by registering the `Microsoft.DataMigration` resource provider.
+
+1. Open the Azure Cloud Shell.
+
+2. Run the following Azure CLI command to register the `Microsoft.DataMigration` resource provider in your Azure subscription:
+
+   ```sh
+   az provider register --namespace Microsoft.DataMigration
+   ```
+
+### Task 2: Provision Azure Database Migration Service
+
+In this task, you will deploy an instance of the Azure Database Migration Service that will be used to migrate the data from MongoDB to Cosmos DB.
+
+1. From the Azure Portal, select **+ Create a resource**.
+
+2. Search the marketplace for **Azure Database Migration Service** and select it.
+
+3. Select **Create**
+
+    ![Azure Database Migration Service in the Azure Marketplace](media/dms-marketplace-create.png)
+
+4. On the **Basics** tab of the **Create Migration Service** pane, enter the following values:
+
+    - Resource group: Select the Resource Group created with this lab
+    - Migration service name: Enter a name, such as `fabmedical[SUFFIX]`
+    - Location: Choose the Azure Region used for the Resource Group
+
+    ![The Basics tab with all values entered.](media/dms-create-basics.png)
+
+5. Select **Next: Networking >>**
+
+6. On the **Networking** tab, select the **Virtual Network** within the `fabmedical-[SUFFIX]` resource group.
+
+    ![Networking tab with Virtual Network selected](media/dms-create-networking.png)
+
+7. Select **Review + create**
+
+8. Select **Create** to create the Azure Database Migration Service instance.
+
+The service may take 5 - 10 minutes to provision.
+
+### Task 3: Migrate data to Azure Cosmos DB
+
+In this task, you will create a **Migration project** within Azure Database Migration Service, and then migrate the data from MongoDB to Azure Cosmos DB.
+
+1. In the Azure Portal, navigate to the **Azure Database Migration Service** that was previously provisioned.
+
+2. On the Azure Database Migration Service blade, select **+ New Migration Project** on the **Overview** pane.
+
+3. On the **New migration project** pane, enter the following values, then select **Create and run activity**:
+
+    - Project name: `fabmedical`
+    - Source server type: `MongoDB`
+    - Target server type: `CosmosDB (MongoDB API)`
+    - Choose type of activity: `Offine data migration`
+
+    ![New migration project pane with values entered.](media/dms-new-migration-project.png)
+
+    > **Note:** The **Offline data migration** activity type is selected since you will be performing a one-time migration from MongoDB to Cosmos DB. Also, the data in the database wont be updated during the migration. In a production scenario, you will want to choose the migration project activity type that best fits your solution requirements.
+
+4. On the **MongoDB to Azure Database for CosmosDB Offline Migration Wizard** pane, enter the following values for the **Select source** tab:
+
+    - Mode: **Standard mode**
+    - Source server name: Enter the Private IP Address of the Build Agent VM used in this lab.
+    - Server port: `27017`
+    - Require SSL: Unchecked
+
+    > **Note:** Leave the **User Name** and **Password** blank as the MongoDB instance on the Build Agent VM for this lab does not have authentication turned on. The Azure Database Migration Service is connected to the same VNet as the Build Agent VM, so it's able to communicate within the VNet directly to the VM without exposing the MongoDB service to the Internet. In production scenarios, you should always have authentication enabled on MongoDB.
+
+    ![Select source tab with values selected for the MongoDB server](media/dms-select-source.png)
+
+5. Select **Next: Select target >>**.
+
+6. On the **Select target** pane, select the following values:
+
+    - Mode: **Select Cosmos DB target**
+
+    - Subscription: Select the Azure subscription you're using for this lab.
+
+    - Select Cosmos DB name: Select the `fabmedical-[SUFFIX]` Cosmos DB instance
+
+    ![The Select target tab with values selected.](media/dms-select-target.png)
+
+    Notice, the **Connection String** will automatically populate with the Key for your Azure Cosomos DB instance.
+
+7. Modify the **Connection string** by replacing `@undefined:` with `@fabmedical-[SUFFIX].documents.azure.com:` so the DNS name matches the Azure Cosmos DB instance. Be sure to replace the `[SUFFIX]`.
+
+    ![The Connection String witht the @undefined: value replaced with the correct DNS name.](dms-select-target-connection-string.png)
+
+8. Select **Next: Database setting >>**.
+
+9. On the **Database setting** tab, select the `contentdb` **Source Database** so this database from MongoDB will be migrated to Azure Cosmos DB.
+
+    ![The Database setting tab with the contentdb source database selected.](media/dms-database-setting.png)
+
+10. Select **Next: Collection setting >>**.
+
+11. On the **Collection setting** tab, expand the **contentdb** database, and ensure both the **sessions** and **speakers** collections are selected for migration. Also, update the **Throughput (RU/s)** to `400` for both collections.
+
+    ![The Collection setting tab with both sessions and speakers collections selected with Throughput RU/s set to 400 for both collections.](media/dms-collection-setting.png)
+
+12. Select **Next: Migration summary >>**.
+
+13. On the **Migration summary**...
+
+TODO
+
 ## Exercise 3: Scale the application and test HA
 
 **Duration**: 20 minutes
