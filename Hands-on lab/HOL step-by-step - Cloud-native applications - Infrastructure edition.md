@@ -38,7 +38,11 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 5: Setup environment variables](#task-5-setup-environment-variables)
     - [Task 6: Push images to Azure Container Registry](#task-6-push-images-to-azure-container-registry)
     - [Task 7: Setup CI Pipeline to Push Images](#task-7-setup-ci-pipeline-to-push-images)
-  - [Exercise 2: Deploy the solution to Azure Kubernetes Service](#exercise-2-deploy-the-solution-to-azure-kubernetes-service)
+  - [Exercise 2: Migrate MongoDB to Cosmos DB using Azure Database Migration Service](#exercise-2-migrate-mongodb-to-cosmos-db-using-azure-database-migration-service)
+    - [Task 1: Enable Microsoft.DataMigration resource provider](#task-1-enable-microsoft.datamigration-resource-provider)
+    - [Task 2: Provision Azure Database Migration Service](#task-2-provision-azure-database-migration-service)
+    - [Task 3: Migrate data to Azure Cosmos DB](#task-3-migrate-data-to-azure-cosmos-db)
+  - [Exercise 3: Deploy the solution to Azure Kubernetes Service](#exercise-3-deploy-the-solution-to-azure-kubernetes-service)
     - [Task 1: Tunnel into the Azure Kubernetes Service cluster](#task-1-tunnel-into-the-azure-kubernetes-service-cluster)
     - [Task 2: Deploy a service using the Kubernetes management dashboard](#task-2-deploy-a-service-using-the-kubernetes-management-dashboard)
     - [Task 3: Deploy a service using kubectl](#task-3-deploy-a-service-using-kubectl)
@@ -47,11 +51,11 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 6: Test the application in a browser](#task-6-test-the-application-in-a-browser)
     - [Task 7: Configure Continuous Delivery to the Kubernetes Cluster](#task-7-configure-continuous-delivery-to-the-kubernetes-cluster)
     - [Task 8: Review Azure Monitor for Containers](#task-8-review-azure-monitor-for-containers)
-  - [Exercise 3: Scale the application and test HA](#exercise-3-scale-the-application-and-test-ha)
+  - [Exercise 4: Scale the application and test HA](#exercise-4-scale-the-application-and-test-ha)
     - [Task 1: Increase service instances from the Kubernetes dashboard](#task-1-increase-service-instances-from-the-kubernetes-dashboard)
     - [Task 2: Increase service instances beyond available resources](#task-2-increase-service-instances-beyond-available-resources)
     - [Task 3: Restart containers and test HA](#task-3-restart-containers-and-test-ha)
-  - [Exercise 4: Working with services and routing application traffic](#exercise-4-working-with-services-and-routing-application-traffic)
+  - [Exercise 5: Working with services and routing application traffic](#exercise-5-working-with-services-and-routing-application-traffic)
     - [Task 1: Scale a service without port constraints](#task-1-scale-a-service-without-port-constraints)
     - [Task 2: Update an external service to support dynamic discovery with a load balancer](#task-2-update-an-external-service-to-support-dynamic-discovery-with-a-load-balancer)
     - [Task 3: Adjust CPU constraints to improve scale](#task-3-adjust-cpu-constraints-to-improve-scale)
@@ -145,7 +149,7 @@ The purpose of this task is to make sure you can run the application successfull
 3. Run an instance of mongodb to use for local testing.
 
    ```bash
-   docker container run --name mongo --net fabmedical -p 27017:27017 -d mongo
+   docker container run --name mongo --net fabmedical -p 27017:27017 -d mongo:4.0
    ```
 
    > **Note**:  With the existing source code written for MongoDB, it can be pointed towards the Azure Cosmos DB MongoDB API endpoint. The Azure Cosmos DB Emulator could be used for local development on Windows, however, the Cosmos DB emulator does not support Linux. As a result, when using Linux for development, MongoDB is still needed for local development environments; with Azure Cosmos DB used for data storage in the cloud. This allows existing source code written for MongoDB storage to be easily migrated to using Azure Cosmos DB backend.
@@ -803,7 +807,132 @@ image and pushes it to your ACR instance automatically.
     git push
     ```
 
-## Exercise 2: Deploy the solution to Azure Kubernetes Service
+
+## Exercise 2: Migrate MongoDB to Cosmos DB using Azure Database Migration Service
+
+**Duration**: 20 minutes
+
+At this point, you have the web and API applications running in Azure Kubernetes Service. The next, step is to migrate the MongoDB database data over to Azure Cosmos DB. This exercise will use the Azure Database Migration Service to migrate the data from the MongoDB database into Azure Cosmos DB.
+
+### Task 1: Enable Microsoft.DataMigration resource provider
+
+In this task, you will enable the use of the Azure Database Migration Service within your Azure subscription by registering the `Microsoft.DataMigration` resource provider.
+
+1. Open the Azure Cloud Shell.
+
+2. Run the following Azure CLI command to register the `Microsoft.DataMigration` resource provider in your Azure subscription:
+
+   ```sh
+   az provider register --namespace Microsoft.DataMigration
+   ```
+
+### Task 2: Provision Azure Database Migration Service
+
+In this task, you will deploy an instance of the Azure Database Migration Service that will be used to migrate the data from MongoDB to Cosmos DB.
+
+1. From the Azure Portal, select **+ Create a resource**.
+
+2. Search the marketplace for **Azure Database Migration Service** and select it.
+
+3. Select **Create**
+
+    ![Azure Database Migration Service in the Azure Marketplace](media/dms-marketplace-create.png)
+
+4. On the **Basics** tab of the **Create Migration Service** pane, enter the following values:
+
+    - Resource group: Select the Resource Group created with this lab
+    - Migration service name: Enter a name, such as `fabmedical[SUFFIX]`
+    - Location: Choose the Azure Region used for the Resource Group
+
+    ![The Basics tab with all values entered.](media/dms-create-basics.png)
+
+5. Select **Next: Networking >>**
+
+6. On the **Networking** tab, select the **Virtual Network** within the `fabmedical-[SUFFIX]` resource group.
+
+    ![Networking tab with Virtual Network selected](media/dms-create-networking.png)
+
+7. Select **Review + create**
+
+8. Select **Create** to create the Azure Database Migration Service instance.
+
+The service may take 5 - 10 minutes to provision.
+
+### Task 3: Migrate data to Azure Cosmos DB
+
+In this task, you will create a **Migration project** within Azure Database Migration Service, and then migrate the data from MongoDB to Azure Cosmos DB.
+
+1. In the Azure Portal, navigate to the **Azure Database Migration Service** that was previously provisioned.
+
+2. On the Azure Database Migration Service blade, select **+ New Migration Project** on the **Overview** pane.
+
+3. On the **New migration project** pane, enter the following values, then select **Create and run activity**:
+
+    - Project name: `fabmedical`
+    - Source server type: `MongoDB`
+    - Target server type: `CosmosDB (MongoDB API)`
+    - Choose type of activity: `Offine data migration`
+
+    ![New migration project pane with values entered.](media/dms-new-migration-project.png)
+
+    > **Note:** The **Offline data migration** activity type is selected since you will be performing a one-time migration from MongoDB to Cosmos DB. Also, the data in the database wont be updated during the migration. In a production scenario, you will want to choose the migration project activity type that best fits your solution requirements.
+
+4. On the **MongoDB to Azure Database for CosmosDB Offline Migration Wizard** pane, enter the following values for the **Select source** tab:
+
+    - Mode: **Standard mode**
+    - Source server name: Enter the Private IP Address of the Build Agent VM used in this lab.
+    - Server port: `27017`
+    - Require SSL: Unchecked
+
+    > **Note:** Leave the **User Name** and **Password** blank as the MongoDB instance on the Build Agent VM for this lab does not have authentication turned on. The Azure Database Migration Service is connected to the same VNet as the Build Agent VM, so it's able to communicate within the VNet directly to the VM without exposing the MongoDB service to the Internet. In production scenarios, you should always have authentication enabled on MongoDB.
+
+    ![Select source tab with values selected for the MongoDB server](media/dms-select-source.png)
+
+5. Select **Next: Select target >>**.
+
+6. On the **Select target** pane, select the following values:
+
+    - Mode: **Select Cosmos DB target**
+
+    - Subscription: Select the Azure subscription you're using for this lab.
+
+    - Select Cosmos DB name: Select the `fabmedical-[SUFFIX]` Cosmos DB instance
+
+    ![The Select target tab with values selected.](media/dms-select-target.png)
+
+    Notice, the **Connection String** will automatically populate with the Key for your Azure Cosomos DB instance.
+
+7. Modify the **Connection string** by replacing `@undefined:` with `@fabmedical-[SUFFIX].documents.azure.com:` so the DNS name matches the Azure Cosmos DB instance. Be sure to replace the `[SUFFIX]`.
+
+    ![The Connection String witht the @undefined: value replaced with the correct DNS name.](media/dms-select-target-connection-string.png)
+
+8. Select **Next: Database setting >>**.
+
+9. On the **Database setting** tab, select the `contentdb` **Source Database** so this database from MongoDB will be migrated to Azure Cosmos DB.
+
+    ![The Database setting tab with the contentdb source database selected.](media/dms-database-setting.png)
+
+10. Select **Next: Collection setting >>**.
+
+11. On the **Collection setting** tab, expand the **contentdb** database, and ensure both the **sessions** and **speakers** collections are selected for migration. Also, update the **Throughput (RU/s)** to `400` for both collections.
+
+    ![The Collection setting tab with both sessions and speakers collections selected with Throughput RU/s set to 400 for both collections.](media/dms-collection-setting.png)
+
+12. Select **Next: Migration summary >>**.
+
+13. On the **Migration summary** tab, enter `Migrate Data` in the **Activity name** field, then select **Start migration** to initiate the migration of the MongoDB data to Azure Cosmos DB.
+
+    ![The Migration summary is shown with MigrateData entered in the Activity name field.](media/dms-migration-summary.png)
+
+14. The status for the migration activity will be shown. The migration will only take a few seconds to complete. Select **Refresh** to reload the status to ensure it shows a **Status** of **Complete**.
+
+    ![The migrate actiity showing the status has completed.](media/dms-migrate-complete.png)
+
+15. To verify the data was migrated, navigate to the **Cosmos DB Account** for the lab within the Azure Portal, then select the **Data Explorer**. You will see the `speakers` and `sessions` collections listed within the `contentdb` database, and you will be able to explore the documents within.
+
+    ![Cosmos DB is open in the Azure Portal with Data Explorer open showing the data has been migrated.](media/dms-confirm-data-in-cosmosdb.png)
+
+## Exercise 3: Deploy the solution to Azure Kubernetes Service
 
 **Duration**: 30 minutes
 
@@ -1585,7 +1714,7 @@ In this task, you will access and review the various logs and dashboards made av
 
    ![The container log query results are displayed, one log entry is expanded in the results view with its details shown.](media/monitor_7.png)
 
-## Exercise 3: Scale the application and test HA
+## Exercise 4: Scale the application and test HA
 
 **Duration**: 20 minutes
 
@@ -1761,7 +1890,7 @@ In this task, you will restart containers and validate that the restart does not
 
     ![Workloads is selected in the navigation menu on the left. On the right are the Deployment, Pods, and Replica Sets boxes.](media/image132.png)
 
-## Exercise 4: Working with services and routing application traffic
+## Exercise 5: Working with services and routing application traffic
 
 **Duration**: 45 minutes
 
