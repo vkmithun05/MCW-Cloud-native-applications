@@ -49,10 +49,9 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 2: Deploy a service using the Kubernetes management dashboard](#task-2-deploy-a-service-using-the-kubernetes-management-dashboard)
     - [Task 3: Deploy a service using kubectl](#task-3-deploy-a-service-using-kubectl)
     - [Task 4: Deploy a service using a Helm chart](#task-4-deploy-a-service-using-a-helm-chart)
-    - [Task 5: Initialize database with a Kubernetes Job](#task-5-initialize-database-with-a-kubernetes-job)
-    - [Task 6: Test the application in a browser](#task-6-test-the-application-in-a-browser)
-    - [Task 7: Configure Continuous Delivery to the Kubernetes Cluster](#task-7-configure-continuous-delivery-to-the-kubernetes-cluster)
-    - [Task 8: Review Azure Monitor for Containers](#task-8-review-azure-monitor-for-containers)
+    - [Task 5: Test the application in a browser](#task-5-test-the-application-in-a-browser)
+    - [Task 6: Configure Continuous Delivery to the Kubernetes Cluster](#task-6-configure-continuous-delivery-to-the-kubernetes-cluster)
+    - [Task 7: Review Azure Monitor for Containers](#task-7-review-azure-monitor-for-containers)
   - [Exercise 4: Scale the application and test HA](#exercise-4-scale-the-application-and-test-ha)
     - [Task 1: Increase service instances from the Kubernetes dashboard](#task-1-increase-service-instances-from-the-kubernetes-dashboard)
     - [Task 2: Increase service instances beyond available resources](#task-2-increase-service-instances-beyond-available-resources)
@@ -1625,64 +1624,7 @@ In this task, you will deploy the web service using a [Helm](https://helm.sh/) c
     git push
     ```
 
-### Task 5: Initialize database with a Kubernetes Job
-
-In this task, you will use a Kubernetes Job to run a container that is meant to execute a task and terminate, rather than run all the time.
-
-1. Create a text file called `init.job.yml` using the Azure Cloud Shell Editor.
-
-   ```bash
-   code init.job.yml
-   ```
-
-2. Copy and paste the following text into the editor:
-
-   > **Note**: Be sure to copy and paste only the contents of the code block carefully to avoid introducing any special characters.
-
-   ```yaml
-   apiVersion: batch/v1
-   kind: Job
-   metadata:
-     name: init
-   spec:
-     template:
-       spec:
-         containers:
-         - name: init
-           image: [LOGINSERVER]/content-init
-           env:
-             - name: MONGODB_CONNECTION
-               valueFrom:
-                 secretKeyRef:
-                   name: cosmosdb
-                   key: db
-         restartPolicy: Never
-     backoffLimit: 4
-   ```
-
-3. Edit this file and update the `[LOGINSERVER]` entry to match the name of your ACR Login Server.
-
-4. Save changes and close the editor.
-
-5. Type the following command to deploy the job described by the YAML. You will receive a message indicating the kubectl has created an init "job.batch".
-
-   ```bash
-   kubectl create --save-config=true -f init.job.yml
-   ```
-
-6. View the Job by selecting **Jobs** under **Workloads** in the Kubernetes UI.
-
-   ![A screenshot of the Kubernetes management dashboard showing jobs.](media/Ex2-Task5.6.png)
-
-7. Select virtual ellipses and then select **Logs**.
-
-   ![A screenshot of the Kubernetes management dashboard showing log output.](media/Ex2-Task5.7.png)
-
-8. Next view your Cosmos DB instance in the Azure portal and see that it now contains two collections.
-
-   ![A screenshot of the Azure Portal showing Cosmos DB collections.](media/Ex2-Task5.8.png)
-
-### Task 6: Test the application in a browser
+### Task 5: Test the application in a browser
 
 In this task, you will verify that you can browse to the web service you have deployed and view the speaker and content information exposed by the API service.
 
@@ -1698,7 +1640,7 @@ In this task, you will verify that you can browse to the web service you have de
 
    ![In this screenshot of the Contoso Neuro 2017 web application, Sessions has been selected, and sample session information appears at the bottom.](media/image115.png)
 
-### Task 7: Configure Continuous Delivery to the Kubernetes Cluster
+### Task 6: Configure Continuous Delivery to the Kubernetes Cluster
 
 In this task, you will use GitHub Actions workflows to automate the process for deploying the web image to the AKS cluster. You will update the workflow and configure a job so that when new images are pushed to the ACR, the pipeline deploys the image to the AKS cluster.
 
@@ -1824,7 +1766,7 @@ In this task, you will use GitHub Actions workflows to automate the process for 
 
     ![Workflow is running](media/2020-08-25-22-15-39.png "Workflow is running")
 
-### Task 8: Review Azure Monitor for Containers
+### Task 7: Review Azure Monitor for Containers
 
 In this task, you will access and review the various logs and dashboards made available by Azure Monitor for Containers.
 
