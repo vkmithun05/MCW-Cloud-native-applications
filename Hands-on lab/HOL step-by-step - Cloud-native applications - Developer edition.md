@@ -56,6 +56,7 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 1: Increase service instances from the Kubernetes dashboard](#task-1-increase-service-instances-from-the-kubernetes-dashboard)
     - [Task 2: Increase service instances beyond available resources](#task-2-increase-service-instances-beyond-available-resources)
     - [Task 3: Restart containers and test HA](#task-3-restart-containers-and-test-ha)
+    - [Task 4: Configure Cosmos DB Autoscale](#task-4-configure-cosmos-db-autoscale)
   - [Exercise 5: Working with services and routing application traffic](#exercise-5-working-with-services-and-routing-application-traffic)
     - [Task 1: Scale a service without port constraints](#task-1-scale-a-service-without-port-constraints)
     - [Task 2: Update an external service to support dynamic discovery with a load balancer](#task-2-update-an-external-service-to-support-dynamic-discovery-with-a-load-balancer)
@@ -1808,7 +1809,6 @@ In this task, you will access and review the various logs and dashboards made av
 
    ![The container log query results are displayed, one log entry is expanded in the results view with its details shown.](media/monitor_7.png)
 
-
 ## Exercise 4: Scale the application and test HA
 
 **Duration**: 20 minutes
@@ -1823,7 +1823,9 @@ In this task, you will increase the number of instances for the API deployment i
 
 2. From the navigation menu, select **Workloads** -\> **Deployments**, and then select the **API** deployment.
 
-3. Select the vertical ellipses, then select **SCALE**.
+3. Select the **SCALE** button in the upper-right.
+
+   ![In the Workloads > Deployments > api bar, the Scale icon is highlighted.](media/image89.png)
 
 4. Change the number of replicas to **2**, and then select **Scale**.
 
@@ -1835,11 +1837,11 @@ In this task, you will increase the number of instances for the API deployment i
 
    ![Replica Sets is selected under Workloads in the navigation menu on the left, and at right, Pods status: 1 pending, 1 running is highlighted. Below that, a red arrow points at the API deployment in the Pods box.](media/image117.png)
 
-6. From the navigation menu, select Deployments from the list. Note that the api service has a pending status indicated by the grey timer icon, and it shows a pod count 1 of 2 instances (shown as "1/2").
+6. From the navigation menu, select **Deployments** from the list. Note that the api service has a pending status indicated by the grey timer icon, and it shows a pod count 1 of 2 instances (shown as `1/2`).
 
    ![In the Deployments box, the api service is highlighted with a grey timer icon at left and a pod count of 1/2 listed at right.](media/image118.png)
 
-7. From the Navigation menu, select Workloads. From this view, note that the health overview in the right panel of this view. You will see the following:
+7. From the Navigation menu, select **Workloads**. From this view, note that the health overview in the right panel of this view. You will see the following:
 
    - One deployment and one replica set are each healthy for the api service.
 
@@ -1875,13 +1877,11 @@ In this task, you will try to increase the number of instances for the API servi
 
 2. Configure the deployment to use a fixed host port for initial testing. Select the vertical ellipses and then select **Edit**.
 
-3. In the Edit a Deployment dialog, select the JSON tab. You will see a list of settings shown in JSON format. Use the copy button to copy the text to your clipboard.
+3. In the Edit a Deployment dialog, select the JSON tab. You will see a list of settings shown in YAML format. Use the copy button to copy the text to your clipboard.
 
    ![Screenshot of the Edit a Deployment dialog box that displays JSON data.](media/image82.png)
 
-4. Paste the contents into the text editor of your choice (notepad is shown here, macOS users can use TextEdit).
-
-   ![Screenshot of the Edit a Deployment contents pasted into Notepad text editor.](media/image83.png)
+4. Paste the contents into the text editor of your choice (such as Notepad on Windows, macOS users can use TextEdit).
 
 5. Scroll down about halfway to find the node `$.spec.template.spec.containers[0]`, as shown in the screenshot below.
 
@@ -1892,9 +1892,9 @@ In this task, you will try to increase the number of instances for the API servi
    - Add the following snippet below the `name` property in the container spec:
 
    ```text
-      ports:
-			containerPort: 3001
-			hostPort: 3001
+     ports:
+	    containerPort: 3001
+	    hostPort: 3001
    ```
 
    - Your container spec should now look like this:
@@ -1927,7 +1927,7 @@ In this task, you will try to increase the number of instances for the API servi
 
 12. Reduce the number of requested pods to `2` using the **Scale** button.
 
-13. Almost immediately, the warning message from the Workloads dashboard should disappear, and the API deployment will show 2/2 pods are running.
+13. Almost immediately, the warning message from the **Workloads** dashboard should disappear, and the **API** deployment will show 2/2 pods are running.
 
     ![Workloads is selected in the navigation menu. A green check mark now appears next to the api deployment listing in the Deployments box at right.](media/image122.png)
 
@@ -1935,13 +1935,13 @@ In this task, you will try to increase the number of instances for the API servi
 
 In this task, you will restart containers and validate that the restart does not impact the running service.
 
-1. From the navigation menu on the left, select Services view under Discovery and Load Balancing. From the Services list, select the external endpoint hyperlink for the web service, and visit the stats page by adding /stats to the URL. Keep this open and handy to be refreshed as you complete the steps that follow.
+1. From the navigation menu on the left, select **Services** view under **Discovery and Load Balancing**. From the **Services** list, select the external endpoint hyperlink for the web service, and visit the **Stats** page by adding / stats to the URL. Keep this open and handy to be refreshed as you complete the steps that follow.
 
    ![In the Services box, the hyperlinked external endpoint for the web service is highlighted. ](media/image112.png)
 
    ![The Stats page is visible in this screenshot of the Contoso Neuro web application.](media/image123.png)
 
-2. From the navigation menu, select Workloads>Deployments. From Deployments list, select the API deployment.
+2. From the navigation menu, select **Workloads** -> **Deployments**. From Deployments list, select the **API** deployment.
 
    ![In the left menu the Deployments item is selected. The API deployment is highlighted in the Deployments list box.](media/image124.png)
 
@@ -1982,6 +1982,29 @@ In this task, you will restart containers and validate that the restart does not
 13. From the navigation menu, select **Workloads**. From this view, note that there is only one API pod now.
 
     ![Workloads is selected in the navigation menu on the left. On the right are the Deployment, Pods, and Replica Sets boxes.](media/image132.png)
+
+
+### Task 4: Configure Cosmos DB Autoscale
+
+In this task, you will setup Autoscale on Azure Cosmos DB.
+
+1. In the Azure Portal, navigate to the `fabmedical-[SUFFIX]` **Azure Cosmos DB Account**.
+
+2. Select **Data Explorer**
+
+3. Within **Data Explorer**, expand the `contentdb` database, then expand the `sessions` collection.
+
+4. Under the `sessions` collection, select **Scale & Settings**.
+
+5. On the **Scale & Settings**, select **Autoscale** for the **Throughput** setting under **Scale**.
+
+    ![Cosmos DB Scale & Settings tab with Autoscale selected](media/cosmosdb-autoscale.png)
+
+6. Select **Save**.
+
+7. Perform the same task to enable **Autoscale** Throughput on the `speakers` collection.
+
+TODO
 
 ## Exercise 5: Working with services and routing application traffic
 
