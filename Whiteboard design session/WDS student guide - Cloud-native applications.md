@@ -162,6 +162,8 @@ While multi-tenancy is a goal for the code base, even with this in place, Arthur
 
 8. Complete an implementation of the proposed solution for a single tenant to train the team and perfect the process.
 
+9. Enhance attendee session feedback with AI to prevent inappropriate content from being posted, and real-time language translation to better accommodate growing worldwide conference attendance.
+
 ### Customer objections
 
 1. There are many ways to deploy Docker containers on Azure. How do those options compare and what are motivations for each?
@@ -169,6 +171,8 @@ While multi-tenancy is a goal for the code base, even with this in place, Arthur
 2. Is there an option in Azure that provides container orchestration platform features that are easy to manage and migrate to, that can also handle our scale and management workflow requirements?
 
 3. We heard Azure Cosmos DB is compatible with MongoDB. Will this provide a migration that minimizes code changes?
+
+4. We know Microsoft offers Cognitive Services with pre-built AI models. What models offer the features we are looking to use for enhancing our conference web site?
 
 ### Infographic for common scenarios
 
@@ -308,3 +312,5 @@ Directions: Tables reconvene with the larger group to hear the facilitator/SME s
 | Image Quarantine                | <https://github.com/Azure/acr/tree/master/docs/preview/quarantine/>                              |
 | Container Monitoring Solution   | <https://docs.microsoft.com/azure/azure-monitor/insights/containers>                       |
 | Azure Cosmos DB                 | <https://docs.microsoft.com/azure/cosmos-db/introduction> |
+| Azure Database for PostgreSQL   | <https://azure.microsoft.com/services/postgresql/> |
+| Azure Cognitive Services        | <https://azure.microsoft.com/services/cognitive-services/> |

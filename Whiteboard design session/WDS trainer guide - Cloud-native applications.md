@@ -288,6 +288,8 @@ While multi-tenancy is a goal for the code base, even with this in place, Arthur
 
 8. Complete an implementation of the proposed solution for a single tenant to train the team and perfect the process.
 
+9. Enhance attendee session feedback with AI to prevent inappropriate content from being posted, and real-time language translation to better accommodate growing worldwide conference attendance.
+
 ### Customer objections
 
 1. There are many ways to deploy Docker containers on Azure. How do those options compare and what are motivations for each?
@@ -295,6 +297,8 @@ While multi-tenancy is a goal for the code base, even with this in place, Arthur
 2. Is there an option in Azure that provides container orchestration platform features that are easy to manage and migrate to, that can also handle our scale and management workflow requirements?
 
 3. We heard Azure Cosmos DB is compatible with MongoDB. Will this provide a migration that minimizes code changes?
+
+4. We know Microsoft offers Cognitive Services with pre-built AI models. What models offer the features we are looking to use for enhancing our conference web site?
 
 ### Infographic for common scenarios
 
@@ -434,6 +438,8 @@ Directions: Tables reconvene with the larger group to hear the facilitator/SME s
 | Image Quarantine                | <https://github.com/Azure/acr/tree/master/docs/preview/quarantine/>                              |
 | Container Monitoring Solution   | <https://docs.microsoft.com/azure/azure-monitor/insights/containers>                       |
 | Azure Cosmos DB                 | <https://docs.microsoft.com/azure/cosmos-db/introduction> |
+| Azure Database for PostgreSQL   | <https://azure.microsoft.com/services/postgresql/> |
+| Azure Cognitive Services        | <https://azure.microsoft.com/services/cognitive-services/> |
 
 # Cloud-native applications whiteboard design session trainer guide
 
@@ -651,6 +657,14 @@ They also decided to move forward with GitHub Actions for container DevOps workf
     Azure Cosmos DB supports multiple NoSQL data models; including supporting a MongoDB API. This provides compatibility for code written for MongoDB to communicate with Cosmos DB without code changes; for easier migration and interoperability.
 
     With the existing source code written for MongoDB, it can be pointed towards the Azure Cosmos DB MongoDB API endpoint. The Azure Cosmos DB Emulator could be used for local development on Windows, however, the Cosmos DB emulator does not support Linux. As a result, when using Linux for development, MongoDB is still needed for local development environments; with Azure Cosmos DB used for data storage in the cloud. This allows existing source code written for MongoDB storage to be easily migrated to using Azure Cosmos DB backend.
+
+4. We know Microsoft offers Cognitive Services with pre-built AI models. What models offer the features we are looking to use for enhancing our conference web site?
+
+    Azure Cognitive Services brings AI within reach for every developer - without requiring machine-learning expertise. All it takes is an API call to embed the ability to implement ML models managed by Microsoft.
+
+    - Content Moderator API can be used to add machine-assisted content moderation and human review tools for images, text, and videos. You can enhance your ability to detect potentially offensive or unwanted images through machine learning-based classifiers, custom lists, and optical character recognition (OCR).
+
+    - Translator API can be used to integrate an AI service for real-time text translation. It can translate text in real-time across more than 70 languages.
 
 ## Customer quote (to be read back to the attendees at the end)
 
