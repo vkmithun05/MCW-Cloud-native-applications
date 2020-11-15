@@ -206,13 +206,15 @@ The conference sites are currently hosted on-premises with the following topolog
 
 - The on-prem data backend is MongoDB; also running on a separate cluster of Linux servers.
 
+- There is relational data stored in PostgreSQL running on Linux servers.
+
 Customers are considered "tenants", and each tenant is treated as a unique deployment whereby the following happens:
 
-- Each tenant has a database in the MongoDB cluster with its own collections.
+- Each tenant has a database in the MongoDB cluster with its own collections, and a database in PostgreSQL.
 
 - A copy of the most recent functional conference code base is taken and configured to point at the tenant database.
 
-  - This includes a web site code base and an administrative site code base for entering conference content such as speakers, sessions, workshops, and sponsors.
+  - This includes a web site code base and an administrative site code base for entering conference content such as speakers, sessions, workshops, sponsors, and session feedback from attendees.
 
 - Modifications to support the customer's styles, graphics, layout, and other custom requests are applied.
 
@@ -268,9 +270,11 @@ While multi-tenancy is a goal for the code base, even with this in place, Arthur
 
 4. Migrate data from MongoDB on-premises to Azure Cosmos DB with the least changes possible to the application code.
 
-5. Continue to use Git repositories for source control and integrate into a CI/CD workflow.
+5. Migrate relational data from PostgreSQL on-premises databases to Microsoft Azure
 
-6. Prefer a complete suite of operational management tools with:
+6. Continue to use Git repositories for source control and integrate into a CI/CD workflow.
+
+7. Prefer a complete suite of operational management tools with:
 
     - UI for manual deployment and management during development and initial POC work.
 
@@ -282,7 +286,7 @@ While multi-tenancy is a goal for the code base, even with this in place, Arthur
 
     - Container image scanning.
 
-7. Complete an implementation of the proposed solution for a single tenant to train the team and perfect the process.
+8. Complete an implementation of the proposed solution for a single tenant to train the team and perfect the process.
 
 ### Customer objections
 
