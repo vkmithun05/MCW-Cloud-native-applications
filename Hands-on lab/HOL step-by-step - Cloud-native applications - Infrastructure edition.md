@@ -2193,7 +2193,7 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
     Use the following as the contents and update the `[SUFFIX]` and `[AZURE-REGION]` to match your ingress DNS name
 
     ```yaml
-    apiVersion: extensions/v1beta1
+    apiVersion: networking.k8s.io/v1beta1
     kind: Ingress
     metadata:
       name: content-ingress
