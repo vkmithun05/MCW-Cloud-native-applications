@@ -61,6 +61,7 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 3: Adjust CPU constraints to improve scale](#task-3-adjust-cpu-constraints-to-improve-scale)
     - [Task 4: Perform a rolling update](#task-4-perform-a-rolling-update)
     - [Task 5: Configure Kubernetes Ingress](#task-5-configure-kubernetes-ingress)
+    - [Task 6: Multi-region Load Balancing with Traffic Manager](#task-6-multi-region-load-balancing-with-traffic-manager)
   - [After the hands-on lab](#after-the-hands-on-lab)
 
 <!-- /TOC -->
@@ -1854,7 +1855,7 @@ In this task, you will setup Autoscale on Azure Cosmos DB.
 
 ## Exercise 5: Working with services and routing application traffic
 
-**Duration**: 45 minutes
+**Duration**: 1 hour
 
 In the previous exercise, we introduced a restriction to the scale properties of the service. In this exercise, you will configure the api deployments to create pods that use dynamic port mappings to eliminate the port resource constraint during scale activities.
 
@@ -2237,6 +2238,57 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
 22. Test TLS termination by visiting both services again using `https`.
 
     > It can take between 5 and 30 minutes before the SSL site becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
+
+### Task 6: Multi-region Load Balancing with Traffic Manager
+
+In this task, you will setup Azure Traffic Manager as a multi-region load balancer. This will enable you to provision an AKS instance of the app in a secondary Azure region with load balancing between the two regions.
+
+1. Within the Azure Portal, select **+ Create a resource**.
+
+2. Search the marketplace for **Traffic Manager profile**, select this resource type, then select **Create**.
+
+    ![Traffic Manager profile in the marketplace](media/tm-marketplace.png)
+
+3. On the **Create Traffic Manager profile** blade, enter the following values, then select **Create**.
+
+    - Name: `fabmedical-[SUFFIX]'
+    - Routing Method: **Performance**
+    - Resource Group: `fabmedical-[SUFFIX]`
+
+    ![Create Traffic Manager profile blade with all values entered.](media/tm-create.png)
+
+4. Navigate to the newly created `fabmedical-[SUFFIX]` **Traffic Manager profile**.
+
+5. On the **Traffic Manager profile** blade, select **Endpoints** under **Settings**.
+
+6. On the **Endpoints** pane, select **+ Add** to add a new endpoint to be load balanced.
+
+7. On the **Add endpoint** pane, enter the following values for the new endpoint, then select **Add**.
+
+    - Type: **External endpoint**
+    - Name: `primary`
+    - Fully-qualified domain name (FQDN) or IP: `fabmedical-[SUFFIX]-ingress.[AZURE-REGION].cloudapp.azure.com`
+    - Location: Choose the same Azure Region as AKS
+
+    Be sure to replace the `[SUFFIX]` and `[AZURE-REGION]` placeholders.
+
+    ![Add endpoint pane with values entered.](media/tm-add-endpoint-primary.png)
+
+8. Notice the list of **Endpoints** now shows the **primary** endpoint that was added.
+
+9. On the **Traffic Manager profile** blade, select **Overview**.
+
+10. On the **Overview** pane, copy the **DNS name** for the Traffic Manager profile.
+
+    ![The Traffic Manager profile overview pane with the DNS name highlighted](media/tm-overview.png)
+
+11. Open a new web browser tab and navigate to the Traffic Manager profile **DNS name** that as just copied.
+
+    ![The Contoso Neuro website using the Traffic Manager profile DNS name](media/tm-endpoint-website.png)
+
+12. When setting up a multi-region hosted application in AKS, you will setup a secondary AKS in another Azure Region, then add it's endpoint to it's Traffic Manager profile to be load balanced.
+
+    > **Note:** You can setup the secondary AKS and instance of the Contoso Neuro webiste on your own if you wish. The steps to set that up are the same as most of the steps you went through in this lab to setup the primary AKS and app instance.
 
 ## After the hands-on lab
 
