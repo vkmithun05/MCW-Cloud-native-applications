@@ -2147,13 +2147,19 @@ In this task, you will edit the web application source code to add Application I
 
 11. While the deployment is in progress, you can navigate to the web application and visit the stats page at `/stats`. Refresh the page as the rolling update executes. Observe that the service is running normally, and tasks continue to be load balanced.
 
-    ![On the Stats page, the webTaskId is highlighted.](media/image145.png)
+    ![On the Stats page, the hostName is highlighted.](media/image145.png)
 
 ### Task 5: Configure Kubernetes Ingress
 
 In this task you will setup a Kubernetes Ingress to take advantage of path-based routing and TLS termination.
 
-1. Update your helm package list.
+1. Within the Azure Cloud Shell, run the following command to add the Nginx stable Helm repository:
+
+    ```bash
+    helm repo add nginx-stable https://helm.nginx.com/stable
+    ```
+
+2. Update your helm package list.
 
    ```bash
    helm repo update
@@ -2164,15 +2170,15 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
    > helm repo add stable https://kubernetes-charts.storage.googleapis.com/
    > ```
 
-2. Install the ingress controller resource to handle ingress requests as they come in. The ingress controller will receive a public IP of its own on the Azure Load Balancer and be able to handle requests for multiple services over port 80 and 443.
+3. Install the ingress controller resource to handle ingress requests as they come in. The ingress controller will receive a public IP of its own on the Azure Load Balancer and be able to handle requests for multiple services over port 80 and 443.
 
    ```bash
-   helm install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --generate-name
+   helm install nginx-stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2 --generate-name
    ```
 
-3. From the Kubernetes dashboard, ensure the Namespace filter is set to **All namespaces**
+4. From the Kubernetes dashboard, ensure the Namespace filter is set to **All namespaces**
 
-4. Under **Discovery and Load Balancing**, select **Services**, then copy the IP Address for the **External endpoints** for the `nginx-ingress-RANDOM-controller` service.
+5. Under **Discovery and Load Balancing**, select **Services**, then copy the IP Address for the **External endpoints** for the `nginx-ingress-RANDOM-controller` service.
 
    ![A screenshot of the Kubernetes management dashboard showing the ingress controller settings.](media/Ex4-Task5.5.png)
 
@@ -2184,7 +2190,7 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
     >
     > ![A screenshot of Azure Cloud Shell showing the command output.](media/Ex4-Task5.5a.png)
 
-5. Create a script to update the public DNS name for the IP.
+6. Within the Azure Cloud Shell, create a script to update the public DNS name for the IP.
 
    ```bash
    code update-ip.sh
@@ -2215,15 +2221,15 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
    - `[INGRESS PUBLIC IP]`: replace this with the IP Address copied previously.
    - `[SUFFIX]`: replace this with the same SUFFIX value used previously for this lab
 
-6. Save changes and close the editor.
+7. Save changes and close the editor.
 
-7. Run the update script.
+8. Run the update script.
 
    ```bash
    bash ./update-ip.sh
    ```
 
-8. Verify the IP update by visiting the URL in your browser.
+9. Verify the IP update by visiting the URL in your browser.
 
    > **Note**: It is normal to receive a 404 message at this time.
 
@@ -2233,17 +2239,17 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
 
    ![A screenshot of the browser URL.](media/Ex4-Task5.9.png)
 
-9.  Use helm to install `cert-manager`, a tool that can provision SSL certificates automatically from letsencrypt.org.
+10. Use helm to install `cert-manager`, a tool that can provision SSL certificates automatically from letsencrypt.org.
 
-   ```bash
-   kubectl create namespace cert-manager
+    ```bash
+    kubectl create namespace cert-manager
 
-   kubectl label namespace cert-manager cert-manager.io/disable-validation=true
+    kubectl label namespace cert-manager cert-manager.io/disable-validation=true
 
-   kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.1/cert-manager.yaml
-   ```
+    kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.1/cert-manager.yaml
+    ```
 
-10. Cert manager will need a custom ClusterIssuer resource to handle requesting SSL certificates.
+11. Cert manager will need a custom ClusterIssuer resource to handle requesting SSL certificates.
 
     ```bash
     code clusterissuer.yml
@@ -2272,15 +2278,15 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
               class: nginx
     ```
 
-11. Save changes and close the editor.
+12. Save changes and close the editor.
 
-12. Create the issuer using `kubectl`.
+13. Create the issuer using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f clusterissuer.yml
     ```
 
-13. Now you can create a certificate object.
+14. Now you can create a certificate object.
 
     > **Note**:
     >
@@ -2310,9 +2316,9 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
         kind: ClusterIssuer
     ```
 
-14. Save changes and close the editor.
+15. Save changes and close the editor.
 
-15. Create the certificate using `kubectl`.
+16. Create the certificate using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f certificate.yml
@@ -2332,7 +2338,7 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
 
     It can take between 5 and 30 minutes before the tls-secret becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 
-16. Now you can create an ingress resource for the content applications.
+17. Now you can create an ingress resource for the content applications.
 
     ```bash
     code content.ingress.yml
@@ -2368,21 +2374,21 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
                   servicePort: 3001
     ```
 
-17. Save changes and close the editor.
+18. Save changes and close the editor.
 
-18. Create the ingress using `kubectl`.
+19. Create the ingress using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f content.ingress.yml
     ```
 
-19. Refresh the ingress endpoint in your browser. You should be able to visit the speakers and sessions pages and see all the content.
+20. Refresh the ingress endpoint in your browser. You should be able to visit the speakers and sessions pages and see all the content.
 
-20. Visit the api directly, by navigating to `/content-api/sessions` at the ingress endpoint.
+21. Visit the api directly, by navigating to `/content-api/sessions` at the ingress endpoint.
 
     ![A screenshot showing the output of the sessions content in the browser.](media/Ex4-Task5.19.png)
 
-21. Test TLS termination by visiting both services again using `https`.
+22. Test TLS termination by visiting both services again using `https`.
 
     > It can take between 5 and 30 minutes before the SSL site becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 
