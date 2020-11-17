@@ -285,6 +285,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    content-api/
    content-init/
    content-web/
+   perftest.sh
    ```
 
 9. Set your username and email, which git uses for commits.

@@ -57,6 +57,7 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 2: Increase service instances beyond available resources](#task-2-increase-service-instances-beyond-available-resources)
     - [Task 3: Restart containers and test HA](#task-3-restart-containers-and-test-ha)
     - [Task 4: Configure Cosmos DB Autoscale](#task-4-configure-cosmos-db-autoscale)
+    - [Task 5: Test Cosmos DB Autoscale](#task-5-test-cosmos-db-autoscale)
   - [Exercise 5: Working with services and routing application traffic](#exercise-5-working-with-services-and-routing-application-traffic)
     - [Task 1: Scale a service without port constraints](#task-1-scale-a-service-without-port-constraints)
     - [Task 2: Update an external service to support dynamic discovery with a load balancer](#task-2-update-an-external-service-to-support-dynamic-discovery-with-a-load-balancer)
@@ -2005,7 +2006,55 @@ In this task, you will setup Autoscale on Azure Cosmos DB.
 
 7. Perform the same task to enable **Autoscale** Throughput on the `speakers` collection.
 
-TODO
+### Task 5: Test Cosmos DB Autoscale
+
+In this task, you will run a performance test script that will test the Autoscale feature of Azure Cosmos DB so you can see that it will now scale greater than 400 RU/s.
+
+1. In the Azure Portal, navigate to the `fabmedical-[SUFFIX]` **Cosmos DB account**.
+
+2. Select **Connection String** under **Settings**.
+
+3. On the **Connection String** pane, copy the **HOST**, **USERNAME**, and **PRIMARY PASSWORD** values. Save these for use later.
+
+    ![The Cosmos DB account Connection String pane with the fields to copy highlighted.](media/cosmos-connection-string-pane.png)
+
+4. Open the Azure Cloud Shell, and **SSH** to the **Build agent VM**.
+
+5. On the **Build agent VM**, navigate to the `~/Fabmedical` directory.
+
+    ```bash
+    cd ~/Fabmedical
+    ```
+
+6. Run the following command to open the `perftest.sh` script for editing in Vim.
+
+    ```bash
+    vi perftest.sh
+    ```
+
+7. There are several variables declared at the top of the `perftest.sh` secript. Modify the **host**, **username**, and **password** variables by setting their values to the corresponding Cosmos DB Connection String values that were copied previously.
+
+    ![Scrrenshot of Vim with perftest.sh file open and variables set to Cosmos DB Connection String values.](media/cosmos-perf-test-variables.png)
+
+8. Save the file and exit Vim.
+
+9. Run the following command to execute the `perftest.sh` script to run a small load test agains Cosmos DB. This script will consume RU's in Cosmos DB by inserting many documents in to the Sessions container.
+
+    ```bash
+    bash ./perftest.sh
+    ```
+
+    > **Note:** The script will take a minute to complete executing.
+
+10. Once the script has completed, navigate back to the **Cosmos DB account** in the Azure portal.
+
+11. Scroll down on the **Overview** pane of the **Cosmos DB account** blade, and locate the **Request Charge** graph.
+
+    > **Note:** It may take 2 - 5 minutes for the activity on the Cosmos DB collection to appear in the activity log. Wiat a couple minutes and then refresh the pane if the recent Request charge doens't show up right now.
+
+12. Notice that the **Request charge** now shows there was activity on the **Cosmos DB account** that exceeded the 400 RU/s limit that was previously set before Autoscale was turned on.
+
+    ![Cosmos DB Request charge graph showing recent activity from performance test](media/cosmos-request-charge.png)
 
 ## Exercise 5: Working with services and routing application traffic
 
