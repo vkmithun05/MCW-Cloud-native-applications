@@ -529,13 +529,13 @@ In this task, you will create Docker images for the application --- one for the 
    docker image build -t content-init .
    ```
 
-11. When complete, you will see seven images now exist when you run the Docker images command.
+11. When complete, you will see eight images now exist when you run the Docker images command.
 
    ```bash
    docker image ls
    ```
 
-   ![Three images are now visible in this screenshot of the console window: content-web, content-api, and node.](media/image60.png)
+   ![Three images are now visible in this screenshot of the console window: content-init, content-web, content-api, and node.](media/vm-list-containers.PNG)
 
 ### Task 5: Run a containerized application
 
@@ -558,22 +558,24 @@ The web application container will be calling endpoints exposed by the API appli
 2. The `docker container run` command has failed because it is configured to connect to mongodb using a localhost URL. However, now that content-api is isolated in a separate container, it cannot access mongodb via localhost even when running on the same docker host. Instead, the API must use the bridge network to connect to mongodb.
 
    ```text
-   > content-api@0.0.0 start /usr/src/app
+   > content-api@0.0.0 start
    > node ./server.js
 
    Listening on port 3001
    Could not connect to MongoDB!
-   MongoTimeoutError: Server selection timed out after 30000 ms
-   npm ERR! code ELIFECYCLE
-   npm ERR! errno 255
-   npm ERR! content-api@0.0.0 start: `node ./server.js`
-   npm ERR! Exit status 255
-   npm ERR!
-   npm ERR! Failed at the content-api@0.0.0 start script.
-   npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+   MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+   npm notice
+   npm notice New patch version of npm available! 7.0.8 -> 7.0.13
+   npm notice Changelog: <https://github.com/npm/cli/releases/tag/v7.0.13>
+   npm notice Run `npm install -g npm@7.0.13` to update!
+   npm notice
+   npm ERR! code 255
+   npm ERR! path /usr/src/app
+   npm ERR! command failed
+   npm ERR! command sh -c node ./server.js
 
    npm ERR! A complete log of this run can be found in:
-   npm ERR!     /root/.npm/_logs/2019-12-04T22_39_38_815Z-debug.log
+   npm ERR!     /root/.npm/_logs/2020-11-23T03_04_12_948Z-debug.log
    ```
 
 3. The content-api application allows an environment variable to configure the mongodb connection string. Remove the existing container, and then instruct the docker engine to set the environment variable by adding the `-e` switch to the `docker container run` command. Also, use the `-d` switch to run the api as a daemon.
@@ -770,7 +772,7 @@ In this task, you will push images to your ACR account, version images with tagg
    docker image ls
    ```
 
-   ![This is a screenshot of a docker images list example.](media/image66.png)
+   ![This is a screenshot of a docker images list example.](media/vm-docker-images-list.PNG)
 
 7. Push the images to your ACR account with the following command:
 
@@ -839,7 +841,7 @@ image and pushes it to your ACR instance automatically.
    cd ~/Fabmedical
    ```
 
-7. Before the GitHub Actions workflows can be setup, the `.github/workflows` directory needs to be created. Do this by running the following commands:
+7. Before the GitHub Actions workflows can be setup, the `.github/workflows` directory needs to be created, if it doesn't already exist. Do this by running the following commands:
 
     ```bash
     mkdir ~/Fabmedical/.github
@@ -1301,6 +1303,13 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
     ```bash
     kubectl apply -f api.deployment.yml
     ```
+
+    >**Note**: If you receive an error like `Operation cannot be fulfilled on deployment.apps "api"` then delete the deployment and recreate it using the modified `api.deployment.yml` file.
+
+      ```bash
+      kubectl delete deployment api
+      kubectl create -f api.deployment.yml
+      ```
 
 20. Select **Deployments** then **api** to view the api deployment. It now has a healthy instance and the logs indicate it has connected to mongodb.
 
@@ -1879,9 +1888,9 @@ In this task, you will try to increase the number of instances for the API servi
 
 2. Configure the deployment to use a fixed host port for initial testing. Select the vertical ellipses and then select **Edit**.
 
-3. In the Edit a Deployment dialog, select the JSON tab. You will see a list of settings shown in YAML format. Use the copy button to copy the text to your clipboard.
+3. In the Edit a resource dialog, select the YAML tab. You will see a list of settings shown in YAML format. Use the copy button to copy the text to your clipboard.
 
-   ![Screenshot of the Edit a Deployment dialog box that displays JSON data.](media/image82.png)
+   ![Screenshot of the Edit a resource dialog box that displays JSON data.](media/api-deployment-edit.PNG)
 
 4. Paste the contents into the text editor of your choice (such as Notepad on Windows, macOS users can use TextEdit).
 
