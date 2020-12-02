@@ -862,16 +862,16 @@ image and pushes it to your ACR instance automatically.
 
    - replace `[SHORT_SUFFIX]` with your short suffix such as `SOL`.
 
-    ```yml
-    name: content-web
+   ```yml
+   name: content-web
 
-    # This workflow is triggered on push to the 'content-web' directory of the  master branch of the repository
-    on:
+   # This workflow is triggered on push to the 'content-web' directory of the  master branch of the repository
+   on:
       push:
-        branches:
-        - master
-        paths:
-        - 'content-web/**'
+         branches:
+            - master
+         paths:
+            - 'content-web/**'
 
       # Configure workflow to also support triggering manually
       workflow_dispatch:
@@ -879,15 +879,14 @@ image and pushes it to your ACR instance automatically.
     # Environment variables are defined so that they can be used throughout the job definitions.
     env:
       imageRepository: 'content-web'
-      resourceGroupName: 'Fabmedical-[SHORT_SUFFIX]'
+      resourceGroupName: 'fabmedical-[SHORT_SUFFIX]'
       containerRegistryName: 'fabmedical[SHORT_SUFFIX]'
       containerRegistry: 'fabmedical[SHORT_SUFFIX].azurecr.io'
       dockerfilePath: './content-web'
       tag: '${{ github.run_id  }}'
 
-    # Jobs define the actions that take place when code is pushed to the master branch
-    jobs:
-
+   # Jobs define the actions that take place when code is pushed to the master branch
+   jobs:
       build-and-publish-docker-image:
         name: Build and Push Docker Image
         runs-on: ubuntu-latest
