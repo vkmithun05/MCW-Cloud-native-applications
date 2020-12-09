@@ -76,11 +76,11 @@ You should follow all of the steps provided in this section _before_ taking part
 
 1. Open a cloud shell by selecting the cloud shell icon in the menu bar.
 
-   ![The cloud shell icon is highlighted on the menu bar.](media/b4-image35.png "Cloud Shell")
+   ![The cloud shell icon is highlighted on the menu bar.](media/b4-image35.png)
 
 2. The cloud shell opens in the browser window. Choose **Bash** if prompted or use the left-hand dropdown on the shell menu bar to choose **Bash** from the dropdown (as shown). If prompted, select **Confirm**.
 
-   ![This is a screenshot of the cloud shell opened in a browser window. Bash was selected.](media/b4-image36.png "Cloud Shell Bash Window")
+   ![This is a screenshot of the cloud shell opened in a browser window. Bash was selected.](media/b4-image36.png)
 
 3. You should make sure to set your default subscription correctly. To view your current subscription type:
 
@@ -88,7 +88,7 @@ You should follow all of the steps provided in this section _before_ taking part
    az account show
    ```
 
-   ![In this screenshot of a Bash window, az account show has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image37.png "Bash Shell AZ Account Show")
+   ![In this screenshot of a Bash window, az account show has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image37.png)
 
 4. To set your default subscription to something other than the current selection, type the following, replacing {id} with the desired subscription id value:
 
@@ -102,7 +102,7 @@ You should follow all of the steps provided in this section _before_ taking part
    az account list
    ```
 
-   ![In this screenshot of a Bash window, az account list has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image38.png "Bash AZ Account List")
+   ![In this screenshot of a Bash window, az account list has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image38.png)
 
 ### Task 2: Download Starter Files
 
@@ -120,7 +120,7 @@ In this task, you use `git` to copy the lab content to your cloud shell so that 
 
 2. The lab files download.
 
-   ![In this screenshot of a Bash window, git clone has been typed and run at the command prompt. The output from git clone is shown.](media/b4-2019-09-30_21-25-06.png "Bash Git Clone")
+   ![In this screenshot of a Bash window, git clone has been typed and run at the command prompt. The output from git clone is shown.](media/b4-2019-09-30_21-25-06.png)
 
 3. We do not need the `.git` folder, and later steps will be less complex if we remove it. Run this command:
 
@@ -152,7 +152,7 @@ Create an Azure Resource Group to hold most of the resources that you create in 
 
 2. When this completes, the Azure Portal shows your Resource Group.
 
-   ![In this screenshot of the Azure Portal, the fabmedical-sol Resource group is listed.](media/b4-image8.png "Fabmedical Resource Groups")
+   ![In this screenshot of the Azure Portal, the fabmedical-sol Resource group is listed.](media/b4-image8.png)
 
 ### Task 4: Create an SSH key
 
@@ -178,7 +178,7 @@ You create VMs during the upcoming exercises. In this section, you create an SSH
 
 5. Because you entered `.ssh/fabmedical` the ssh-keygen generates the file in the `.ssh` folder in your user folder, where the cloud shell opens by default.
 
-   ![In this screenshot of the cloud shell window, ssh-keygen -t RSA -b 2048 -C admin@fabmedical has been typed and run at the command prompt. Information about the generated key appears in the window.](media/b4-image57.png "SSH Keygen")
+   ![In this screenshot of the cloud shell window, ssh-keygen -t RSA -b 2048 -C admin@fabmedical has been typed and run at the command prompt. Information about the generated key appears in the window.](media/b4-image57.png)
 
 6. From the cloud shell command line, enter the following command to output the public key content. Copy this information to use later.
 
@@ -188,7 +188,7 @@ You create VMs during the upcoming exercises. In this section, you create an SSH
 
 7. Keep this cloud shell open and remain in the default directory. You will use this shell in later tasks.
 
-    ![In this screenshot of the cloud shell window, cat .ssh/fabmedical has been typed and run at the command prompt. Information about the public key content appears in the window.](media/b4-image571.png "Cloud Shell - cat .ssh")
+    ![In this screenshot of the cloud shell window, cat .ssh/fabmedical has been typed and run at the command prompt. Information about the public key content appears in the window.](media/b4-image571.png)
 
 ### Task 5: Create a Service Principal
 
@@ -206,7 +206,7 @@ Azure Kubernetes Service (AKS) requires an Azure Active Directory (AAD) service 
 
 2. The command produces output like this. Copy this information to use later.
 
-   ![In this screenshot of a Bash window, az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/{id}" --name="Fabmedical-sp-SUFFIX" has been typed and run at the command prompt. Service principal information is visible in the window, but at this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image39.png "Bash AZ Create RBAC")
+   ![In this screenshot of a Bash window, az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/{id}" --name="Fabmedical-sp-SUFFIX" has been typed and run at the command prompt. Service principal information is visible in the window, but at this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image39.png)
 
 3. To get the service principal object id, type the following command, replacing {appId} with your service principal appId:
 
@@ -216,7 +216,7 @@ Azure Kubernetes Service (AKS) requires an Azure Active Directory (AAD) service 
 
 4. The command produces output like this. Copy this information to use later.
 
-   ![In this screenshot of a Bash window, az ad sp show --id d41261a3-d8b8-4cf0-890d-1fb6efc20a67 --query "{objectId:@.objectId}" has been typed and run at the command prompt. Service Principal information is visible in the window.](media/b4-image58.png "Bash Manage Azure Active Directory service principal")
+   ![In this screenshot of a Bash window, az ad sp show --id d41261a3-d8b8-4cf0-890d-1fb6efc20a67 --query "{objectId:@.objectId}" has been typed and run at the command prompt. Service Principal information is visible in the window.](media/b4-image58.png)
 
 ### Task 6: Deploy ARM Template
 
@@ -236,7 +236,7 @@ In this section, you configure and execute an ARM template that creates all the 
    code azuredeploy.parameters.json
    ```
 
-   ![This screenshot shows the online editor for azure could shell. Display the azuredeploy.parameters.json](media/b4-image581.png "Edit azuredeploy.parameters.json")
+   ![This screenshot shows the online editor for azure could shell.](media/b4-image581.png)
 
 3. Update the values for the various keys so that they match your environment:
 
@@ -255,11 +255,11 @@ In this section, you configure and execute an ARM template that creates all the 
 
 4. Select the **...** button and select **Save**.
 
-   ![In this screenshot of an Azure Cloud Shell editor window, the ... button has been selected, and the Save option is highlighted.](media/b4-image62.png "Azure Cloud Shell Save")
+   ![In this screenshot of an Azure Cloud Shell editor window, the ... button has been selected, and the Save option is highlighted.](media/b4-image62.png)
 
 5. Select the **...** button again and select **Close Editor**.
 
-   ![In this screenshot of the Azure Cloud Shell editor window, the ... button has been selected, and the Close Editor option is highlighted.](media/b4-image63.png "Azure Cloud Shell Close")
+   ![In this screenshot of the Azure Cloud Shell editor window, the ... button has been selected, and the Close Editor option is highlighted.](media/b4-image63.png)
 
 6. Create the needed resources by typing the following instruction (case sensitive), replacing {resourceGroup} with the name of the previously created resource group:
 
@@ -279,7 +279,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
 2. In the upper-right corner, expand the user drop down menu and select **Your repositories**.
 
-    ![The user menu is expanded with the Your repositories item selected.](media/2020-08-23-18-03-40.png "User menu, your repositories")
+    ![The user menu is expanded with the Your repositories item selected.](media/2020-08-23-18-03-40.png "User menu")
 
 3. Next to the search criteria, locate and select the **New** button.
 
@@ -380,7 +380,7 @@ VM.
 
 2. In the cloud shell output, take note of the public IP address for the VM.
 
-   ![The cloud shell window is displayed with the Public IP address shown.](media/b4-2019-10-01_11-58-05.png "Azure Cloud Shell Public IP")
+   ![The cloud shell window is displayed with the Public IP address shown.](media/b4-2019-10-01_11-58-05.png)
 
 3. Connect to the new VM you created by typing the following command:
 
@@ -408,7 +408,7 @@ VM.
 
    `adminfabmedical@fabmedical-SUFFIX:~$`
 
-   ![In this screenshot of a Cloud Shell window, ssh -i .ssh/fabmedical adminfabmedical@52.174.141.11 has been typed and run at the command prompt. The information detailed above appears in the window.](media/b4-image27.png "Azure Cloud Shell Connect to Host")
+   ![In this screenshot of a Cloud Shell window, ssh -i .ssh/fabmedical adminfabmedical@52.174.141.11 has been typed and run at the command prompt. The information detailed above appears in the window. At this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image27.png)
 
 > **Note**: If you have issues connecting, you may have pasted the SSH public key incorrectly in the ARM template. Unfortunately, if this is the case, you will have to recreate the VM and try again.
 
@@ -467,7 +467,7 @@ In this task, you update the packages and install the Docker engine.
    docker version
    ```
 
-   ![In this screenshot of a Cloud Shell window, docker version has been typed and run at the command prompt. Docker version information appears in the window.](media/b4-image28.png "Display Docker version")
+   ![In this screenshot of a Cloud Shell window, docker version has been typed and run at the command prompt. Docker version information appears in the window.](media/b4-image28.png)
 
 9. You may check the versions of node.js and npm as well, just for information purposes, using these commands:
 
@@ -489,14 +489,14 @@ In this task, you update the packages and install the Docker engine.
     sudo usermod -aG docker $USER
     ```
 
-    ![In this screenshot of a Cloud Shell window, sudo usermod -aG docker $USER has been typed and run at the command prompt. Errors appear in the window.](media/b4-image29.png "Remove SUDO requirement")
+    ![In this screenshot of a Cloud Shell window, sudo usermod -aG docker $USER has been typed and run at the command prompt. Errors appear in the window.](media/b4-image29.png)
 
 12. For the user permission changes to take effect, exit the SSH
     session by typing `exit`, then press \<Enter\>. Reconnect to the build agent VM using SSH as you did in the previous task.
 
 13. Repeat the Docker version command, and note the output now shows the server version as well.
 
-    ![In this screenshot of a Cloud Shell window, docker version has been typed and run at the command prompt. Docker version information appears in the window, in addition to server version information.](media/b4-image30.png "Display Docker version")
+    ![In this screenshot of a Cloud Shell window, docker version has been typed and run at the command prompt. Docker version information appears in the window, in addition to server version information.](media/b4-image30.png)
 
 14. Run a few Docker commands:
 
@@ -514,7 +514,7 @@ In this task, you update the packages and install the Docker engine.
 
 15. In both cases, you have an empty list but no errors while running the command. Your build agent is ready with the Docker engine running correctly.
 
-    ![In this screenshot of a Cloud Shell window, docker container ls has been typed and run at the command prompt, as has the docker container ls -a command.](media/b4-image31.png "Display Docker container list")
+    ![In this screenshot of a Cloud Shell window, docker container ls has been typed and run at the command prompt, as has the docker container ls -a command.](media/b4-image31.png)
 
 ### Task 10: Clone Repositories to the Build Agent
 
