@@ -1296,6 +1296,8 @@ In this task, deploy the web service using `kubectl`.
 
 In this task, you will deploy the web service using a [Helm](https://helm.sh/) chart to streamline the installing and managing the container-based application on the Azure Kubernetes cluster.
 
+You will configure a Helm Chart that will be used to deploy and configure the **content-web** container image to Kubernetes. This is a technique that can be used to more easily deploy and manage the application on the Azure Kubernetes Cluster.
+
 1. From the Kubernetes dashboard, under **Workloads**, select **Deployments**.
 
 2. Select the triple vertical dots on the right of the `web` deployment and then choose **Delete**. When prompted, select **Delete** again.
