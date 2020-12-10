@@ -239,7 +239,7 @@ The purpose of this task is to make sure you can run the application successfull
 
     ![In this screenshot, nodejs ./server.js & has been typed and run at the command prompt, which starts the API as a background process.](media/image47.png "Start the mongodb in background")
 
-11. Press ENTER again to get to a command prompt for the next step.
+11. Press `ENTER` again to get to a command prompt for the next step.
 
 12. Test the API using curl. You will request the speaker's content, and this will return a JSON result.
 
@@ -317,7 +317,7 @@ In this task, you will browse to the web application for testing.
 
    ![In this screenshot of your list of available resources, the first item is selected, which has the following values for Name, Type, and Location: fabmedical-soll (a red arrows points to this name), Virtual machine, and East US 2.](media/image54.png "List of resources")
 
-3. From the Virtual Machine blade overview, find the IP address of the VM.
+3. From the **Virtual Machine** blade overview, find the **IP address** of the VM.
 
    ![In the Virtual Machine blade, Overview is selected on the left and Public IP address 52.174.141.11 is highlighted on the right.](media/image26.png "VM Public IP Address")
 
@@ -523,9 +523,9 @@ In this task, you will create Docker images for the application --- one for the 
 
 10. Type the following command to create a Docker image for the init application.
 
-   ```bash
-   docker image build -t content-init .
-   ```
+      ```bash
+      docker image build -t content-init .
+      ```
 
 11. When complete, you will see eight images now exist when you run the Docker images command.
 
@@ -547,7 +547,7 @@ The web application container will be calling endpoints exposed by the API appli
 
    - Instructs the Docker engine to use port `3001` and map that to the internal container port `3001`.
 
-   - Creates a container from the specified image, by its tag, such as content-api.
+   - Creates a container from the specified image, by its tag, such as `content-api`.
 
    ```bash
    docker container run --name api --net fabmedical -p 3001:3001 content-api
@@ -620,7 +620,7 @@ The web application container will be calling endpoints exposed by the API appli
 
 ### Task 6: Setup environment variables
 
-In this task, you will configure the **web** container to communicate with the API container using an environment variable, similar to the way the mongodb connection string is provided to the api.
+In this task, you will configure the `web` container to communicate with the API container using an environment variable, similar to the way the mongodb connection string is provided to the api.
 
 1. From cloud shell connected to the build agent VM, stop and remove the web container using the following commands.
 
@@ -752,7 +752,7 @@ In this task, you will push images to your ACR account, version images with tagg
 
    ![In this screenshot of the console window, the following has been typed and run at the command prompt: docker login fabmedicalsoll.azurecr.io](media/image65.png "Docker log into container")
 
-   >**Tip**: Make sure to specify the fully qualified registry login server (all lowercase).
+   > **Tip**: Make sure to specify the fully qualified registry login server (all lowercase).
 
 5. Run the following commands to properly tag your images to match your ACR account name.
 
@@ -782,7 +782,7 @@ In this task, you will push images to your ACR account, version images with tagg
 
    ![In this screenshot of the console window, an example of images being pushed to an ACR account results from typing and running the following at the command prompt: docker push [LOGINSERVER]/content-web.](media/image67.png "Push image to ACR")
 
-8. In the Azure Portal, navigate to your ACR account, and select Repositories under Services on the left-hand menu. You will now see two, one for each image.
+8. In the Azure Portal, navigate to your ACR account, and select **Repositories** under **Services** on the left-hand menu. You will now see two, one for each image.
 
    ![In this screenshot, content-api and content-web each appear on their own lines below Repositories.](media/image68.png "Search for repositories")
 
@@ -790,7 +790,7 @@ In this task, you will push images to your ACR account, version images with tagg
 
    ![In this screenshot, content-api is selected under Repositories, and the Tags blade appears on the right.](media/image69.png "View latest repo tags")
 
-10. From the cloud shell session attached to the VM, assign the v1 tag to each image with the following commands. Then list the Docker images to note that there are now two entries for each image: showing the latest tag and the `v1` tag. Also note that the image ID is the same for the two entries, as there is only one copy of the image.
+10. From the cloud shell session attached to the VM, assign the `v1` tag to each image with the following commands. Then list the Docker images to note that there are now two entries for each image: showing the `latest` tag and the `v1` tag. Also note that the image ID is the same for the two entries, as there is only one copy of the image.
 
     ```bash
     docker image tag [LOGINSERVER]/content-web:latest [LOGINSERVER]/content-web:v1
@@ -799,7 +799,7 @@ In this task, you will push images to your ACR account, version images with tagg
     docker image ls
     ```
 
-    ![In this screenshot of the console window, an example of tags being added and displayed.](media/image70.png "View latest image by tag")
+    ![In this screenshot of the console window is an example of tags being added and displayed.](media/image70.png "View latest image by tag")
 
 11. Repeat Step 7 to push the images to ACR again so that the newly tagged `v1` images are pushed. Then refresh one of the repositories to see the two versions of the image now appear.
 
@@ -944,7 +944,7 @@ image and pushes it to your ACR instance automatically.
 
 18. Edit the `resourceGroupName` and `containerRegistry` environment values to replace `[SHORT_SUFFIX]` with your own three-letter suffix so that it matches your container registry's name and resource group.
 
-    ![Screenshot of content-api.yml with the environment variables highlighted.](media/2020-08-25-15-59-56.png "Screenshot of content-api.yml with the environment variables highlighted")
+    ![The screenshot shows the content-api.yml with the environment variables highlighted.](media/2020-08-25-15-59-56.png "content-api.yml environment variables highlighted")
 
 19. Save the file, then navigate to the repositories in GitHub, select Actions, and then manually run the **content-api** workflow.
 
@@ -987,7 +987,7 @@ In this task, you will deploy an instance of the Azure Database Migration Servic
 
 3. Select **Create**
 
-    ![Screenshot shows Azure Database Migration Service in the Azure Marketplace](media/dms-marketplace-create.png "Azure Database Migration Service")
+    ![The screenshot shows the Azure Database Migration Service in the Azure Marketplace.](media/dms-marketplace-create.png "Azure Database Migration Service")
 
 4. On the **Basics** tab of the **Create Migration Service** pane, enter the following values:
 
@@ -1001,7 +1001,7 @@ In this task, you will deploy an instance of the Azure Database Migration Servic
 
 6. On the **Networking** tab, select the **Virtual Network** within the `fabmedical-[SUFFIX]` resource group.
 
-    ![The screenshot shows the Create Migration Service Networking tab with Virtual Network selected](media/dms-create-networking.png "Create Migration Service Networking tab")
+    ![The screenshot shows the Create Migration Service Networking tab with Virtual Network selected.](media/dms-create-networking.png "Create Migration Service Networking tab")
 
 7. Select **Review + create**
 
@@ -1037,7 +1037,7 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
     > **Note:** Leave the **User Name** and **Password** blank as the MongoDB instance on the Build Agent VM for this lab does not have authentication turned on. The Azure Database Migration Service is connected to the same VNet as the Build Agent VM, so it's able to communicate within the VNet directly to the VM without exposing the MongoDB service to the Internet. In production scenarios, you should always have authentication enabled on MongoDB.
 
-    ![Select source tab with values selected for the MongoDB server](media/dms-select-source.png "MongoDB to Azure Database for CosmosDB - Select source")
+    ![Select source tab with values selected for the MongoDB server.](media/dms-select-source.png "MongoDB to Azure Database for CosmosDB - Select source")
 
 5. Select **Next: Select target >>**.
 
@@ -1093,7 +1093,7 @@ In this exercise, you will connect to the Azure Kubernetes Service cluster you c
 
 In this task, you will gather the information you need about your Azure Kubernetes Service cluster to connect to the cluster and execute commands to connect to the Kubernetes management dashboard from cloud shell.
 
-> **Note**: The following tasks should be executed in cloud shell and not the build machine, so disconnect from build machine if still connected
+> **Note**: The following tasks should be executed in cloud shell and not the build machine, so disconnect from build machine if still connected.
 
 1. Verify that you are connected to the correct subscription with the following command to show your default subscription:
 
@@ -1122,7 +1122,7 @@ In this task, you will gather the information you need about your Azure Kubernet
 
    ![In this screenshot of the console, kubectl get nodes has been typed and run at the command prompt, which produces a list of nodes.](media/image75.png "kubectl get nodes")
 
-4. Since the AKS cluster uses RBAC, a ClusterRoleBinding must be created before you can correctly access the dashboard. To create the required binding, execute the command bellow:
+4. Since the AKS cluster uses RBAC, a `ClusterRoleBinding` must be created before you can correctly access the dashboard. To create the required binding, execute the command below:
 
    ```bash
    kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
@@ -1148,7 +1148,7 @@ In this task, you will gather the information you need about your Azure Kubernet
     > ls /home
     > ```
 
-6. Create an SSH tunnel linking a local port (8001) on your cloud shell host to port 443 on the management node of the cluster. Cloud shell will then use the web preview feature to give you remote access to the Kubernetes dashboard. Execute the command below replacing the values as follows:
+6. Create an SSH tunnel linking a local port (`8001`) on your cloud shell host to port 443 on the management node of the cluster. Cloud shell will then use the web preview feature to give you remote access to the Kubernetes dashboard. Execute the command below replacing the values as follows:
 
    > **Note**: After you run this command, it may work at first and later lose its connection, so you may have to run this again to reestablish the connection. If the Kubernetes dashboard becomes unresponsive in the browser this is an indication to return here and check your tunnel or rerun the command.
 
@@ -1200,13 +1200,13 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
    ![In the Advanced options dialog box, the above information has been entered. At the bottom of the dialog box is a Deploy button.](media/image79.png "Show Advanced Options")
 
-4. Select **Deploy** to initiate the service deployment based on the image. This can take a few minutes. In the meantime, you will be redirected to the Overview dashboard. Select the **API** deployment from the Overview dashboard to see the deployment in progress.
+4. Select **Deploy** to initiate the service deployment based on the image. This can take a few minutes. In the meantime, you will be redirected to the Overview dashboard. Select the **API** deployment from the **Overview** dashboard to see the deployment in progress.
 
    ![This is a screenshot of the Kubernetes management dashboard. Overview is highlighted on the left, and at right, a red arrow points to the api deployment.](media/image80.png "See the deployment in progress")
 
 5. Kubernetes indicates a problem with the `api` **Replica Set** after some seconds. Select the ellipsis icon, then select **Logs** to investigate.
 
-   ![This screenshot of the Kubernetes management dashboard shows an error with the replica set, and ellipse menu with Logs option highlighted.](media/Ex2-Task1.5.png "Investigate logs")
+   ![This is a screenshot of the Kubernetes management dashboard that shows an error with the replica set, and ellipse menu with Logs option highlighted.](media/Ex2-Task1.5.png "Investigate logs")
 
 6. The log indicates that the content-api application is once again failing because it cannot find a mongodb api to communicate with. You will resolve this issue by connecting to Cosmos DB.
 
@@ -1214,11 +1214,11 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
 7. Open the Azure portal in your browser and navigate to your resource group and find your Cosmos DB resource. Select the Cosmos DB resource to view details.
 
-   ![A screenshot of the Azure Portal showing the Cosmos DB among existing resources.](media/Ex2-Task1.9.png "Select CosmosDB resource from list")
+   ![This is a screenshot of the Azure Portal showing the Cosmos DB among existing resources.](media/Ex2-Task1.9.png "Select CosmosDB resource from list")
 
 8. Under **Quick Start** select the **Node.js** tab and copy the **Node.js 3.0 connection string**.
 
-   ![A screenshot of the Azure Portal showing the quick start for setting up Cosmos DB with MongoDB API. The copy button is highlighted.](media/Ex2-Task1.10.png "Capture CosmosDB connection string")
+   ![This is a screenshot of the Azure Portal showing the quick start for setting up Cosmos DB with MongoDB API. The copy button is highlighted.](media/Ex2-Task1.10.png "Capture CosmosDB connection string")
 
 9. Update the provided connection string with a database `contentdb` and a replica set `globaldb`.
 
@@ -1230,9 +1230,9 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
 10. To avoid disconnecting from the Kubernetes dashboard, open a **new** Azure Cloud Shell console.
 
-    ![A screenshot of the cloud shell window with a red arrow pointing at the "Open new session" button on the toolbar](media/hol-2019-10-19_06-13-34.png "Open new Azure Cloud Shell console")
+    ![This is a screenshot of the cloud shell window with a red arrow pointing at the "Open new session" button on the toolbar.](media/hol-2019-10-19_06-13-34.png "Open new Azure Cloud Shell console")
 
-11. You will setup a Kubernetes secret to store the connection string and configure the "content-api" application to access the secret. First, you must base64 encode the secret value. Open your Azure Cloud Shell window and use the following command to encode the connection string and then, copy the output.
+11. You will setup a Kubernetes secret to store the connection string and configure the `content-api` application to access the secret. First, you must base64 encode the secret value. Open your Azure Cloud Shell window and use the following command to encode the connection string and then, copy the output.
 
     > **Note**: Double quote marks surrounding the connection string are required to successfully produce the required output.
 
@@ -1240,7 +1240,7 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
     echo -n "[CONNECTION STRING VALUE]" | base64 -w 0 - | echo $(</dev/stdin)
     ```
 
-    ![A screenshot of the Azure cloud shell window showing the command to create the base64 encoded secret.  The output to copy is highlighted.](media/hol-2019-10-18_07-12-13.png "Show encoded secret")
+    ![This is a screenshot of the Azure cloud shell window showing the command to create the base64 encoded secret.  The output to copy is highlighted.](media/hol-2019-10-18_07-12-13.png "Show encoded secret")
 
 12. Return to the Kubernetes UI in your browser and select **+ Create**.
 
@@ -1256,15 +1256,15 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
       db: <base64 encoded value>
     ```
 
-    ![A screenshot of the Kubernetes management dashboard showing the YAML file for creating a deployment.](media/Ex2-Task1.13.png "Upload YAML data")
+    ![This is a screenshot of the Kubernetes management dashboard showing the YAML file for creating a deployment.](media/Ex2-Task1.13.png "Upload YAML data")
 
 14. Scroll down in the Kubernetes dashboard until you can see **Secrets** in the left-hand menu. Select it.
 
-    ![A screenshot of the Kubernetes management dashboard showing secrets.](media/Ex2-Task1.14.png "Manage Kubernetes secrets")
+    ![This is a  screenshot of the Kubernetes management dashboard showing secrets.](media/Ex2-Task1.14.png "Manage Kubernetes secrets")
 
 15. View the details for the **cosmosdb** secret. Select the eyeball icon to show the secret.
 
-    ![A screenshot of the Kubernetes management dashboard showing the value of a secret.](media/Ex2-Task1.15.png "View CosmosDB secret")
+    ![This is a screenshot of the Kubernetes management dashboard showing the value of a secret.](media/Ex2-Task1.15.png "View CosmosDB secret")
 
 16. Next, download the api deployment configuration using the following command in your Azure Cloud Shell window:
 
@@ -1289,11 +1289,11 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
             key: db
     ```
 
-    ![A screenshot of the Kubernetes management dashboard showing part of the deployment file.](media/Ex2-Task1.17.png "Edit the api.deployment.yml file")
+    ![This is a screenshot of the Kubernetes management dashboard showing part of the deployment file.](media/Ex2-Task1.17.png "Edit the api.deployment.yml file")
 
 18. Save your changes and close the editor.
 
-    ![A screenshot of the code editor save and close actions.](media/Ex2-Task1.17.1.png "Code editor configuration update")
+    ![This is a screenshot of the code editor save and close actions.](media/Ex2-Task1.17.1.png "Code editor configuration update")
 
 19. Update the api deployment by using `kubectl` to apply the new configuration.
 
@@ -1310,7 +1310,7 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
 20. Select **Deployments** then **api** to view the api deployment. It now has a healthy instance and the logs indicate it has connected to mongodb.
 
-    ![A screenshot of the Kubernetes management dashboard showing logs output.](media/Ex2-Task1.19.png "API Logs")
+    ![This is a screenshot of the Kubernetes management dashboard showing logs output.](media/Ex2-Task1.19.png "API Logs")
 
 ### Task 3: Deploy a service using kubectl
 
@@ -1396,7 +1396,7 @@ In this task, deploy the web service using `kubectl`.
 
    ![In this screenshot of the Azure Cloud Shell editor window, the ... button has been selected and the Close Editor option is highlighted.](media/b4-image63.png "Close Azure Cloud Editor")
 
-7. Create a text file called web.service.yml using the Azure Cloud Shell
+7. Create a text file called `web.service.yml` using the Azure Cloud Shell
    Editor.
 
    ```bash
@@ -1434,7 +1434,6 @@ In this task, deploy the web service using `kubectl`.
     kubectl create --save-config=true -f web.deployment.yml -f web.service.yml
     ```
 
-
     ![In this screenshot of the console, kubectl apply -f kubernetes-web.yaml has been typed and run at the command prompt. Messages about web deployment and web service creation appear below.](media/image93.png "kubectl create application")
 
 11. Return to the browser where you have the Kubernetes management dashboard open. From the navigation menu, under **Discovery and Load Balancing**, select the **Services** view.
@@ -1457,7 +1456,7 @@ You will configure a Helm Chart that will be used to deploy and configure the **
 
 1. From the Kubernetes dashboard, under **Workloads**, select **Deployments**.
 
-2. Select the triple vertical dots on the right of the **web** deployment and then choose **Delete**. When prompted, select **Delete** again.
+2. Select the triple vertical dots on the right of the `web` deployment and then choose **Delete**. When prompted, select **Delete** again.
 
    ![A screenshot of the Kubernetes management dashboard showing how to delete a deployment.](media/Ex2-Task4.2.png "Kubernetes dashboard web deployments")
 
@@ -1862,7 +1861,7 @@ In this task, you will increase the number of instances for the API deployment i
 
 8. Navigate to the web application from the browser again. The application should still work without errors as you navigate to Speakers and Sessions pages.
 
-   - Navigate to the /stats page. You will see information about the environment including:
+   - Navigate to the `/stats` page. You will see information about the environment including:
 
      - **webTaskId:** The task identifier for the web service instance.
 
@@ -1878,7 +1877,7 @@ In this task, you will increase the number of instances for the API deployment i
 
      - **uptime:** The up time for the API service.
 
-   - Refresh the page in the browser, and you can see the hostName change between the two API service instances. The letters after "api-{number}-" in the hostname will change.
+   - Refresh the page in the browser, and you can see the hostName change between the two API service instances. The letters after `api-{number}-` in the hostname will change.
 
 ### Task 2: Increase service instances beyond available resources
 
@@ -1938,7 +1937,7 @@ In this task, you will try to increase the number of instances for the API servi
 
 12. Reduce the number of requested pods to `2` using the **Scale** button.
 
-13. Almost immediately, the warning message from the **Workloads** dashboard should disappear, and the **API** deployment will show 2/2 pods are running.
+13. Almost immediately, the warning message from the **Workloads** dashboard should disappear, and the **API** deployment will show `2/2` pods are running.
 
     ![Workloads is selected in the navigation menu. A green check mark now appears next to the api deployment listing in the Deployments box at right.](media/image122.png "Review pods list")
 
@@ -1956,9 +1955,9 @@ In this task, you will restart containers and validate that the restart does not
 
    ![In the left menu the Deployments item is selected. The API deployment is highlighted in the Deployments list box.](media/image124.png "API pod deployments")
 
-3. From the API deployment view, select **Scale** and from the dialog presented, and enter 4 for the desired number of pods. Select **OK**.
+3. From the API deployment view, select **Scale** and from the dialog presented, and enter `4` for the desired number of pods. Select **OK**.
 
-4. From the navigation menu, select **Workloads** -> **Replica Sets**. Select the api replica set, and from the **Replica Set** view, you will see that two pods cannot deploy.
+4. From the navigation menu, select **Workloads** -> **Replica Sets**. Select the **api** replica set, and from the **Replica Set** view, you will see that two pods cannot deploy.
 
    ![Replica Sets is selected under Workloads in the navigation menu on the left. On the right are the Details and Pods boxes. In the Pods box, two pods have exclamation point (!) alerts and messages indicating that they cannot deploy.](media/image125.png "View failed pod deployment details")
 
@@ -1966,13 +1965,13 @@ In this task, you will restart containers and validate that the restart does not
 
    ![On the Stats page in the Contoso Neuro web application, two different api host name values are highlighted.](media/image126.png "View web task hostname")
 
-6. After refreshing enough times to see that the hostName value is changing, and the service remains healthy, return to the Replica Sets view for the API. From the navigation menu, select Replica Sets under Workloads and select the API replica set.
+6. After refreshing enough times to see that the `hostName` value is changing, and the service remains healthy, return to the **Replica Sets** view for the API. From the navigation menu, select Replica Sets under Workloads and select the **API** replica set.
 
 7. From this view, take note that the hostName value shown in the web application stats page matches the pod names for the pods that are running.
 
    ![Two different pod names are highlighted in the Pods box, which match the values from the previous Stats page.](media/image127.png "View two API pod details")
 
-8. Note the remaining pods are still pending, since there are not enough port resources available to launch another instance. Make some room by deleting a running instance. Select the context menu and choose Delete for one of the healthy pods.
+8. Note the remaining pods are still pending, since there are not enough port resources available to launch another instance. Make some room by deleting a running instance. Select the context menu and choose **Delete** for one of the healthy pods.
 
    ![The context menu for a pod in the pod list is expanded with the Delete item selected.](media/image128.png "Delete running pod instance")
 
@@ -1993,7 +1992,6 @@ In this task, you will restart containers and validate that the restart does not
 13. From the navigation menu, select **Workloads**. From this view, note that there is only one API pod now.
 
     ![Workloads is selected in the navigation menu on the left. On the right are the Deployment, Pods, and Replica Sets boxes.](media/image132.png "View only one replica")
-
 
 ### Task 4: Configure Cosmos DB Autoscale
 
@@ -2043,7 +2041,7 @@ In this task, you will run a performance test script that will test the Autoscal
 
 7. There are several variables declared at the top of the `perftest.sh` secript. Modify the **host**, **username**, and **password** variables by setting their values to the corresponding Cosmos DB Connection String values that were copied previously.
 
-    ![Scrrenshot of Vim with perftest.sh file open and variables set to Cosmos DB Connection String values.](media/cosmos-perf-test-variables.png "Modify the connection information in Vim")
+    ![The screenshot shows Vim with perftest.sh file open and variables set to Cosmos DB Connection String values.](media/cosmos-perf-test-variables.png "Modify the connection information in Vim")
 
 8. Save the file and exit Vim.
 
@@ -2085,13 +2083,13 @@ In this task, we will reconfigure the API deployment so that it will produce pod
 
    - Scroll to the first spec node that describes replicas as shown in the screenshot. Set the value for replicas to `4`.
 
-   - Within the replicas spec, beneath the template node, find the **api** containers spec. Remove the hostPort entry for the API container's port mapping.  The screenshot below shows the desired configuration after editing.
+   - Within the replicas spec, beneath the template node, find the **api** containers spec. Remove the `hostPort` entry for the API container's port mapping.  The screenshot below shows the desired configuration after editing.
 
    - Within the resources, beneath the template node, find the **cpu** under requests. Update this to `100m` so the **api** instances use less than a full CPU core.
 
      ![This is a screenshot of the Edit a Resource dialog box with various displayed information about spec, selector, and template. Under the spec node, replicas: 4 is highlighted. Further down, ports are highlighted.](media/image137.png "Edit cpu value in YAML")
 
-     ![This is a screenshot of th Edit a Resource dialog box with the cpu information set.](media/image137b.png "Updated cpu value shown")
+     ![This is a screenshot of the Edit a Resource dialog box with the cpu information set.](media/image137b.png "Updated cpu value shown")
 
 4. Select **Update**. New pods will now choose a dynamic port.
 
@@ -2247,7 +2245,7 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
     > kubectl get svc --namespace kube-system
     > ```
     >
-    > ![A screenshot of Azure Cloud Shell showing the command output.](media/Ex4-Task5.5a.png "View the ingress controller LoadBalancer")
+   ![A screenshot of Azure Cloud Shell showing the command output.](media/Ex4-Task5.5a.png "View the ingress controller LoadBalancer")
 
 6. Within the Azure Cloud Shell, create a script to update the public DNS name for the IP.
 
@@ -2467,7 +2465,7 @@ In this task, you will setup Azure Traffic Manager as a multi-region load balanc
     - Routing Method: **Performance**
     - Resource Group: `fabmedical-[SUFFIX]`
 
-    ![Create Traffic Manager profile blade with all values entered.](media/tm-create.png "Create Traffic Manager profile configuration")
+    ![The screenshot shows the Create Traffic Manager profile blade with all values entered.](media/tm-create.png "Create Traffic Manager profile configuration")
 
 4. Navigate to the newly created `fabmedical-[SUFFIX]` **Traffic Manager profile**.
 
