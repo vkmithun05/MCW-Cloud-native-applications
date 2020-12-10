@@ -9,7 +9,7 @@ Before the hands-on lab setup guide
 </div>
 
 <div class="MCWHeader3">
-October 2020
+August 2020
 </div>
 
 Information in this document, including URL and other Internet Web site references, is subject to change without notice. Unless otherwise noted, the example companies, organizations, products, domain names, e-mail addresses, logos, people, places, and events depicted herein are fictitious, and no association with any real company, organization, product, domain name, e-mail address, logo, person, place or event is intended or should be inferred. Complying with all applicable copyright laws is the responsibility of the user. Without limiting the rights under copyright, no part of this document may be reproduced, stored in or introduced into a retrieval system, or transmitted in any form or by any means (electronic, mechanical, photocopying, recording, or otherwise), or for any purpose, without the express written permission of Microsoft Corporation.
@@ -31,11 +31,12 @@ The names of manufacturers, products, or URLs are provided for informational pur
     - [Task 2: Download Starter Files](#task-2-download-starter-files)
     - [Task 3: Resource Group](#task-3-resource-group)
     - [Task 4: Create an SSH key](#task-4-create-an-ssh-key)
-    - [Task 5: Deploy ARM Template](#task-5-deploy-arm-template)  
-    - [Task 6: Create a GitHub repository](#task-6-create-a-github-repository)
-    - [Task 7: Connect securely to the build agent](#task-7-connect-securely-to-the-build-agent)
-    - [Task 8: Complete the build agent setup](#task-8-complete-the-build-agent-setup)
-    - [Task 9: Clone Repositories to the Build Agent](#task-9-clone-repositories-to-the-build-agent)
+    - [Task 5: Create a Service Principal](#task-5-create-a-service-principal)
+    - [Task 6: Deploy ARM Template](#task-6-deploy-arm-template)
+    - [Task 7: Create a GitHub repository](#task-7-create-a-github-repository)
+    - [Task 8: Connect securely to the build agent](#task-8-connect-securely-to-the-build-agent)
+    - [Task 9: Complete the build agent setup](#task-9-complete-the-build-agent-setup)
+    - [Task 10: Clone Repositories to the Build Agent](#task-10-clone-repositories-to-the-build-agent)
 
 <!-- /TOC -->
 
@@ -47,7 +48,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
 
    - Trial subscriptions will _not_ work.
 
-   - To complete this lab setup ensure your account includes the following:
+   - To complete this lab setup (including [Task 5: Create a Service Principal](#Task-5-Create-a-Service-Principal)) ensure your account includes the following:
 
      - Has the [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner) built-in role for the subscription you use.
 
@@ -75,11 +76,11 @@ You should follow all of the steps provided in this section _before_ taking part
 
 1. Open a cloud shell by selecting the cloud shell icon in the menu bar.
 
-   ![The cloud shell icon is highlighted on the menu bar.](media/b4-image35.png)
+   ![The cloud shell icon is highlighted on the menu bar.](media/b4-image35.png "Cloud Shell")
 
 2. The cloud shell opens in the browser window. Choose **Bash** if prompted or use the left-hand dropdown on the shell menu bar to choose **Bash** from the dropdown (as shown). If prompted, select **Confirm**.
 
-   ![This is a screenshot of the cloud shell opened in a browser window. Bash was selected.](media/b4-image36.png)
+   ![This is a screenshot of the cloud shell opened in a browser window. Bash was selected.](media/b4-image36.png "Cloud Shell Bash Window")
 
 3. You should make sure to set your default subscription correctly. To view your current subscription type:
 
@@ -87,7 +88,7 @@ You should follow all of the steps provided in this section _before_ taking part
    az account show
    ```
 
-   ![In this screenshot of a Bash window, az account show has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image37.png)
+   ![In this screenshot of a Bash window, az account show has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image37.png "Bash Shell AZ Account Show")
 
 4. To set your default subscription to something other than the current selection, type the following, replacing {id} with the desired subscription id value:
 
@@ -101,7 +102,7 @@ You should follow all of the steps provided in this section _before_ taking part
    az account list
    ```
 
-   ![In this screenshot of a Bash window, az account list has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image38.png)
+   ![In this screenshot of a Bash window, az account list has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image38.png "Bash AZ Account List")
 
 ### Task 2: Download Starter Files
 
@@ -119,7 +120,7 @@ In this task, you use `git` to copy the lab content to your cloud shell so that 
 
 2. The lab files download.
 
-   ![In this screenshot of a Bash window, git clone has been typed and run at the command prompt. The output from git clone is shown.](media/b4-2019-09-30_21-25-06.png)
+   ![In this screenshot of a Bash window, git clone has been typed and run at the command prompt. The output from git clone is shown.](media/b4-2019-09-30_21-25-06.png "Bash Git Clone")
 
 3. We do not need the `.git` folder, and later steps will be less complex if we remove it. Run this command:
 
@@ -151,7 +152,7 @@ Create an Azure Resource Group to hold most of the resources that you create in 
 
 2. When this completes, the Azure Portal shows your Resource Group.
 
-   ![In this screenshot of the Azure Portal, the fabmedical-sol Resource group is listed.](media/b4-image8.png)
+   ![In this screenshot of the Azure Portal, the fabmedical-sol Resource group is listed.](media/b4-image8.png "Fabmedical Resource Groups")
 
 ### Task 4: Create an SSH key
 
@@ -177,7 +178,7 @@ You create VMs during the upcoming exercises. In this section, you create an SSH
 
 5. Because you entered `.ssh/fabmedical` the ssh-keygen generates the file in the `.ssh` folder in your user folder, where the cloud shell opens by default.
 
-   ![In this screenshot of the cloud shell window, ssh-keygen -t RSA -b 2048 -C admin@fabmedical has been typed and run at the command prompt. Information about the generated key appears in the window.](media/b4-image57.png)
+   ![In this screenshot of the cloud shell window, ssh-keygen -t RSA -b 2048 -C admin@fabmedical has been typed and run at the command prompt. Information about the generated key appears in the window.](media/b4-image57.png "SSH Keygen")
 
 6. From the cloud shell command line, enter the following command to output the public key content. Copy this information to use later.
 
@@ -187,9 +188,37 @@ You create VMs during the upcoming exercises. In this section, you create an SSH
 
 7. Keep this cloud shell open and remain in the default directory. You will use this shell in later tasks.
 
-    ![In this screenshot of the cloud shell window, cat .ssh/fabmedical has been typed and run at the command prompt. Information about the public key content appears in the window.](media/b4-image571.png)
+    ![In this screenshot of the cloud shell window, cat .ssh/fabmedical has been typed and run at the command prompt. Information about the public key content appears in the window.](media/b4-image571.png "Cloud Shell - cat .ssh")
 
-### Task 5: Deploy ARM Template
+### Task 5: Create a Service Principal
+
+Azure Kubernetes Service (AKS) requires an Azure Active Directory (AAD) service principal to interact with Azure APIs. The service principal is needed to dynamically manage resources such as user-defined routes and the Layer 4 Azure Load Balancer. The easiest way to set up the service principal is by using the Azure cloud shell.
+
+> **Note**: To complete this task, ensure your account is an [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner) built-in role for the subscription you use and is a [Member](https://docs.microsoft.com/azure/active-directory/fundamentals/users-default-permissions#member-and-guest-users) user in the Azure AD tenant you use. You may have trouble creating a service principal if you do not meet these requirements.
+
+1. To create a service principal, type the following command in the cloud shell command line, replacing {id} with your subscription identifier, and replacing suffix with your chosen suffix to make the name unique:
+
+   > **Note**: If you don't have a cloud shell available, refer back to [Task 1: Setup Azure Cloud Shell](#task-1-setup-azure-cloud-shell).
+
+   ```bash
+   az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/{id}" --name="http://fabmedical-sp-{SUFFIX}"
+   ```
+
+2. The command produces output like this. Copy this information to use later.
+
+   ![In this screenshot of a Bash window, az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/{id}" --name="Fabmedical-sp-SUFFIX" has been typed and run at the command prompt. Service principal information is visible in the window, but at this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image39.png "Bash AZ Create RBAC")
+
+3. To get the service principal object id, type the following command, replacing {appId} with your service principal appId:
+
+   ```bash
+   az ad sp show --id {appId} --query "{objectId:@.objectId}"
+   ```
+
+4. The command produces output like this. Copy this information to use later.
+
+   ![In this screenshot of a Bash window, az ad sp show --id d41261a3-d8b8-4cf0-890d-1fb6efc20a67 --query "{objectId:@.objectId}" has been typed and run at the command prompt. Service Principal information is visible in the window.](media/b4-image58.png "Bash Manage Azure Active Directory service principal")
+
+### Task 6: Deploy ARM Template
 
 In this section, you configure and execute an ARM template that creates all the resources that you need throughout the exercises.
 
@@ -207,13 +236,16 @@ In this section, you configure and execute an ARM template that creates all the 
    code azuredeploy.parameters.json
    ```
 
-   ![This screenshot shows the online editor for azure could shell.](media/b4-image581.png)
+   ![This screenshot shows the online editor for azure could shell. Display the azuredeploy.parameters.json](media/b4-image581.png "Edit azuredeploy.parameters.json")
 
 3. Update the values for the various keys so that they match your environment:
 
    - **Suffix**: Enter a shortened version of your SUFFIX with a max of 3 chars.
    - **VirtualMachineAdminUsernameLinux**: The Linux Build Agent VM admin username (example: `"adminfabmedical"`).
    - **VirtualMachineAdminPublicKeyLinux**: The Linux Build Agent VM admin ssh public key. You find this value in the `.ssh/fabmedical.pub` file created previously (example: `"ssh-rsa AAAAB3N(...)vPiybQV admin@fabmedical"`).
+   - **KubernetesServicePrincipalClientId**: The Kubernetes Cluster Service Principal Client Id. Use the service principal **appId** from a previous step.
+   - **KubernetesServicePrincipalClientSecret**: The Kubernetes Cluster Service Principal Client Secret. Use the service principal **password** from a previous step.
+   - **KubernetesServicePrincipalObjectId**: The Kubernetes Cluster Service Principal Object Id. Use the service principal **objectId** from a previous step.
    - **CosmosLocation**: The primary location of the Azure Cosmos DB. Use the same location as the resource group previously created (example: `"eastus"`).
    - **CosmosLocationName**: The name of the primary location of the Azure Cosmos DB. Use the name of the same location as the resource group previously created (example: `"East US"`).
    - **CosmosPairedLocation**: The secondary location of the Azure Cosmos DB. The below link can be used to help find the Azure Region Pair for your primary location. (example: `"westus"`).
@@ -223,11 +255,11 @@ In this section, you configure and execute an ARM template that creates all the 
 
 4. Select the **...** button and select **Save**.
 
-   ![In this screenshot of an Azure Cloud Shell editor window, the ... button has been selected, and the Save option is highlighted.](media/b4-image62.png)
+   ![In this screenshot of an Azure Cloud Shell editor window, the ... button has been selected, and the Save option is highlighted.](media/b4-image62.png "Azure Cloud Shell Save")
 
 5. Select the **...** button again and select **Close Editor**.
 
-   ![In this screenshot of the Azure Cloud Shell editor window, the ... button has been selected, and the Close Editor option is highlighted.](media/b4-image63.png)
+   ![In this screenshot of the Azure Cloud Shell editor window, the ... button has been selected, and the Close Editor option is highlighted.](media/b4-image63.png "Azure Cloud Shell Close")
 
 6. Create the needed resources by typing the following instruction (case sensitive), replacing {resourceGroup} with the name of the previously created resource group:
 
@@ -239,7 +271,7 @@ In this section, you configure and execute an ARM template that creates all the 
 
    > **Note** If you get an error about the Cosmos DB name, ensure that you typed the `ComsosLocation` and `CosmosPairedLocation` without any spaces. Re-run the above command after you have corrected the name.
 
-### Task 6: Create a GitHub repository
+### Task 7: Create a GitHub repository
 
 FabMedical has provided starter files for you. They have taken a copy of the websites for their customer Contoso Neuro and refactored it from a single node.js site into a website with a content API that serves up the speakers and sessions. This refactored code is a starting point to validate the containerization of their websites. Use this to help them complete a POC that validates the development workflow for running the website and API as Docker containers and managing them within the Azure Kubernetes Service environment.
 
@@ -247,7 +279,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
 2. In the upper-right corner, expand the user drop down menu and select **Your repositories**.
 
-    ![The user menu is expanded with the Your repositories item selected.](media/2020-08-23-18-03-40.png "User menu")
+    ![The user menu is expanded with the Your repositories item selected.](media/2020-08-23-18-03-40.png "User menu, your repositories")
 
 3. Next to the search criteria, locate and select the **New** button.
 
@@ -261,7 +293,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
     ![Quick setup screen is displayed with the copy button next to the GitHub URL textbox selected.](media/2020-08-23-18-15-45.png "Quick setup screen")
 
-6. Open a **new** Azure Cloud Shell console.  You can do this by selecting the **Open new session** button from the first console, or navigating to <https://shell.azure.com> and logging in with the same lab credentials.
+6. Open a **new** Azure Cloud Shell console.  You can do this by selecting the **Open new session** button from the first console, or navigating to https://shell.azure.com and logging in with the same lab credentials.
 
 7. Navigate to the FabMedical source code folder and list the contents.
 
@@ -285,7 +317,6 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    content-api/
    content-init/
    content-web/
-   perftest.sh
    ```
 
 9. Set your username and email, which git uses for commits.
@@ -328,7 +359,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
 14. Refresh your GitHub repository, you should now see the code published.
 
-### Task 7: Connect securely to the build agent
+### Task 8: Connect securely to the build agent
 
 In this section, you validate that you can connect to the new build agent
 VM.
@@ -349,7 +380,7 @@ VM.
 
 2. In the cloud shell output, take note of the public IP address for the VM.
 
-   ![The cloud shell window is displayed with the Public IP address shown.](media/b4-2019-10-01_11-58-05.png)
+   ![The cloud shell window is displayed with the Public IP address shown.](media/b4-2019-10-01_11-58-05.png "Azure Cloud Shell Public IP")
 
 3. Connect to the new VM you created by typing the following command:
 
@@ -377,11 +408,11 @@ VM.
 
    `adminfabmedical@fabmedical-SUFFIX:~$`
 
-   ![In this screenshot of a Cloud Shell window, ssh -i .ssh/fabmedical adminfabmedical@52.174.141.11 has been typed and run at the command prompt. The information detailed above appears in the window. At this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image27.png)
+   ![In this screenshot of a Cloud Shell window, ssh -i .ssh/fabmedical adminfabmedical@52.174.141.11 has been typed and run at the command prompt. The information detailed above appears in the window.](media/b4-image27.png "Azure Cloud Shell Connect to Host")
 
 > **Note**: If you have issues connecting, you may have pasted the SSH public key incorrectly in the ARM template. Unfortunately, if this is the case, you will have to recreate the VM and try again.
 
-### Task 8: Complete the build agent setup
+### Task 9: Complete the build agent setup
 
 In this task, you update the packages and install the Docker engine.
 
@@ -423,13 +454,20 @@ In this task, you update the packages and install the Docker engine.
    sudo apt-get upgrade -y
    ```
 
+7. Install `docker-compose`
+
+   ```bash
+   sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+   sudo chmod +x /usr/local/bin/docker-compose
+   ```
+
 8. When the command has completed, check the Docker version installed by executing this command. The output may look something like that shown in the following screenshot. Note that the server version is not shown yet, because you didn't run the command with elevated privileges (to be addressed shortly).
 
    ```bash
    docker version
    ```
 
-   ![In this screenshot of a Cloud Shell window, docker version has been typed and run at the command prompt. Docker version information appears in the window.](media/b4-image28.png)
+   ![In this screenshot of a Cloud Shell window, docker version has been typed and run at the command prompt. Docker version information appears in the window.](media/b4-image28.png "Display Docker version")
 
 9. You may check the versions of node.js and npm as well, just for information purposes, using these commands:
 
@@ -451,14 +489,14 @@ In this task, you update the packages and install the Docker engine.
     sudo usermod -aG docker $USER
     ```
 
-    ![In this screenshot of a Cloud Shell window, sudo usermod -aG docker $USER has been typed and run at the command prompt. Errors appear in the window.](media/b4-image29.png)
+    ![In this screenshot of a Cloud Shell window, sudo usermod -aG docker $USER has been typed and run at the command prompt. Errors appear in the window.](media/b4-image29.png "Remove SUDO requirement")
 
 12. For the user permission changes to take effect, exit the SSH
     session by typing `exit`, then press \<Enter\>. Reconnect to the build agent VM using SSH as you did in the previous task.
 
 13. Repeat the Docker version command, and note the output now shows the server version as well.
 
-    ![In this screenshot of a Cloud Shell window, docker version has been typed and run at the command prompt. Docker version information appears in the window, in addition to server version information.](media/b4-image30.png)
+    ![In this screenshot of a Cloud Shell window, docker version has been typed and run at the command prompt. Docker version information appears in the window, in addition to server version information.](media/b4-image30.png "Display Docker version")
 
 14. Run a few Docker commands:
 
@@ -476,9 +514,9 @@ In this task, you update the packages and install the Docker engine.
 
 15. In both cases, you have an empty list but no errors while running the command. Your build agent is ready with the Docker engine running correctly.
 
-    ![In this screenshot of a Cloud Shell window, docker container ls has been typed and run at the command prompt, as has the docker container ls -a command.](media/b4-image31.png)
+    ![In this screenshot of a Cloud Shell window, docker container ls has been typed and run at the command prompt, as has the docker container ls -a command.](media/b4-image31.png "Display Docker container list")
 
-### Task 9: Clone Repositories to the Build Agent
+### Task 10: Clone Repositories to the Build Agent
 
 In this task, you clone your repositories from GitHub so you can work with them on the build agent.
 
