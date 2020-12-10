@@ -181,7 +181,7 @@ The purpose of this task is to make sure you can run the application successfull
 6. To initialize the local database with test content, first navigate to the content-init directory and run npm install.
 
    ```bash
-   cd content-init
+   cd ~/Fabmedical/content-init
    npm install
    ```
 
@@ -249,7 +249,7 @@ The purpose of this task is to make sure you can run the application successfull
 
     ![In this screenshot, made a curl request to view speakers.](media/image47_1.png)
 
-13. Navigate to the web application directory, run npm install and ng build.
+13. Navigate to the web application directory, run `npm install` and `ng build`.
 
     ```bash
     cd ../content-web
