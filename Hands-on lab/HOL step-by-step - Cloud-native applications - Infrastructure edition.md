@@ -186,10 +186,10 @@ The purpose of this task is to make sure you can run the application successfull
    ```
 
    > **Note**: In some cases, the `root` user will be assigned ownership of your user's `.config` folder. If this happens, run the following command to return ownership to `adminfabmedical` and then try `npm install` again:
-
-    ```bash
-    sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
-    ```
+   >
+   > ```bash
+   > sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
+   > ```
 
 7. Initialize the database.
 
@@ -255,7 +255,6 @@ The purpose of this task is to make sure you can run the application successfull
     cd ../content-web
     npm install
     ng build
-    node ./app.js &
     ```
 
     ![In this screenshot, after navigating to the web application directory, nodejs ./server.js & has been typed and run at the command prompt, which runs the application as a background process as well.](media/image48.png "Running web server")
@@ -266,17 +265,47 @@ The purpose of this task is to make sure you can run the application successfull
      sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
      ```
 
-14. Press `ENTER` again to get a command prompt for the next step.
+14. From Azure cloud shell, run the following command to find the IP address for the build agent VM provisioned when you ran the ARM deployment.
 
-15. Test the web application using curl. You will see HTML output returned without errors.
+    ```bash
+    az vm show -d -g fabmedical-[SUFFIX] -n fabmedical-[SHORT_SUFFIX] --query publicIps -o tsv
+    ```
+
+    Example:
+
+    ```bash
+    az vm show -d -g fabmedical-sol -n fabmedical-SOL --query publicIps -o tsv
+    ```
+
+15. From the cloud shell in the build machine edit the `app.js` file using vim.
+
+    ```bash
+    vim app.js
+    ```
+
+    Then press **_i_** to get into the edit mode, after that replace localhost with the build machine IP address.
+
+    ![Edit the app.js file in vim in the build machine to update the API URL.](media/image27.png "Edit the app.js")
+
+    Then press **_ESC_**, write **_:wq_** to save you changes and close the file.
+
+16. Now run the content-web application in the background.
+
+    ```bash
+    node ./app.js &
+    ```
+
+    Press `ENTER` again to get a command prompt for the next step.
+
+17. Test the web application using curl. You will see HTML output returned without errors.
 
     ```bash
     curl http://localhost:3000
     ```
 
-16. Leave the application running for the next task.
+18. Leave the application running for the next task.
 
-17. If you received a JSON response to the /speakers content request and an HTML response from the web application, your environment is working as expected.
+19. If you received a JSON response to the /speakers content request and an HTML response from the web application, your environment is working as expected.
 
 ### Task 2: Browsing to the web application
 
@@ -333,19 +362,7 @@ In this task, you will create Docker images for the application --- one for the 
    docker image build -t content-api .
    ```
 
-3. From the `content-init` folder containing the API application files and the new `Dockerfile` you created, type the following command to create a Docker image for the Init application. This command does the following:
-
-   - Executes the Docker build command to produce the image
-
-   - Tags the resulting image with the name content-init (-t)
-
-   - The final dot (`.`) indicates to use the Dockerfile in this current directory context. By default, this file is expected to have the name `Dockerfile` (case sensitive).
-
-   ```bash
-   docker image build -t content-init .
-   ```
-
-4. Once the image is successfully built, run the Docker images listing command again. You will see several new images: the node images and your container image.
+3. Once the image is successfully built, run the Docker images listing command again. You will see several new images: the node images and your container image.
 
    ```bash
    docker image ls
@@ -355,14 +372,14 @@ In this task, you will create Docker images for the application --- one for the 
 
    ![The node image (node) and your container image (content-api) are visible in this screenshot of the console window.](media/image59.png "List Docker images")
 
-5. Navigate to the `content-web` folder again and list the files. Note that this folder has a Dockerfile.
+4. Navigate to the `content-web` folder again and list the files. Note that this folder has a Dockerfile.
 
    ```bash
    cd ../content-web
    ll
    ```
 
-6. View the Dockerfile contents -- which are similar to the file you created previously in the API folder. Type the following command:
+5. View the Dockerfile contents -- which are similar to the file you created previously in the API folder. Type the following command:
 
    ```bash
    cat Dockerfile
@@ -370,38 +387,38 @@ In this task, you will create Docker images for the application --- one for the 
 
    > Notice that the `content-web` Dockerfile build stage includes additional tools for a front-end Angular application in addition to installing npm packages.
 
-7. Type the following command to create a Docker image for the web application.
+6. Type the following command to create a Docker image for the web application.
 
    ```bash
    docker image build -t content-web .
    ```
 
-8. Navigate to the content-init folder again and list the files. Note that this folder already has a Dockerfile.
+7. Navigate to the content-init folder again and list the files. Note that this folder already has a Dockerfile.
 
    ```bash
    cd ../content-init
    ll
    ```
 
-9. View the Dockerfile contents -- which are similar to the file you created previously in the API folder. Type the following command:
+8. View the Dockerfile contents -- which are similar to the file you created previously in the API folder. Type the following command:
 
    ```bash
    cat Dockerfile
    ```
 
-10. Type the following command to create a Docker image for the init application.
+9. Type the following command to create a Docker image for the init application.
 
       ```bash
       docker image build -t content-init .
       ```
 
-11. When complete, you will see seven images now exist when you run the Docker images command.
+10. When complete, you will see eight images now exist when you run the Docker images command.
 
    ```bash
    docker image ls
    ```
 
-   ![Three images are now visible in this screenshot of the console window: content-web, content-api, and node.](media/image60.png "Docker images")
+   ![Three images are now visible in this screenshot of the console window: content-init, content-web, content-api, and node.](media/vm-list-containers.PNG "View content images")
 
 ### Task 4: Run a containerized application
 
@@ -424,22 +441,24 @@ The web application container will be calling endpoints exposed by the API appli
 2. The `docker container run` command has failed because it is configured to connect to mongodb using a localhost URL. However, now that content-api is isolated in a separate container, it cannot access mongodb via localhost even when running on the same docker host. Instead, the API must use the bridge network to connect to mongodb.
 
    ```text
-   > content-api@0.0.0 start /usr/src/app
+      > content-api@0.0.0 start
    > node ./server.js
 
    Listening on port 3001
    Could not connect to MongoDB!
-   MongoTimeoutError: Server selection timed out after 30000 ms
-   npm ERR! code ELIFECYCLE
-   npm ERR! errno 255
-   npm ERR! content-api@0.0.0 start: `node ./server.js`
-   npm ERR! Exit status 255
-   npm ERR!
-   npm ERR! Failed at the content-api@0.0.0 start script.
-   npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+   MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+   npm notice
+   npm notice New patch version of npm available! 7.0.8 -> 7.0.13
+   npm notice Changelog: <https://github.com/npm/cli/releases/tag/v7.0.13>
+   npm notice Run `npm install -g npm@7.0.13` to update!
+   npm notice
+   npm ERR! code 255
+   npm ERR! path /usr/src/app
+   npm ERR! command failed
+   npm ERR! command sh -c node ./server.js
 
    npm ERR! A complete log of this run can be found in:
-   npm ERR!     /root/.npm/_logs/2019-12-04T22_39_38_815Z-debug.log
+   npm ERR!     /root/.npm/_logs/2020-11-23T03_04_12_948Z-debug.log
    ```
 
 3. The content-api application allows an environment variable to configure the mongodb connection string. Remove the existing container, and then instruct the docker engine to set the environment variable by adding the `-e` switch to the `docker container run` command. Also, use the `-d` switch to run the api as a daemon.
@@ -501,14 +520,27 @@ In this task, you will configure the `web` container to communicate with the API
    docker container ls -a
    ```
 
-3. Open the Dockerfile for editing using Vim and press the `i` key to go into edit mode.
+3. Review the `app.js` file.
+
+   ```bash
+   cd ../content-web
+   cat app.js
+   ```
+
+4. Observe that the `contentApiUrl` variable can be set with an environment variable.
+
+   ```javascript
+   const contentApiUrl = process.env.CONTENT_API_URL || "http://localhost:3001";
+   ```
+
+5. Open the Dockerfile for editing using Vim and press the `i` key to go into edit mode.
 
    ```bash
    vi Dockerfile
    <i>
    ```
 
-4. Locate the `EXPOSE` line shown below and add a line above it that sets the default value for the environment variable, as shown in the screenshot.
+6. Locate the `EXPOSE` line shown below and add a line above it that sets the default value for the environment variable, as shown in the screenshot.
 
    ```Dockerfile
    ENV CONTENT_API_URL http://localhost:3001
@@ -516,7 +548,7 @@ In this task, you will configure the `web` container to communicate with the API
 
    ![In this screenshot of Dockerfile, the CONTENT_API_URL code appears above the next Dockerfile line, which reads EXPOSE 3000.](media/hol-2019-10-01_19-37-35.png "Set ENV variable")
 
-5. Press the Escape key and type `:wq` and then press the Enter key to save and close the file.
+7. Press the Escape key and type `:wq` and then press the Enter key to save and close the file.
 
    ```text
    <Esc>
@@ -524,26 +556,26 @@ In this task, you will configure the `web` container to communicate with the API
    <Enter>
    ```
 
-6. Rebuild the web application Docker image using the same command as you did previously.
+8. Rebuild the web application Docker image using the same command as you did previously.
 
    ```bash
    docker image build -t content-web .
    ```
 
-7. Create and start the image passing the correct URI to the API container as an environment variable. This variable will address the API application using its container name over the Docker network you created. After running the container, check to see the container is running and note the dynamic port assignment for the next step.
+9. Create and start the image passing the correct URI to the API container as an environment variable. This variable will address the API application using its container name over the Docker network you created. After running the container, check to see the container is running and note the dynamic port assignment for the next step.
 
    ```bash
    docker container run --name web --net fabmedical -P -d -e CONTENT_API_URL=http://api:3001 content-web
    docker container ls
    ```
 
-8. Curl the speakers path again, using the port assigned to the web container. Again, you will see HTML returned, but because curl does not process javascript, you cannot determine if the web application is communicating with the api application. You must verify this connection in a browser.
+10. Curl the speakers path again, using the port assigned to the web container. Again, you will see HTML returned, but because curl does not process javascript, you cannot determine if the web application is communicating with the api application. You must verify this connection in a browser.
 
    ```bash
    curl http://localhost:[PORT]/speakers.html
    ```
 
-9. You will not be able to browse to the web application on the ephemeral port because the VM only exposes a limited port range. Now you will stop the web container and restart it using port 3000 to test in the browser. Type the following commands to stop the container, remove it, and run it again using explicit settings for the port.
+11. You will not be able to browse to the web application on the ephemeral port because the VM only exposes a limited port range. Now you will stop the web container and restart it using port 3000 to test in the browser. Type the following commands to stop the container, remove it, and run it again using explicit settings for the port.
 
    ```bash
     docker container stop web
@@ -551,13 +583,13 @@ In this task, you will configure the `web` container to communicate with the API
     docker container run --name web --net fabmedical -p 3000:3000 -d -e CONTENT_API_URL=http://api:3001 content-web
    ```
 
-10. Curl the speaker path again, using port `3000`. You will see the same HTML returned.
+12. Curl the speaker path again, using port `3000`. You will see the same HTML returned.
 
     ```bash
     curl http://localhost:3000/speakers.html
     ```
 
-11. You can now use a web browser to navigate to the website and successfully view the application at port `3000`. Replace `[BUILDAGENTIP]` with the IP address you used previously.
+13. You can now use a web browser to navigate to the website and successfully view the application at port `3000`. Replace `[BUILDAGENTIP]` with the IP address you used previously.
 
     ```bash
     http://[BUILDAGENTIP]:3000
@@ -1153,6 +1185,13 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
     kubectl apply -f api.deployment.yml
     ```
 
+    >**Note**: If you receive an error like `Operation cannot be fulfilled on deployment.apps "api"` then delete the deployment and recreate it using the modified `api.deployment.yml` file.
+
+      ```bash
+      kubectl delete deployment api
+      kubectl create -f api.deployment.yml
+      ```
+
 20. Select **Deployments** then **api** to view the api deployment. It now has a healthy instance and the logs indicate it has connected to mongodb.
 
     ![This is a screenshot of the Kubernetes management dashboard showing logs output.](media/Ex2-Task1.19.png "API Logs")
@@ -1731,9 +1770,9 @@ In this task, you will try to increase the number of instances for the API servi
 
 2. Configure the deployment to use a fixed host port for initial testing. Select the vertical ellipses and then select **Edit**.
 
-3. In the Edit a Deployment dialog, select the JSON tab. You will see a list of settings shown in JSON format. Use the copy button to copy the text to your clipboard.
+3. In the Edit a resource dialog, select the YAML tab. You will see a list of settings shown in YAML format. Use the copy button to copy the text to your clipboard.
 
-   ![Screenshot of the Edit a Deployment dialog box that displays JSON data.](media/image82.png)
+   ![Screenshot of the Edit a resource dialog box that displays JSON data.](media/api-deployment-edit.PNG "Edit a resource YAML config")
 
 4. Paste the contents into the text editor of your choice (such as Notepad on Windows, macOS users can use TextEdit).
 
