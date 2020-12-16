@@ -1003,7 +1003,7 @@ In this task, you will deploy an instance of the Azure Database Migration Servic
 
     ![The screenshot shows the Create Migration Service Networking tab with Virtual Network selected.](media/dms-create-networking.png "Create Migration Service Networking tab")
 
-7. Select **Review + create**
+7. Select **Review + create**.
 
 8. Select **Create** to create the Azure Database Migration Service instance.
 
@@ -1047,7 +1047,7 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
     - Subscription: Select the Azure subscription you're using for this lab.
 
-    - Select Cosmos DB name: Select the `fabmedical-[SUFFIX]` Cosmos DB instance
+    - Select Cosmos DB name: Select the `fabmedical-[SUFFIX]` Cosmos DB instance.
 
     ![The Select target tab with values selected.](media/dms-select-target.png "MongoDB to Azure Database for CosmosDB - Select target")
 
@@ -1829,7 +1829,7 @@ At this point, you have deployed a single instance of the web and API service co
 
 In this task, you will increase the number of instances for the API deployment in the Kubernetes management dashboard. While it is deploying, you will observe the changing status.
 
-1. Switch to the Kubernetes Dashboard
+1. Switch to the Kubernetes Dashboard.
 
 2. From the navigation menu, select **Workloads** -\> **Deployments**, and then select the **API** deployment.
 
@@ -1999,7 +1999,7 @@ In this task, you will setup Autoscale on Azure Cosmos DB.
 
 1. In the Azure Portal, navigate to the `fabmedical-[SUFFIX]` **Azure Cosmos DB Account**.
 
-2. Select **Data Explorer**
+2. Select **Data Explorer**. 
 
 3. Within **Data Explorer**, expand the `contentdb` database, then expand the `sessions` collection.
 
@@ -2478,7 +2478,7 @@ In this task, you will setup Azure Traffic Manager as a multi-region load balanc
     - Type: **External endpoint**
     - Name: `primary`
     - Fully-qualified domain name (FQDN) or IP: `fabmedical-[SUFFIX]-ingress.[AZURE-REGION].cloudapp.azure.com`
-    - Location: Choose the same Azure Region as AKS
+    - Location: Choose the same Azure Region as AKS.
 
     Be sure to replace the `[SUFFIX]` and `[AZURE-REGION]` placeholders.
 
@@ -2502,7 +2502,7 @@ In this task, you will setup Azure Traffic Manager as a multi-region load balanc
 
 ## After the hands-on lab
 
-**Duration**: 10 mins
+**Duration**: 10 minutes
 
 In this exercise, you will de-provision any Azure resources created in support of this lab.
 
