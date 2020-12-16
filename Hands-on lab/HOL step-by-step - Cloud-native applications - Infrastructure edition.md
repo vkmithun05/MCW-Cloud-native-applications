@@ -869,25 +869,25 @@ In this task, you will deploy an instance of the Azure Database Migration Servic
 
 2. Search the marketplace for **Azure Database Migration Service** and select it.
 
-3. Select **Create**
+3. Select **Create**.
 
     ![The screenshot shows the Azure Database Migration Service in the Azure Marketplace.](media/dms-marketplace-create.png "Azure Database Migration Service")
 
 4. On the **Basics** tab of the **Create Migration Service** pane, enter the following values:
 
-    - Resource group: Select the Resource Group created with this lab
-    - Migration service name: Enter a name, such as `fabmedical[SUFFIX]`
-    - Location: Choose the Azure Region used for the Resource Group
+    - Resource group: Select the Resource Group created with this lab.
+    - Migration service name: Enter a name, such as `fabmedical[SUFFIX]`.
+    - Location: Choose the Azure Region used for the Resource Group.
 
     ![The screenshot shows the Create Migration Service Basics tab with all values entered.](media/dms-create-basics.png "Create Migration Basics Tab")
 
-5. Select **Next: Networking >>**
+5. Select **Next: Networking >>**.
 
 6. On the **Networking** tab, select the **Virtual Network** within the `fabmedical-[SUFFIX]` resource group.
 
     ![The screenshot shows the Create Migration Service Networking tab with Virtual Network selected.](media/dms-create-networking.png "Create Migration Service Networking tab")
 
-7. Select **Review + create**
+7. Select **Review + create**.
 
 8. Select **Create** to create the Azure Database Migration Service instance.
 
@@ -931,7 +931,7 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
     - Subscription: Select the Azure subscription you're using for this lab.
 
-    - Select Cosmos DB name: Select the `fabmedical-[SUFFIX]` Cosmos DB instance
+    - Select Cosmos DB name: Select the `fabmedical-[SUFFIX]` Cosmos DB instance.
 
     ![The Select target tab with values selected.](media/dms-select-target.png "MongoDB to Azure Database for CosmosDB - Select target")
 
@@ -1650,7 +1650,7 @@ In this task, you will use GitHub Actions workflows to automate the process for 
    git push
    ```
 
-10. Switch back to GitHub
+10. Switch back to GitHub.
 
 11. On the **content-web** workflow, select **Run workflow** and manually trigger the workflow to execute.
 
@@ -1712,7 +1712,7 @@ At this point, you have deployed a single instance of the web and API service co
 
 In this task, you will increase the number of instances for the API deployment in the Kubernetes management dashboard. While it is deploying, you will observe the changing status.
 
-1. Switch to the Kubernetes Dashboard
+1. Switch to the Kubernetes Dashboard.
 
 2. From the navigation menu, select **Workloads** -\> **Deployments**, and then select the **API** deployment.
 
@@ -1882,7 +1882,7 @@ In this task, you will setup Autoscale on Azure Cosmos DB.
 
 1. In the Azure Portal, navigate to the `fabmedical-[SUFFIX]` **Azure Cosmos DB Account**.
 
-2. Select **Data Explorer**
+2. Select **Data Explorer**.
 
 3. Within **Data Explorer**, expand the `contentdb` database, then expand the `sessions` collection.
 
@@ -1988,7 +1988,7 @@ In this task, you will update the web service so that it supports dynamic discov
 
 1. From the navigation menu, select **Deployments** under **Workloads**. From the view's Deployments list, select the **web** deployment.
 
-2. Select **Edit**, then select the **JSON** tab
+2. Select **Edit**, then select the **JSON** tab.
 
 3. From the dialog, scroll to the web containers spec as shown in the screenshot. Remove the hostPort entry for the web container's port mapping.
 
@@ -2158,8 +2158,8 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
 
    Be sure to replace the following placeholders in the script:
 
-   - `[INGRESS PUBLIC IP]`: replace this with the IP Address copied previously.
-   - `[SUFFIX]`: replace this with the same SUFFIX value used previously for this lab
+   - `[INGRESS PUBLIC IP]`: Replace this with the IP Address copied previously.
+   - `[SUFFIX]`: Replace this with the same SUFFIX value used previously for this lab.
 
 7. Save changes and close the editor.
 
@@ -2284,7 +2284,7 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
     code content.ingress.yml
     ```
 
-    Use the following as the contents and update the `[SUFFIX]` and `[AZURE-REGION]` to match your ingress DNS name
+    Use the following as the contents and update the `[SUFFIX]` and `[AZURE-REGION]` to match your ingress DNS name:
 
     ```yaml
     apiVersion: networking.k8s.io/v1beta1
@@ -2361,7 +2361,7 @@ In this task, you will setup Azure Traffic Manager as a multi-region load balanc
     - Type: **External endpoint**
     - Name: `primary`
     - Fully-qualified domain name (FQDN) or IP: `fabmedical-[SUFFIX]-ingress.[AZURE-REGION].cloudapp.azure.com`
-    - Location: Choose the same Azure Region as AKS
+    - Location: Choose the same Azure Region as AKS.
 
     Be sure to replace the `[SUFFIX]` and `[AZURE-REGION]` placeholders.
 
