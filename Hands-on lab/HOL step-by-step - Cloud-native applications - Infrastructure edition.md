@@ -114,7 +114,7 @@ Each tenant will have the following containers:
    - To complete this lab, ensure your account has the following roles:
 
      - The [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner)
-       built-in role for the subscription you will use.
+       built-in role for the Azure Subscription you will use.
 
      - Is a [Member](https://docs.microsoft.com/azure/active-directory/fundamentals/users-default-permissions#member-and-guest-users) user in the Azure AD tenant you will use. (Guest users will not have the necessary permissions.)
 
@@ -186,10 +186,10 @@ The purpose of this task is to make sure you can run the application successfull
    ```
 
    > **Note**: In some cases, the `root` user will be assigned ownership of your user's `.config` folder. If this happens, run the following command to return ownership to `adminfabmedical` and then try `npm install` again:
-   >
-   > ```bash
-   > sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
-   > ```
+
+   ```bash
+   sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
+   ```
 
 7. Initialize the database.
 
@@ -1516,7 +1516,6 @@ You will configure a Helm Chart that will be used to deploy and configure the **
     git commit -m "Helm chart update."
     git push
     ```
-
 
 ### Task 5: Test the application in a browser
 

@@ -25,7 +25,6 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
 **Contents**
 
 <!-- TOC -->
-
 - [Cloud-native applications - Developer edition hands-on lab step-by-step](#cloud-native-applications---developer-edition-hands-on-lab-step-by-step)
   - [Abstract and learning objectives](#abstract-and-learning-objectives)
   - [Overview](#overview)
@@ -40,6 +39,8 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 6: Setup environment variables](#task-6-setup-environment-variables)
     - [Task 7: Push images to Azure Container Registry](#task-7-push-images-to-azure-container-registry)
     - [Task 8: Setup CI Pipeline to Push Images](#task-8-setup-ci-pipeline-to-push-images)
+  - [Exercise 2: Migrate MongoDB to Cosmos DB using Azure Database Migration Service](#exercise-2-migrate-mongodb-to-cosmos-db-using-azure-database-migration-service)
+    - [Task 1: Enable Microsoft.DataMigration resource provider](#task-1-enable-microsoftdatamigration-resource-provider)
     - [Task 2: Provision Azure Database Migration Service](#task-2-provision-azure-database-migration-service)
     - [Task 3: Migrate data to Azure Cosmos DB](#task-3-migrate-data-to-azure-cosmos-db)
   - [Exercise 3: Deploy the solution to Azure Kubernetes Service](#exercise-3-deploy-the-solution-to-azure-kubernetes-service)
@@ -185,11 +186,11 @@ The purpose of this task is to make sure you can run the application successfull
    npm install
    ```
 
-   > **Note**: In some cases, the `root` user will be assigned ownership of your user's `.config` folder. If this happens, run the following command to return ownership to `adminfabmedical` and then try `npm install` again: 
-   >
-   > ```bash
-   > sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
-   > ```
+   > **Note**: In some cases, the `root` user will be assigned ownership of your user's `.config` folder. If this happens, run the following command to return ownership to `adminfabmedical` and then try `npm install` again:
+
+   ```bash
+   sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
+   ```
 
 7. Initialize the database.
 
@@ -952,12 +953,11 @@ image and pushes it to your ACR instance automatically.
 
 21. Commit and push the changes to the Git repository:
 
-    ```bash
-    git add .
-    git commit -m "Updated workflow YAML"
-    git push
-    ```
-
+   ```bash
+   git add .
+   git commit -m "Updated workflow YAML"
+   git push
+   ```
 
 ## Exercise 2: Migrate MongoDB to Cosmos DB using Azure Database Migration Service
 
@@ -985,19 +985,19 @@ In this task, you will deploy an instance of the Azure Database Migration Servic
 
 2. Search the marketplace for **Azure Database Migration Service** and select it.
 
-3. Select **Create**
+3. Select **Create**.
 
     ![The screenshot shows the Azure Database Migration Service in the Azure Marketplace.](media/dms-marketplace-create.png "Azure Database Migration Service")
 
 4. On the **Basics** tab of the **Create Migration Service** pane, enter the following values:
 
-    - Resource group: Select the Resource Group created with this lab
-    - Migration service name: Enter a name, such as `fabmedical[SUFFIX]`
-    - Location: Choose the Azure Region used for the Resource Group
+    - Resource group: Select the Resource Group created with this lab.
+    - Migration service name: Enter a name, such as `fabmedical[SUFFIX]`.
+    - Location: Choose the Azure Region used for the Resource Group.
 
     ![The screenshot shows the Create Migration Service Basics tab with all values entered.](media/dms-create-basics.png "Create Migration Basics Tab")
 
-5. Select **Next: Networking >>**
+5. Select **Next: Networking >>**.
 
 6. On the **Networking** tab, select the **Virtual Network** within the `fabmedical-[SUFFIX]` resource group.
 
@@ -1767,7 +1767,7 @@ In this task, you will use GitHub Actions workflows to automate the process for 
    git push
    ```
 
-10. Switch back to GitHub
+10. Switch back to GitHub.
 
 11. On the **content-web** workflow, select **Run workflow** and manually trigger the workflow to execute.
 
@@ -2105,7 +2105,7 @@ In this task, you will update the web service so that it supports dynamic discov
 
 1. From the navigation menu, select **Deployments** under **Workloads**. From the view's Deployments list, select the **web** deployment.
 
-2. Select **Edit**, then select the **JSON** tab
+2. Select **Edit**, then select the **JSON** tab.
 
 3. From the dialog, scroll to the web containers spec as shown in the screenshot. Remove the hostPort entry for the web container's port mapping.
 
@@ -2275,8 +2275,8 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
 
    Be sure to replace the following placeholders in the script:
 
-   - `[INGRESS PUBLIC IP]`: replace this with the IP Address copied previously.
-   - `[SUFFIX]`: replace this with the same SUFFIX value used previously for this lab
+   - `[INGRESS PUBLIC IP]`: Replace this with the IP Address copied previously.
+   - `[SUFFIX]`: Replace this with the same SUFFIX value used previously for this lab.
 
 7. Save changes and close the editor.
 
@@ -2401,7 +2401,7 @@ In this task you will setup a Kubernetes Ingress to take advantage of path-based
     code content.ingress.yml
     ```
 
-    Use the following as the contents and update the `[SUFFIX]` and `[AZURE-REGION]` to match your ingress DNS name
+    Use the following as the contents and update the `[SUFFIX]` and `[AZURE-REGION]` to match your ingress DNS name:
 
     ```yaml
     apiVersion: networking.k8s.io/v1beta1
