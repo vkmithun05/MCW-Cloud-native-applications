@@ -760,7 +760,6 @@ In this task, you will push images to your ACR account, version images with tagg
    ```bash
    docker image tag content-web [LOGINSERVER]/content-web
    docker image tag content-api [LOGINSERVER]/content-api
-   docker image tag content-init [LOGINSERVER]/content-init
    ```
 
    > **Note**: Be sure to replace the `[LOGINSERVER]` of your ACR instance.
@@ -778,7 +777,6 @@ In this task, you will push images to your ACR account, version images with tagg
    ```bash
    docker image push [LOGINSERVER]/content-web
    docker image push [LOGINSERVER]/content-api
-   docker image push [LOGINSERVER]/content-init
    ```
 
    ![In this screenshot of the console window, an example of images being pushed to an ACR account results from typing and running the following at the command prompt: docker push [LOGINSERVER]/content-web.](media/image67.png "Push image to ACR")
@@ -796,7 +794,6 @@ In this task, you will push images to your ACR account, version images with tagg
     ```bash
     docker image tag [LOGINSERVER]/content-web:latest [LOGINSERVER]/content-web:v1
     docker image tag [LOGINSERVER]/content-api:latest [LOGINSERVER]/content-api:v1
-    docker image tag [LOGINSERVER]/content-init:latest [LOGINSERVER]/content-init:v1
     docker image ls
     ```
 
@@ -807,7 +804,6 @@ In this task, you will push images to your ACR account, version images with tagg
     ```bash
     docker image push [LOGINSERVER]/content-web:v1
     docker image push [LOGINSERVER]/content-api:v1
-    docker image push [LOGINSERVER]/content-init:v1
     ```
 
 12. Refresh one of the repositories to see the two versions of the image now appear.
@@ -957,9 +953,7 @@ image and pushes it to your ACR instance automatically.
 
 19. Save the file, then navigate to the repositories in GitHub, select Actions, and then manually run the **content-api** workflow.
 
-20. Next, setup the **content-init** workflow. Follow the same steps as the previous `content-api` workflow for the `content-init.yml` file, remembering to update the `[SHORT_SUFFIX]` value with your own three-letter suffix.
-
-21. Commit and push the changes to the Git repository:
+20. Commit and push the changes to the Git repository:
 
    ```bash
    git add .
