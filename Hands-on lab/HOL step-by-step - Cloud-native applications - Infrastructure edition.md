@@ -1548,7 +1548,7 @@ In this task, you will use GitHub Actions workflows to automate the process for 
 1. Navigate to the `.github/workflows` folder of the git repository, and open the `content-web.yml` workflow using `vi`:
 
     ```bash
-    cd ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/developer/.github/workflows
+    cd ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/infrastructure/.github/workflows
     vi content-web.yml
     ```
 
