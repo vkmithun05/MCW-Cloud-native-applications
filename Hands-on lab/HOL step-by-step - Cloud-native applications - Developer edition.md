@@ -44,13 +44,12 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 2: Provision Azure Database Migration Service](#task-2-provision-azure-database-migration-service)
     - [Task 3: Migrate data to Azure Cosmos DB](#task-3-migrate-data-to-azure-cosmos-db)
   - [Exercise 3: Deploy the solution to Azure Kubernetes Service](#exercise-3-deploy-the-solution-to-azure-kubernetes-service)
-    - [Task 1: Tunnel into the Azure Kubernetes Service cluster](#task-1-tunnel-into-the-azure-kubernetes-service-cluster)
-    - [Task 2: Deploy a service using the Kubernetes management dashboard](#task-2-deploy-a-service-using-the-kubernetes-management-dashboard)
-    - [Task 3: Deploy a service using kubectl](#task-3-deploy-a-service-using-kubectl)
-    - [Task 4: Deploy a service using a Helm chart](#task-4-deploy-a-service-using-a-helm-chart)
-    - [Task 5: Test the application in a browser](#task-5-test-the-application-in-a-browser)
-    - [Task 6: Configure Continuous Delivery to the Kubernetes Cluster](#task-6-configure-continuous-delivery-to-the-kubernetes-cluster)
-    - [Task 7: Review Azure Monitor for Containers](#task-7-review-azure-monitor-for-containers)
+    - [Task 1: Deploy a service using the Azure Portal](#task-1-deploy-a-service-using-the-azure-portal)
+    - [Task 2: Deploy a service using kubectl](#task-2-deploy-a-service-using-kubectl)
+    - [Task 3: Deploy a service using a Helm chart](#task-3-deploy-a-service-using-a-helm-chart)
+    - [Task 4: Test the application in a browser](#task-4-test-the-application-in-a-browser)
+    - [Task 5: Configure Continuous Delivery to the Kubernetes Cluster](#task-5-configure-continuous-delivery-to-the-kubernetes-cluster)
+    - [Task 6: Review Azure Monitor for Containers](#task-6-review-azure-monitor-for-containers)
   - [Exercise 4: Scale the application and test HA](#exercise-4-scale-the-application-and-test-ha)
     - [Task 1: Increase service instances from the Kubernetes dashboard](#task-1-increase-service-instances-from-the-kubernetes-dashboard)
     - [Task 2: Increase service instances beyond available resources](#task-2-increase-service-instances-beyond-available-resources)
@@ -1124,47 +1123,114 @@ In this task, you will gather the information you need about your Azure Kubernet
 
    ![In this screenshot of the console, kubectl get nodes has been typed and run at the command prompt, which produces a list of nodes.](media/image75.png "kubectl get nodes")
 
-### Task 2: Deploy a service using the Kubernetes management dashboard
+### Task 1: Deploy a service using the Azure Portal
 
-In this task, you will deploy the API application to the Azure Kubernetes Service cluster using the Kubernetes dashboard.
+In this task, you will deploy the API application to the Azure Kubernetes Service cluster using the Azure Portal.
 
-1. From the Kubernetes dashboard, select **Create** in the top right corner.
+1. We first need to define a Service for our API so that the applicaton is accessible within the cluster. In the AKS blade in the Azure Portal select **Services and ingresses** and on the Services tab select **+ Add**.
 
-2. From the Resource creation view, select **Create from form**.
+    ![This is a screenshot of the Azure Portal for AKS showing adding a Service.](media/2021-03-25-17-04-04.png "Add a Service")
 
-   ![This is a screenshot of the Deploy a Containerized App dialog box. Specify app details below is selected, and the fields have been filled in with the information that follows. At the bottom of the dialog box is a SHOW ADVANCED OPTIONS link.](media/image78.png "Display Create from form")
+2. In the **Add with YAML** screen, paste following YAML and choose **Add**.
 
-   - Enter `api` for the App name.
+   ```yaml
+   apiVersion: v1
+   kind: Service
+   metadata:
+   labels:
+      app: api
+   name: api
+   spec:
+   ports:
+      - name: api-traffic
+         port: 3001
+         protocol: TCP
+         targetPort: 3001
+   selector:
+      app: api
+   sessionAffinity: None
+   type: ClusterIP
+   ```
 
-   - Enter `[LOGINSERVER]/content-api` for the Container Image, replacing `[LOGINSERVER]` with your ACR login server, such as `fabmedicalsol.azurecr.io`.
+3. Now select **Workloads** under the **Kubernetes resources** section in the left navigation.
 
-   - Set Number of pods to `1`.
+    ![Select workloads under Kubernetes resources.](media/2021-03-25-17-04-35.png "Select workloads under Kubernetes resources")
 
-   - Set Service to `Internal`.
+2. From the Workloads view, with **Deployments** selected (the default) then select **+ Add**.
 
-   - Use `3001` for Port and `3001` for Target port.
+   ![Selecing + Add to create a deployment.](media/2021-03-25-17-05-05.png "Selecing + Add to create a deployment")
 
-3. Select **SHOW ADVANCED OPTIONS**
+3. In the **Add with YAML** screen that loads paste the following YAML and update the 
 
-   - Enter `1` for the CPU requirement (cores).
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+   labels:
+         app: api
+   name: api
+   spec:
+   replicas: 1
+   selector:
+         matchLabels:
+         app: api
+   strategy:
+         rollingUpdate:
+         maxSurge: 1
+         maxUnavailable: 1
+         type: RollingUpdate
+   template:
+         metadata:
+         labels:
+               app: api
+         name: api
+         spec:
+         containers:
+         - image: [LOGINSERVER].azurecr.io/content-api
+            livenessProbe:
+               httpGet:
+                  path: /
+                  port: 3001
+               initialDelaySeconds: 30
+               periodSeconds: 20
+               timeoutSeconds: 10
+               failureThreshold: 3
+            imagePullPolicy: Always
+            name: api
+            ports:
+               - containerPort: 3001
+               hostPort: 3001
+               protocol: TCP
+            resources:
+               requests:
+                  cpu: 1
+                  memory: 128Mi
+            securityContext:
+               privileged: false
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+         dnsPolicy: ClusterFirst
+         restartPolicy: Always
+         schedulerName: default-scheduler
+         securityContext: {}
+         terminationGracePeriodSeconds: 30
+   ```
 
-   - Enter `128` for the Memory requirement (MiB).
+4. Select **Add** to initiate the deployment. This can take a few minutes after which you will see the deployment listed.
 
-   ![In the Advanced options dialog box, the above information has been entered. At the bottom of the dialog box is a Deploy button.](media/image79.png "Show Advanced Options")
+   ![Service is showing as unhealthy](media/2021-03-25-17-05-36.png "Service is showing as unhealthy")
 
-4. Select **Deploy** to initiate the service deployment based on the image. This can take a few minutes. In the meantime, you will be redirected to the Overview dashboard. Select the **API** deployment from the **Overview** dashboard to see the deployment in progress.
+5. Select the **api** deployment to open the Deployment, select **Live logs** and then a Pod from the drop-down. After a few moments the live logs should appear.
 
-   ![This is a screenshot of the Kubernetes management dashboard. Overview is highlighted on the left, and at right, a red arrow points to the api deployment.](media/image80.png "See the deployment in progress")
+   ![Service is showing as unhealthy](media/2021-03-25-17-06-09.png "Service is showing as unhealthy")
 
-5. Kubernetes indicates a problem with the `api` **Replica Set** after some seconds. Select the ellipsis icon, then select **Logs** to investigate.
+   > **Note:** if the logs don't display it may be the Pod no longer exists. You can use the **View in Log Analytics** to view historical logs regardless of Pod.
 
-   ![This is a screenshot of the Kubernetes management dashboard that shows an error with the replica set, and ellipse menu with Logs option highlighted.](media/Ex2-Task1.5.png "Investigate logs")
+6. If you scroll through the the log you can see it indicates that the content-api application is once again failing because it cannot find a MongoDB api to communicate with. You will resolve this issue by connecting to Cosmos DB.
 
-6. The log indicates that the content-api application is once again failing because it cannot find a mongodb api to communicate with. You will resolve this issue by connecting to Cosmos DB.
+   ![This screenshot of the Kubernetes management dashboard shows logs output for the api container.](media/2021-03-25-17-07-13.png "MongoDB communication error")
 
-   ![This screenshot of the Kubernetes management dashboard shows logs output for the api container.](media/Ex2-Task1.6.png "MongoDB communication error")
-
-7. Open the Azure portal in your browser and navigate to your resource group and find your Cosmos DB resource. Select the Cosmos DB resource to view details.
+7. In the Azure Portal navigate to your resource group and find your Cosmos DB. Select the Cosmos DB resource to view details.
 
    ![This is a screenshot of the Azure Portal showing the Cosmos DB among existing resources.](media/Ex2-Task1.9.png "Select CosmosDB resource from list")
 
@@ -1172,17 +1238,13 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
    ![This is a screenshot of the Azure Portal showing the quick start for setting up Cosmos DB with MongoDB API. The copy button is highlighted.](media/Ex2-Task1.10.png "Capture CosmosDB connection string")
 
-9. Update the provided connection string with a database `contentdb` and a replica set `globaldb`.
+9. Modify the copied connection string by adding the database `contentdb` to the URL, along with a replicaSet of `globaldb`. The resulting connection string should look like the below sample.
 
    > **Note**: Username and password redacted for brevity.
 
    ```text
    mongodb://<USERNAME>:<PASSWORD>@fabmedical-<SUFFIX>.documents.azure.com:10255/contentdb?ssl=true&replicaSet=globaldb
    ```
-
-10. To avoid disconnecting from the Kubernetes dashboard, open a **new** Azure Cloud Shell console.
-
-    ![This is a screenshot of the cloud shell window with a red arrow pointing at the "Open new session" button on the toolbar.](media/hol-2019-10-19_06-13-34.png "Open new Azure Cloud Shell console")
 
 11. You will setup a Kubernetes secret to store the connection string and configure the `content-api` application to access the secret. First, you must base64 encode the secret value. Open your Azure Cloud Shell window and use the following command to encode the connection string and then, copy the output.
 
@@ -1194,9 +1256,9 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ![This is a screenshot of the Azure cloud shell window showing the command to create the base64 encoded secret.  The output to copy is highlighted.](media/hol-2019-10-18_07-12-13.png "Show encoded secret")
 
-12. Return to the Kubernetes UI in your browser and select **+ Create**.
+12. Return to the AKS blade in the Azure Portal and select **Configuration** under the **Kubernetes resources** section. Select **Secrets** and choose **+ Add**.
 
-13. In the **Create from input** tab, update the following YAML with the encoded connection string from your clipboard, paste the YAML data into the create dialog, and choose **Upload**.
+13. In the **Add with YAML** screen, paste following YAML and replace the placeholder with the encoded connection string from your clipboard and choose **Add**. Note that YAML is position sensitive so you must ensure indentation is correct when typing or pasting.
 
     ```yaml
     apiVersion: v1
@@ -1208,15 +1270,15 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
       db: <base64 encoded value>
     ```
 
-    ![This is a screenshot of the Kubernetes management dashboard showing the YAML file for creating a deployment.](media/Ex2-Task1.13.png "Upload YAML data")
+    ![This is a screenshot of the Azure Portal for AKS howing the YAML file for creating a deployment.](media/2021-03-25-17-08-06.png "Upload YAML data")
 
-14. Scroll down in the Kubernetes dashboard until you can see **Secrets** in the left-hand menu. Select it.
+14. Sort the Secrets list by name and you should now see your new secret displayed. 
 
-    ![This is a  screenshot of the Kubernetes management dashboard showing secrets.](media/Ex2-Task1.14.png "Manage Kubernetes secrets")
+    ![This is a screenshot of the Azure Portal for AKS showing secrets.](media/2021-03-25-17-08-31.png "Manage Kubernetes secrets")
 
-15. View the details for the **cosmosdb** secret. Select the eyeball icon to show the secret.
+15. View the details for the **cosmosdb** secret by selected it in the list.
 
-    ![This is a screenshot of the Kubernetes management dashboard showing the value of a secret.](media/Ex2-Task1.15.png "View CosmosDB secret")
+    ![This is a screenshot of the Azure Portal for AKS showing the value of a secret.](media/2021-03-25-17-08-54.png "View cosmosdb secret")
 
 16. Next, download the api deployment configuration using the following command in your Azure Cloud Shell window:
 
@@ -1247,24 +1309,18 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ![This is a screenshot of the code editor save and close actions.](media/Ex2-Task1.17.1.png "Code editor configuration update")
 
-19. Update the api deployment by using `kubectl` to apply the new configuration.
+19. Update the api deployment by using `kubectl` to deploy the API.
 
-    ```bash
-    kubectl apply -f api.deployment.yml
-    ```
+   ```bash
+   kubectl delete deployment api
+   kubectl create -f api.deployment.yml
+   ```
 
-    >**Note**: If you receive an error like `Operation cannot be fulfilled on deployment.apps "api"` then delete the deployment and recreate it using the modified `api.deployment.yml` file.
+20. In the Azure Portal return to Live logs (see Step 5). The last log should show as connected to MongoDB.
 
-      ```bash
-      kubectl delete deployment api
-      kubectl create -f api.deployment.yml
-      ```
+    ![This is a screenshot of the Kubernetes management dashboard showing logs output.](media/2021-03-25-17-09-24.png "API Logs")
 
-20. Select **Deployments** then **api** to view the api deployment. It now has a healthy instance and the logs indicate it has connected to mongodb.
-
-    ![This is a screenshot of the Kubernetes management dashboard showing logs output.](media/Ex2-Task1.19.png "API Logs")
-
-### Task 3: Deploy a service using kubectl
+### Task 2: Deploy a service using kubectl
 
 In this task, deploy the web service using `kubectl`.
 
@@ -1388,19 +1444,15 @@ In this task, deploy the web service using `kubectl`.
 
     ![In this screenshot of the console, kubectl apply -f kubernetes-web.yaml has been typed and run at the command prompt. Messages about web deployment and web service creation appear below.](media/image93.png "kubectl create application")
 
-11. Return to the browser where you have the Kubernetes management dashboard open. From the navigation menu, under **Discovery and Load Balancing**, select the **Services** view.
+11. Return to the AKS blade in the Azure Portal. From the navigation menu, under **Kubernetes resources**, select the **Services and ingresses** view. You should be able to access the website via an external endpoint.
 
-12. From the Services view, select the `web` service, and from this view, you will see the web service deploying. This deployment can take a few minutes.
-
-13. When it completes, navigate to the main services link, you should be able to access the website via an external endpoint.
-
-    ![In the Kubernetes management dashboard, Services is selected below Discovery and Load Balancing in the navigation menu. At right are three boxes that display various information about the web service deployment: Details, Pods, and Events.](media/image94.png "Display External Endpoint")
+    ![AKS services and ingresses shown with External IP highlighted](media/aks-resources-services-ingresses-view.png "AKS services and ingresses shown with External IP highlighted")
 
 14. In the top navigation, select the `speakers` and `sessions` links.
 
     ![A screenshot of the web site showing no data displayed.](media/Ex2-Task3.11.png "Web site home page")
 
-### Task 4: Deploy a service using a Helm chart
+### Task 3: Deploy a service using a Helm chart
 
 In this task, you will deploy the web service using a [Helm](https://helm.sh/) chart to streamline the installing and managing the container-based application on the Azure Kubernetes cluster.
 
@@ -1587,7 +1639,7 @@ You will configure a Helm Chart that will be used to deploy and configure the **
     git push
     ```
 
-### Task 5: Test the application in a browser
+### Task 4: Test the application in a browser
 
 In this task, you will verify that you can browse to the web service you have deployed and view the speaker and content information exposed by the API service.
 
@@ -1603,7 +1655,7 @@ In this task, you will verify that you can browse to the web service you have de
 
    ![In this screenshot of the Contoso Neuro web application, Sessions has been selected, and sample session information appears at the bottom.](media/image115.png "Sample session information displayed")
 
-### Task 6: Configure Continuous Delivery to the Kubernetes Cluster
+### Task 5: Configure Continuous Delivery to the Kubernetes Cluster
 
 In this task, you will use GitHub Actions workflows to automate the process for deploying the web image to the AKS cluster. You will update the workflow and configure a job so that when new images are pushed to the ACR, the pipeline deploys the image to the AKS cluster.
 
@@ -1729,7 +1781,7 @@ In this task, you will use GitHub Actions workflows to automate the process for 
 
     ![The screenshot shows workflow is running and the current status.](media/2020-08-25-22-15-39.png "Workflow is running")
 
-### Task 7: Review Azure Monitor for Containers
+### Task 6: Review Azure Monitor for Containers
 
 In this task, you will access and review the various logs and dashboards made available by Azure Monitor for Containers.
 
