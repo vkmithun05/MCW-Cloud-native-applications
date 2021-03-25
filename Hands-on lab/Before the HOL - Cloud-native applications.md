@@ -190,35 +190,7 @@ You create VMs during the upcoming exercises. In this section, you create an SSH
 
     ![In this screenshot of the cloud shell window, cat .ssh/fabmedical has been typed and run at the command prompt. Information about the public key content appears in the window.](media/b4-image571.png "Cloud Shell - cat .ssh")
 
-### Task 5: Create a Service Principal
-
-Azure Kubernetes Service (AKS) requires an Azure Active Directory (AAD) service principal to interact with Azure APIs. The service principal is needed to dynamically manage resources such as user-defined routes and the Layer 4 Azure Load Balancer. The easiest way to set up the service principal is by using the Azure cloud shell.
-
-> **Note**: To complete this task, ensure your account is an [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner) built-in role for the subscription you use and is a [Member](https://docs.microsoft.com/azure/active-directory/fundamentals/users-default-permissions#member-and-guest-users) user in the Azure AD tenant you use. You may have trouble creating a service principal if you do not meet these requirements.
-
-1. To create a service principal, type the following command in the cloud shell command line, replacing {id} with your subscription identifier, and replacing suffix with your chosen suffix to make the name unique:
-
-   > **Note**: If you don't have a cloud shell available, refer back to [Task 1: Setup Azure Cloud Shell](#task-1-setup-azure-cloud-shell).
-
-   ```bash
-   az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/{id}" --name="http://fabmedical-sp-{SUFFIX}"
-   ```
-
-2. The command produces output like this. Copy this information to use later.
-
-   ![In this screenshot of a Bash window, az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/{id}" --name="Fabmedical-sp-SUFFIX" has been typed and run at the command prompt. Service principal information is visible in the window, but at this time, we are unable to capture all of the information in the window. Future versions of this course should address this.](media/b4-image39.png "Bash AZ Create RBAC")
-
-3. To get the service principal object id, type the following command, replacing {appId} with your service principal appId:
-
-   ```bash
-   az ad sp show --id {appId} --query "{objectId:@.objectId}"
-   ```
-
-4. The command produces output like this. Copy this information to use later.
-
-   ![In this screenshot of a Bash window, az ad sp show --id d41261a3-d8b8-4cf0-890d-1fb6efc20a67 --query "{objectId:@.objectId}" has been typed and run at the command prompt. Service Principal information is visible in the window.](media/b4-image58.png "Bash Manage Azure Active Directory service principal")
-
-### Task 6: Deploy ARM Template
+### Task 5: Deploy ARM Template
 
 In this section, you configure and execute an ARM template that creates all the resources that you need throughout the exercises.
 
