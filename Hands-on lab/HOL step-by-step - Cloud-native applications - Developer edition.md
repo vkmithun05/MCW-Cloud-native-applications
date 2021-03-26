@@ -1127,29 +1127,29 @@ In this task, you will gather the information you need about your Azure Kubernet
 
 In this task, you will deploy the API application to the Azure Kubernetes Service cluster using the Azure Portal.
 
-1. We first need to define a Service for our API so that the applicaton is accessible within the cluster. In the AKS blade in the Azure Portal select **Services and ingresses** and on the Services tab select **+ Add**.
+1. We first need to define a Service for our API so that the application is accessible within the cluster. In the AKS blade in the Azure Portal select **Services and ingresses** and on the Services tab select **+ Add**.
 
     ![This is a screenshot of the Azure Portal for AKS showing adding a Service.](media/2021-03-25-17-04-04.png "Add a Service")
 
 2. In the **Add with YAML** screen, paste following YAML and choose **Add**.
 
    ```yaml
-   apiVersion: v1
-   kind: Service
-   metadata:
-   labels:
-      app: api
-   name: api
-   spec:
-   ports:
-      - name: api-traffic
-         port: 3001
-         protocol: TCP
-         targetPort: 3001
-   selector:
-      app: api
-   sessionAffinity: None
-   type: ClusterIP
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: api
+      name: api
+    spec:
+      ports:
+        - name: api-traffic
+          port: 3001
+          protocol: TCP
+          targetPort: 3001
+      selector:
+        app: api
+      sessionAffinity: None
+      type: ClusterIP
    ```
 
 3. Now select **Workloads** under the **Kubernetes resources** section in the left navigation.
@@ -1158,62 +1158,62 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
 2. From the Workloads view, with **Deployments** selected (the default) then select **+ Add**.
 
-   ![Selecing + Add to create a deployment.](media/2021-03-25-17-05-05.png "Selecing + Add to create a deployment")
+   ![Selecting + Add to create a deployment.](media/2021-03-25-17-05-05.png "Selecing + Add to create a deployment")
 
-3. In the **Add with YAML** screen that loads paste the following YAML and update the 
+3. In the **Add with YAML** screen that loads paste the following YAML and update the `[LOGINSERVER]` placeholder with the name of the ACR instance.
 
    ```yaml
-   apiVersion: apps/v1
-   kind: Deployment
-   metadata:
-   labels:
-         app: api
-   name: api
-   spec:
-   replicas: 1
-   selector:
-         matchLabels:
-         app: api
-   strategy:
-         rollingUpdate:
-         maxSurge: 1
-         maxUnavailable: 1
-         type: RollingUpdate
-   template:
-         metadata:
-         labels:
-               app: api
-         name: api
-         spec:
-         containers:
-         - image: [LOGINSERVER].azurecr.io/content-api
-            livenessProbe:
-               httpGet:
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: api
+      name: api
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: api
+      strategy:
+        rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 1
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: api
+            name: api
+        spec:
+          containers:
+            - name: api
+              image: [LOGINSERVER].azurecr.io/content-api
+              imagePullPolicy: Always
+              livenessProbe:
+                httpGet:
                   path: /
                   port: 3001
-               initialDelaySeconds: 30
-               periodSeconds: 20
-               timeoutSeconds: 10
-               failureThreshold: 3
-            imagePullPolicy: Always
-            name: api
-            ports:
-               - containerPort: 3001
-               hostPort: 3001
-               protocol: TCP
-            resources:
-               requests:
+                initialDelaySeconds: 30
+                periodSeconds: 20
+                timeoutSeconds: 10
+                failureThreshold: 3
+              ports:
+                - containerPort: 3001
+                  hostPort: 3001
+                  protocol: TCP
+              resources:
+                requests:
                   cpu: 1
                   memory: 128Mi
-            securityContext:
-               privileged: false
-            terminationMessagePath: /dev/termination-log
-            terminationMessagePolicy: File
-         dnsPolicy: ClusterFirst
-         restartPolicy: Always
-         schedulerName: default-scheduler
-         securityContext: {}
-         terminationGracePeriodSeconds: 30
+              securityContext:
+                privileged: false
+                terminationMessagePath: /dev/termination-log
+                terminationMessagePolicy: File
+                dnsPolicy: ClusterFirst
+                restartPolicy: Always
+                schedulerName: default-scheduler
+                securityContext: {}
+                terminationGracePeriodSeconds: 30
    ```
 
 4. Select **Add** to initiate the deployment. This can take a few minutes after which you will see the deployment listed.
