@@ -571,17 +571,19 @@ In this task, you will configure the `web` container to communicate with the API
 
 10. Curl the speakers path again, using the port assigned to the web container. Again, you will see HTML returned, but because curl does not process javascript, you cannot determine if the web application is communicating with the api application. You must verify this connection in a browser.
 
-   ```bash
-   curl http://localhost:[PORT]/speakers.html
-   ```
+    ```bash
+    curl http://localhost:[PORT]/speakers.html
+    ```
 
 11. You will not be able to browse to the web application on the ephemeral port because the VM only exposes a limited port range. Now you will stop the web container and restart it using port 3000 to test in the browser. Type the following commands to stop the container, remove it, and run it again using explicit settings for the port.
 
-   ```bash
-    docker container stop web
-    docker container rm web
-    docker container run --name web --net fabmedical -p 3000:3000 -d -e CONTENT_API_URL=http://api:3001 content-web
-   ```
+    ```bash
+     docker container stop web
+     docker container rm web
+     docker container run --name web --net fabmedical -p 3000:3000 -d -e CONTENT_API_URL=http://api:3001  content-web
+    ```
+
+    > **WARNING:** If you receive an error such as `Error starting userland proxy: listen tcp4 0.0.0.0:3000:  bind: address already in use.` the previous Node instance might be holding the port 3000. Run `sudo pkill  node` to kill the local node instance.
 
 12. Curl the speaker path again, using port `3000`. You will see the same HTML returned.
 
@@ -597,7 +599,7 @@ In this task, you will configure the `web` container to communicate with the API
     EXAMPLE: http://13.68.113.176:3000
     ```
 
-12. Commit your changes and push to the repository.
+14. Commit your changes and push to the repository.
 
     ```bash
     git add .

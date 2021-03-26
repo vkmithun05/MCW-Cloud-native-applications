@@ -699,6 +699,8 @@ In this task, you will configure the `web` container to communicate with the API
     docker container run --name web --net fabmedical -p 3000:3000 -d -e CONTENT_API_URL=http://api:3001 content-web
     ```
 
+    > **WARNING:** If you receive an error such as `Error starting userland proxy: listen tcp4 0.0.0.0:3000: bind: address already in use.` the previous Node instance might be holding the port 3000. Run `sudo pkill node` to kill the local node instance.
+
 12. Curl the speaker path again, using port `3000`. You will see the same HTML returned.
 
     ```bash
