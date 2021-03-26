@@ -47,12 +47,11 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 1: Deploy a service using the Azure Portal](#task-1-deploy-a-service-using-the-azure-portal)
     - [Task 2: Deploy a service using kubectl](#task-2-deploy-a-service-using-kubectl)
     - [Task 3: Deploy a service using a Helm chart](#task-3-deploy-a-service-using-a-helm-chart)
-    - [Task 4: Test the application in a browser](#task-4-test-the-application-in-a-browser)
-    - [Task 5: Configure Continuous Delivery to the Kubernetes Cluster](#task-5-configure-continuous-delivery-to-the-kubernetes-cluster)
-    - [Task 6: Review Azure Monitor for Containers](#task-6-review-azure-monitor-for-containers)
+    - [Task 4: Configure Continuous Delivery to the Kubernetes Cluster](#task-4-configure-continuous-delivery-to-the-kubernetes-cluster)
+    - [Task 5: Review Azure Monitor for Containers](#task-5-review-azure-monitor-for-containers)
   - [Exercise 4: Scale the application and test HA](#exercise-4-scale-the-application-and-test-ha)
-    - [Task 1: Increase service instances from the Kubernetes dashboard](#task-1-increase-service-instances-from-the-kubernetes-dashboard)
-    - [Task 2: Increase service instances beyond available resources](#task-2-increase-service-instances-beyond-available-resources)
+    - [Task 1: Increase service instances from the Azure Portal](#task-1-increase-service-instances-from-the-azure-portal)
+    - [Task 2: Resolve failed provisioning of replicas](#task-2-resolve-failed-provisioning-of-replicas) 
     - [Task 3: Restart containers and test HA](#task-3-restart-containers-and-test-ha)
     - [Task 4: Configure Cosmos DB Autoscale](#task-4-configure-cosmos-db-autoscale)
     - [Task 5: Test Cosmos DB Autoscale](#task-5-test-cosmos-db-autoscale)
@@ -1458,30 +1457,31 @@ In this task, you will deploy the web service using a [Helm](https://helm.sh/) c
 
 You will configure a Helm Chart that will be used to deploy and configure the **content-web** container image to Kubernetes. This is a technique that can be used to more easily deploy and manage the application on the Azure Kubernetes Cluster.
 
-1. From the Kubernetes dashboard, under **Workloads**, select **Deployments**.
+1. From the AKS blade in the Azure Portal, under **Kubernetes resources**, select **Workloads**.
 
-2. Select the triple vertical dots on the right of the `web` deployment and then choose **Delete**. When prompted, select **Delete** again.
+2. Select the `web` Deployment and then choose **Delete**. When prompted, check **Confirm delete** and select **Delete** again.
 
-   ![A screenshot of the Kubernetes management dashboard showing how to delete a deployment.](media/Ex2-Task4.2.png "Kubernetes dashboard web deployments")
+   ![A screenshot of the Kubernetes management dashboard showing how to delete a deployment.](media/2021-03-26-16-42-03.png "Kubernetes dashboard web deployments")
 
-3. From the Kubernetes dashboard, under **Discovery and Load Balancing**, select **Services**.
+3. From the AKS blade in the Azure Portal, under **Kubernetes resources**, select **Services and ingresses**.
 
-4. Select the triple vertical dots on the right of the **web** service and then choose **Delete**. When prompted, select **Delete** again.
+4. Select the `web` Service and then choose **Delete**. When prompted, check **Confirm delete** and select **Delete** again.
 
-   ![A screenshot of the Kubernetes management dashboard showing how to delete a deployment.](media/Ex2-Task4.4.png "Kubernetes delete deployment")
+   ![A screenshot of the Kubernetes management dashboard showing how to delete a deployment.](media/2021-03-26-16-43-29.png "Kubernetes delete deployment")
 
-5. Open a **new** Azure Cloud Shell console.
+5. Open a **new** Azure Cloud Shell.
 
-6. Update your starter files by pulling the latest changes from the Git repository:
+6. Clone your fabmedical repository (replace URL with URL of your repository):
 
     ```bash
-    cd ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/developer/content-web
-    git pull
+    git clone https://github.com/USER_NAME/fabmedical.git
     ```
 
-7. We will use the `helm create` command to scaffold out a chart implementation that we can build on. Use the following commands to create a new chart named `web` in a new directory:
+7. We will use the `helm create` command to scaffold out a chart implementation that we can build on. Use the following commands to create a new chart named `web` in a new directory (replace 'fabmedical' with the directory created by your clone):
 
     ```bash
+    cd fabmedical
+    cd content-web
     mkdir charts
     cd charts
     helm create web
@@ -1517,7 +1517,7 @@ You will configure a Helm Chart that will be used to deploy and configure the **
       port: 80
     ```
 
-12. Search for the `resources` definition and update the values so that they match the following. You are removing the curly braces and adding the `requests`:
+12. Search for the `resources` definition and update the values so that they match the following. You are removing the curly braces and adding the `requests` (make sure to remove the {} characters after the `resource:` node):
 
     ```yaml
     resources:
@@ -1612,7 +1612,7 @@ You will configure a Helm Chart that will be used to deploy and configure the **
 
 22. Save changes and close the editor.
 
-23. The chart is now setup to run our web container. Type the following command to deploy the application described by the YAML files. You will receive a message indicating that helm has created a web deployment and a web service.
+23. The chart is now setup to deploy our web container. Type the following command to deploy the application described by the Helm chart. You will receive a message indicating that helm has created a web deployment and a web service.
 
     ```bash
     cd ../..
@@ -1621,41 +1621,24 @@ You will configure a Helm Chart that will be used to deploy and configure the **
 
     ![In this screenshot of the console, helm install web ./web has been typed and run at the command prompt. Messages about web deployment and web service creation appear below.](media/Ex2-Task4.24.png "Helm web deployment messages")
 
-24. Return to the browser where you have the Kubernetes management dashboard open. From the navigation menu, select **Services** view under **Discovery and Load Balancing**. From the Services view, select the **web** service, and from this view, you will see the web service deploying. This deployment can take a few minutes. When it completes, you should be able to access the website via an external endpoint.
+24. Return to the browser where you have the Azure Portal open. From the navigation menu, select **Services and ingresses**. You will see the web service deploying which deployment can take a few minutes. When it completes, you should be able to access the website via an external endpoint.
 
-    ![In the Kubernetes management dashboard, Services is selected below Discovery and Load Balancing in the navigation menu. At right are three boxes that display various information about the web service deployment: Details, Pods, and Events. "External endpoints" is highlighted to show that an external endpoint has been created.](media/image94.png "Web service endpoint")
+    ![In the AKS Services and ingresses blade in the Azure Portal showing the web service selected.](media/2021-03-26-16-44-18.png "Web service endpoint")
 
-25. Select the speakers and sessions links.
+25. Select the speakers and sessions links and check that content is displayed for each.
 
     ![A screenshot of the web site showing no data displayed.](media/Ex2-Task3.11.png "Web site home page")
 
-26. We will now persist the changes into the repository. Execute the following commands:
+26. We will now commit our Helm chart to our GitHubs repository. Execute the following commands in the root folder of your 'fabmedical' clone:
 
     ```bash
-    cd ..
-    git pull
-    git add charts/
+    git add content-web/charts/
     git commit -m "Helm chart added."
     git push
     ```
 
-### Task 4: Test the application in a browser
 
-In this task, you will verify that you can browse to the web service you have deployed and view the speaker and content information exposed by the API service.
-
-1. From the Kubernetes management dashboard, in the navigation menu, select the **Services** view under **Discovery and Load Balancing**.
-
-2. In the list of services, locate the external endpoint for the `web` service and select this hyperlink to launch the application.
-
-   ![In the Services box, a red arrow points at the hyperlinked external endpoint for the web service.](media/image112.png "Application external endpoint")
-
-3. You will see the `web` application in your browser and be able to select the Speakers and Sessions links to view those pages without errors. The lack of errors means that the web application is correctly calling the API service to show the details on each of those pages.
-
-   ![In this screenshot of the Contoso Neuro web application, Speakers has been selected, and sample speaker information appears at the bottom.](media/image114.png "Sample speaker information displayed")
-
-   ![In this screenshot of the Contoso Neuro web application, Sessions has been selected, and sample session information appears at the bottom.](media/image115.png "Sample session information displayed")
-
-### Task 5: Configure Continuous Delivery to the Kubernetes Cluster
+### Task 4: Configure Continuous Delivery to the Kubernetes Cluster
 
 In this task, you will use GitHub Actions workflows to automate the process for deploying the web image to the AKS cluster. You will update the workflow and configure a job so that when new images are pushed to the ACR, the pipeline deploys the image to the AKS cluster.
 
@@ -1781,7 +1764,7 @@ In this task, you will use GitHub Actions workflows to automate the process for 
 
     ![The screenshot shows workflow is running and the current status.](media/2020-08-25-22-15-39.png "Workflow is running")
 
-### Task 6: Review Azure Monitor for Containers
+### Task 5: Review Azure Monitor for Containers
 
 In this task, you will access and review the various logs and dashboards made available by Azure Monitor for Containers.
 
@@ -1829,45 +1812,39 @@ In this task, you will access and review the various logs and dashboards made av
 
 At this point, you have deployed a single instance of the web and API service containers. In this exercise, you will increase the number of container instances for the web service and scale the front-end on the existing cluster.
 
-### Task 1: Increase service instances from the Kubernetes dashboard
+### Task 1: Increase service instances from the Azure Portal
 
-In this task, you will increase the number of instances for the API deployment in the Kubernetes management dashboard. While it is deploying, you will observe the changing status.
+In this task, you will increase the number of instances for the API deployment in the AKS Azure Portal blade. While it is deploying, you will observe the changing status.
 
-1. Switch to the Kubernetes Dashboard.
+1. In the AKS blade in the Azure Portal select **Workloads** and then select the **API** deployment.
 
-2. From the navigation menu, select **Workloads** -\> **Deployments**, and then select the **API** deployment.
+2. Select **YAML** in the window that loads and scroll down until you find **replicas**. Change the number of replicas to **2**, and then select **Review + save**. When prompted, check **Confirm manifest change** and select **Save**.
 
-3. Select the **SCALE** button in the upper-right.
+   ![In the edit YAML dialog, 2 is entered in the desired number of replicas.](media/2021-03-26-16-49-32.png "Setting replicas to 2")
 
-   ![In the Workloads > Deployments > api bar, the Scale icon is highlighted.](media/image89.png "Scale a resource")
+   > **Note**: If the deployment completes quickly, you may not see the deployment Waiting states in the portal, as described in the following steps.
 
-4. Change the number of replicas to **2**, and then select **Scale**.
+3. From the Replica Set view for the API, you will see it is now deploying and that there is one healthy instance and one pending instance.
 
-   ![In the Scale a Deployment dialog box, 2 is entered in the Desired number of pods box.](media/image116.png "Scale a Deployment dialog")
+   ![Replica Sets is selected under Workloads in the navigation menu on the left, and at right, Pods status: 1 pending, 1 running is highlighted. Below that, a red arrow points at the API deployment in the Pods box.](media/2021-03-26-16-50-11.png "View replica details")
 
-   > **Note**: If the deployment completes quickly, you may not see the deployment Waiting states in the dashboard, as described in the following steps.
+4. From the navigation menu, select **Workloads**. Note that the api Deployment has an alert and shows a pod count 1 of 2 instances (shown as `1/2`).
 
-5. From the Replica Set view for the API, you will see it is now deploying and that there is one healthy instance and one pending instance.
+   ![In the Deployments box, the api service is highlighted with a grey timer icon at left and a pod count of 1/2 listed at right.](media/2021-03-26-16-50-38.png "View api active pods")
 
-   ![Replica Sets is selected under Workloads in the navigation menu on the left, and at right, Pods status: 1 pending, 1 running is highlighted. Below that, a red arrow points at the API deployment in the Pods box.](media/image117.png "View replica details")
+   > **Note**: If you receive an error about insufficient CPU that is OK. We will see how to deal with this in the next Task (Hint: you can use the **Insights** option in the AKS Azure Portal to review the **Node** status and view the Kubernetes event logs).
 
-6. From the navigation menu, select **Deployments** from the list. Note that the api service has a pending status indicated by the grey timer icon, and it shows a pod count 1 of 2 instances (shown as `1/2`).
+5. From the Navigation menu, select **Workloads**. From this view, note that the health overview in the right panel of this view. You will see the following:
 
-   ![In the Deployments box, the api service is highlighted with a grey timer icon at left and a pod count of 1/2 listed at right.](media/image118.png "View api active pods")
+   - One Deployment and one Replica Set are each healthy for the web service.
 
-   > **Note**: If you receive an error about insufficient CPU, that is expected.
+   - The api Deployment and Replica Set are in a warning state.
 
-7. From the Navigation menu, select **Workloads**. From this view, note that the health overview in the right panel of this view. You will see the following:
+   - Two pods are healthy in the 'default' namespace.
 
-   - One deployment and one replica set are each healthy for the api service.
+6. Open the Contoso Neuro Conference web application. The application should still work without errors as you navigate to Speakers and Sessions pages.
 
-   - One replica set is healthy for the web service.
-
-   - Three pods are healthy.
-
-8. Navigate to the web application from the browser again. The application should still work without errors as you navigate to Speakers and Sessions pages.
-
-   - Navigate to the `/stats` page. You will see information about the environment including:
+   - Navigate to the `/stats` page. You will see information about the hosting environment including:
 
      - **webTaskId:** The task identifier for the web service instance.
 
@@ -1883,69 +1860,38 @@ In this task, you will increase the number of instances for the API deployment i
 
      - **uptime:** The up time for the API service.
 
-   - Refresh the page in the browser, and you can see the hostName change between the two API service instances. The letters after `api-{number}-` in the hostname will change.
+### Task 2: Resolve failed provisioning of replicas
 
-### Task 2: Increase service instances beyond available resources
+In this task, you will resolve the failed API replicas. These failures occur due to the clusters' inability to meet the requested resources.
 
-In this task, you will try to increase the number of instances for the API service container beyond available resources in the cluster. You will observe how Kubernetes handles this condition and correct the problem.
+1. In the AKS blade in the Azure Portal select **Workloads** and then select the **API** deployment. Select the **YAML** navigation item.
 
-1. From the navigation menu, select **Deployments**. From this view, select the **api** deployment.
+2. In the **YAML** screen scroll down and change the following items:
 
-2. Configure the deployment to use a fixed host port for initial testing. Select the vertical ellipses and then select **Edit**.
+   - Modify **ports** and remove the **hostPort**. Two Pods cannot map to the same host port.
 
-3. In the Edit a resource dialog, select the YAML tab. You will see a list of settings shown in YAML format. Use the copy button to copy the text to your clipboard.
+      ```yaml
+      ports:
+         - containerPort: 3001
+         protocol: TCP
+      ```
 
-   ![Screenshot of the Edit a resource dialog box that displays JSON data.](media/api-deployment-edit.PNG "Edit a resource YAML config")
+   - Modify the **cpu** and set it to **100m**. CPU is divided between all Pods on a Node.
 
-4. Paste the contents into the text editor of your choice (such as Notepad on Windows, macOS users can use TextEdit).
+      ```yaml
+      resources:
+         requests:
+            cpu: 100m
+            memory: 128Mi
+      ```
 
-5. Scroll down about halfway to find the node `$.spec.template.spec.containers[0]`, as shown in the screenshot below.
+   Select **Review + save** and, when prompted, confirm the changes and select **Save**.
 
-   ![Screenshot of the deployment code, with the $.spec.template.spec.containers[0] section highlighted.](media/image84.png "Container deployment configuration")
+   ![In the edit YAML dialog, showing two changes required.](media/2021-03-26-16-56-28.png "Modify deployment manifest")
 
-6. The containers spec has a single entry for the API container at the moment. You will see that the name of the container is `api` - this is how you know you are looking at the correct container spec.
+3. Return to the **Workloads** main view on the AKS Azure Portal and you will now see that the Deployment is healthy with two Pods operating.
 
-   - Add the following snippet below the `name` property in the container spec:
-
-   ```text
-     ports:
-	    - containerPort: 3001
-	      hostPort: 3001
-   ```
-
-   - Your container spec should now look like this:
-
-   ![Screenshot of the deployment JSON code, with the $.spec.template.spec.containers[0] section highlighted, showing the updated values for containerPort and hostPort, both set to port 3001.](media/image85.png "View container ports")
-
-7. Copy the updated document from notepad into the clipboard. Return to the Kubernetes dashboard, which should still be viewing the **api** deployment.
-
-   - Paste the updated document.
-
-   - Select Update.
-
-   ![UPDATE is highlighted in the Edit a Deployment dialog box.](media/image88.png "Update API YAML")
-
-8. From the API deployment view, select **Scale**.
-
-9. Change the number of replicas to 4 and select **Scale**.
-
-   ![In the Scale a Deployment dialog box, 4 is entered in the Desired number of pods box.](media/image119.png "Scale a resource")
-
-10. From the navigation menu, select **Services** view under **Discovery and Load Balancing**. Select the **api** service from the **Services** list. From the api service view, you will see it has two healthy instances and two unhealthy (or possibly pending depending on timing) instances.
-
-    ![In the api service view, various information is displayed in the Details box and in the Pods box.](media/image120.png "View API service endpoints and pods")
-
-11. After a few minutes, select **Workloads** from the navigation menu. From this view, you should see an alert reported for the api deployment.
-
-    ![Workloads is selected in the navigation menu. At right, an exclamation point (!) appears next to the api deployment listing in the Deployments box.](media/image121.png "View deployment log")
-
-    > **Note**: This message indicates that there were not enough available resources to match the requirements for a new pod instance. In this case, this is because the instance requires port `3001`, and since there are only 2 nodes available in the cluster, only two api instances can be scheduled. The third and fourth pod instances will wait for a new node to be available that can run another instance using that port.
-
-12. Reduce the number of requested pods to `2` using the **Scale** button.
-
-13. Almost immediately, the warning message from the **Workloads** dashboard should disappear, and the **API** deployment will show `2/2` pods are running.
-
-    ![Workloads is selected in the navigation menu. A green check mark now appears next to the api deployment listing in the Deployments box at right.](media/image122.png "Review pods list")
+   ![In the Workload view with the API deployment highlighted.](media/2021-03-26-16-56-52.png "API deployment is now healthy")
 
 ### Task 3: Restart containers and test HA
 
