@@ -44,11 +44,12 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 2: Provision Azure Database Migration Service](#task-2-provision-azure-database-migration-service)
     - [Task 3: Migrate data to Azure Cosmos DB](#task-3-migrate-data-to-azure-cosmos-db)
   - [Exercise 3: Deploy the solution to Azure Kubernetes Service](#exercise-3-deploy-the-solution-to-azure-kubernetes-service)
-    - [Task 1: Deploy a service using the Azure Portal](#task-1-deploy-a-service-using-the-azure-portal)
-    - [Task 2: Deploy a service using kubectl](#task-2-deploy-a-service-using-kubectl)
-    - [Task 3: Deploy a service using a Helm chart](#task-3-deploy-a-service-using-a-helm-chart)
-    - [Task 4: Configure Continuous Delivery to the Kubernetes Cluster](#task-4-configure-continuous-delivery-to-the-kubernetes-cluster)
-    - [Task 5: Review Azure Monitor for Containers](#task-5-review-azure-monitor-for-containers)
+    - [Task 1: Tunnel into the Azure Kubernetes Service cluster](#task-1-tunnel-into-the-azure-kubernetes-service-cluster) 
+    - [Task 2: Deploy a service using the Azure Portal](#task-2-deploy-a-service-using-the-azure-portal)
+    - [Task 3: Deploy a service using kubectl](#task-3-deploy-a-service-using-kubectl)
+    - [Task 4: Deploy a service using a Helm chart](#task-4-deploy-a-service-using-a-helm-chart)
+    - [Task 5: Configure Continuous Delivery to the Kubernetes Cluster](#task-5-configure-continuous-delivery-to-the-kubernetes-cluster)
+    - [Task 6: Review Azure Monitor for Containers](#task-6-review-azure-monitor-for-containers)
   - [Exercise 4: Scale the application and test HA](#exercise-4-scale-the-application-and-test-ha)
     - [Task 1: Increase service instances from the Azure Portal](#task-1-increase-service-instances-from-the-azure-portal)
     - [Task 2: Resolve failed provisioning of replicas](#task-2-resolve-failed-provisioning-of-replicas) 
@@ -1121,7 +1122,7 @@ In this task, you will gather the information you need about your Azure Kubernet
 
    ![In this screenshot of the console, kubectl get nodes has been typed and run at the command prompt, which produces a list of nodes.](media/image75.png "kubectl get nodes")
 
-### Task 1: Deploy a service using the Azure Portal
+### Task 2: Deploy a service using the Azure Portal
 
 In this task, you will deploy the API application to the Azure Kubernetes Service cluster using the Azure Portal.
 
@@ -1318,7 +1319,7 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ![This is a screenshot of the Kubernetes management dashboard showing logs output.](media/2021-03-25-17-09-24.png "API Logs")
 
-### Task 2: Deploy a service using kubectl
+### Task 3: Deploy a service using kubectl
 
 In this task, deploy the web service using `kubectl`.
 
@@ -1450,7 +1451,7 @@ In this task, deploy the web service using `kubectl`.
 
     ![A screenshot of the web site showing no data displayed.](media/Ex2-Task3.11.png "Web site home page")
 
-### Task 3: Deploy a service using a Helm chart
+### Task 4: Deploy a service using a Helm chart
 
 In this task, you will deploy the web service using a [Helm](https://helm.sh/) chart to streamline the installing and managing the container-based application on the Azure Kubernetes cluster.
 
@@ -1637,7 +1638,7 @@ You will configure a Helm Chart that will be used to deploy and configure the **
     ```
 
 
-### Task 4: Configure Continuous Delivery to the Kubernetes Cluster
+### Task 5: Configure Continuous Delivery to the Kubernetes Cluster
 
 In this task, you will use GitHub Actions workflows to automate the process for deploying the web image to the AKS cluster. You will update the workflow and configure a job so that when new images are pushed to the ACR, the pipeline deploys the image to the AKS cluster.
 
@@ -1763,7 +1764,7 @@ In this task, you will use GitHub Actions workflows to automate the process for 
 
     ![The screenshot shows workflow is running and the current status.](media/2020-08-25-22-15-39.png "Workflow is running")
 
-### Task 5: Review Azure Monitor for Containers
+### Task 6: Review Azure Monitor for Containers
 
 In this task, you will access and review the various logs and dashboards made available by Azure Monitor for Containers.
 
