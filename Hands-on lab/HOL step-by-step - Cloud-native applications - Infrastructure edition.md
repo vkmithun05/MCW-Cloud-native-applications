@@ -969,7 +969,7 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
 13. Select **Next: Migration summary >>**.
 
-14. On the **Migration summary** tab, enter `Migrate Data` in the **Activity name** field, then select **Start migration** to initiate the migration of the MongoDB data to Azure Cosmos DB.
+14. On the **Migration summary** tab, enter `MigrateData` in the **Activity name** field, then select **Start migration** to initiate the migration of the MongoDB data to Azure Cosmos DB.
 
     ![The screenshot shows the Migration summary is shown with MigrateData entered in the Activity name field.](media/dms-migration-summary.png "Migration summary")
 
