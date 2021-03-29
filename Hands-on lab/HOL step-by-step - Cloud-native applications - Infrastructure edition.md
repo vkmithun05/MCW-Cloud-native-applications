@@ -50,8 +50,8 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
     - [Task 5: Configure Continuous Delivery to the Kubernetes Cluster](#task-5-configure-continuous-delivery-to-the-kubernetes-cluster)
     - [Task 6: Review Azure Monitor for Containers](#task-6-review-azure-monitor-for-containers)
   - [Exercise 4: Scale the application and test HA](#exercise-4-scale-the-application-and-test-ha)
-    - [Task 1: Increase service instances from the Kubernetes dashboard](#task-1-increase-service-instances-from-the-kubernetes-dashboard)
-    - [Task 2: Increase service instances beyond available resources](#task-2-increase-service-instances-beyond-available-resources)
+    - [Task 1: Increase service instances from the Azure Portal](#task-1-increase-service-instances-from-the-azure-portal)
+    - [Task 2: Resolve failed provisioning of replicas](#task-2-resolve-failed-provisioning-of-replicas)
     - [Task 3: Restart containers and test HA](#task-3-restart-containers-and-test-ha)
     - [Task 4: Configure Cosmos DB Autoscale](#task-4-configure-cosmos-db-autoscale)
     - [Task 5: Test Cosmos DB Autoscale](#task-5-test-cosmos-db-autoscale)
@@ -569,17 +569,19 @@ In this task, you will configure the `web` container to communicate with the API
 
 10. Curl the speakers path again, using the port assigned to the web container. Again, you will see HTML returned, but because curl does not process javascript, you cannot determine if the web application is communicating with the api application. You must verify this connection in a browser.
 
-   ```bash
-   curl http://localhost:[PORT]/speakers.html
-   ```
+    ```bash
+    curl http://localhost:[PORT]/speakers.html
+    ```
 
 11. You will not be able to browse to the web application on the ephemeral port because the VM only exposes a limited port range. Now you will stop the web container and restart it using port 3000 to test in the browser. Type the following commands to stop the container, remove it, and run it again using explicit settings for the port.
 
-   ```bash
-    docker container stop web
-    docker container rm web
-    docker container run --name web --net fabmedical -p 3000:3000 -d -e CONTENT_API_URL=http://api:3001 content-web
-   ```
+    ```bash
+     docker container stop web
+     docker container rm web
+     docker container run --name web --net fabmedical -p 3000:3000 -d -e CONTENT_API_URL=http://api:3001  content-web
+    ```
+
+    > **WARNING:** If you receive an error such as `Error starting userland proxy: listen tcp4 0.0.0.0:3000:  bind: address already in use.` the previous Node instance might be holding the port 3000. Run `sudo pkill  node` to kill the local node instance.
 
 12. Curl the speaker path again, using port `3000`. You will see the same HTML returned.
 
@@ -595,7 +597,7 @@ In this task, you will configure the `web` container to communicate with the API
     EXAMPLE: http://13.68.113.176:3000
     ```
 
-12. Commit your changes and push to the repository.
+14. Commit your changes and push to the repository.
 
     ```bash
     git add .
@@ -665,13 +667,13 @@ In this task, you will push images to your ACR account, version images with tagg
 
    ![In this screenshot of the console window, an example of images being pushed to an ACR account results from typing and running the following at the command prompt: docker push [LOGINSERVER]/content-web.](media/image67.png "Push image to ACR")
 
-8. In the Azure Portal, navigate to your ACR account, and select **Repositories** under **Services** on the left-hand menu. You will now see two, one for each image.
+8. In the Azure Portal, navigate to your ACR account, and select **Repositories (1)** under **Services** on the left-hand menu. You will now see two containers **(2)**, one for each image.
 
-   ![In this screenshot, content-api and content-web each appear on their own lines below Repositories.](media/image68.png "Search for repositories")
+   ![In this screenshot, content-api and content-web each appear on their own lines below Repositories.](media/acr-two-containers.png "Search for repositories")
 
-9. Select `content-api`. You will see the latest tag is assigned.
+9. Select `content-api` **(1)**. You will see the latest tag **(2)** is assigned.
 
-   ![In this screenshot, content-api is selected under Repositories, and the Tags blade appears on the right.](media/image69.png "View latest repo tags")
+   ![In this screenshot, content-api is selected under Repositories, and the Tags blade appears on the right.](media/acr-content-api-latest.png "View latest repo tags")
 
 10. From the cloud shell session attached to the VM, assign the `v1` tag to each image with the following commands. Then list the Docker images to note that there are now two entries for each image: showing the `latest` tag and the `v1` tag. Also note that the image ID is the same for the two entries, as there is only one copy of the image.
 
@@ -848,7 +850,6 @@ image and pushes it to your ACR instance automatically.
     git push
     ```
 
-
 ## Exercise 2: Migrate MongoDB to Cosmos DB using Azure Database Migration Service
 
 **Duration**: 20 minutes
@@ -903,11 +904,15 @@ The service may take 5 - 10 minutes to provision.
 
 In this task, you will create a **Migration project** within Azure Database Migration Service, and then migrate the data from MongoDB to Azure Cosmos DB.
 
-1. In the Azure Portal, navigate to the **Azure Database Migration Service** that was previously provisioned.
+1. In the Azure Portal, navigate to your Build Agent VM, and copy the Private IP address **(2)**. Paste the contents into the text editor of your choice (such as Notepad on Windows, macOS users can use TextEdit) for future use.
 
-2. On the Azure Database Migration Service blade, select **+ New Migration Project** on the **Overview** pane.
+   ![Built Agent VM is shown. Overview tab is open. Private IP address is highlighted.](media/agent-vm-private-ip-address.png "Private IP Address")
 
-3. On the **New migration project** pane, enter the following values, then select **Create and run activity**:
+2. In the Azure Portal, navigate to the **Azure Database Migration Service** that was previously provisioned.
+
+3. On the Azure Database Migration Service blade, select **+ New Migration Project** on the **Overview** pane.
+
+4. On the **New migration project** pane, enter the following values, then select **Create and run activity**:
 
     - Project name: `fabmedical`
     - Source server type: `MongoDB`
@@ -918,7 +923,7 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
     > **Note:** The **Offline data migration** activity type is selected since you will be performing a one-time migration from MongoDB to Cosmos DB. Also, the data in the database won't be updated during the migration. In a production scenario, you will want to choose the migration project activity type that best fits your solution requirements.
 
-4. On the **MongoDB to Azure Database for CosmosDB Offline Migration Wizard** pane, enter the following values for the **Select source** tab:
+5. On the **MongoDB to Azure Database for CosmosDB Offline Migration Wizard** pane, enter the following values for the **Select source** tab:
 
     - Mode: **Standard mode**
     - Source server name: Enter the Private IP Address of the Build Agent VM used in this lab.
@@ -929,9 +934,9 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
     ![Select source tab with values selected for the MongoDB server.](media/dms-select-source.png "MongoDB to Azure Database for CosmosDB - Select source")
 
-5. Select **Next: Select target >>**.
+6. Select **Next: Select target >>**.
 
-6. On the **Select target** pane, select the following values:
+7. On the **Select target** pane, select the following values:
 
     - Mode: **Select Cosmos DB target**
 
@@ -943,33 +948,33 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
     Notice, the **Connection String** will automatically populate with the Key for your Azure Cosmos DB instance.
 
-7. Modify the **Connection string** by replacing `@undefined:` with `@fabmedical-[SUFFIX].documents.azure.com:` so the DNS name matches the Azure Cosmos DB instance. Be sure to replace the `[SUFFIX]`.
+8. Modify the **Connection string** by replacing `@undefined:` with `@fabmedical-[SUFFIX].documents.azure.com:` so the DNS name matches the Azure Cosmos DB instance. Be sure to replace the `[SUFFIX]`.
 
     ![The screenshot shows the Connection string with the @undefined: value replaced with the correct DNS name.](media/dms-select-target-connection-string.png "Setting the Connection string")
 
-8. Select **Next: Database setting >>**.
+9. Select **Next: Database setting >>**.
 
-9. On the **Database setting** tab, select the `contentdb` **Source Database** so this database from MongoDB will be migrated to Azure Cosmos DB.
+10. On the **Database setting** tab, select the `contentdb` **Source Database** so this database from MongoDB will be migrated to Azure Cosmos DB.
 
     ![The screenshot shows the Database setting tab with the contentdb source database selected.](media/dms-database-setting.png "Database setting tab")
 
-10. Select **Next: Collection setting >>**.
+11. Select **Next: Collection setting >>**.
 
-11. On the **Collection setting** tab, expand the **contentdb** database, and ensure both the **sessions** and **speakers** collections are selected for migration. Also, update the **Throughput (RU/s)** to `400` for both collections.
+12. On the **Collection setting** tab, expand the **contentdb** database, and ensure both the **sessions** and **speakers** collections are selected for migration. Also, update the **Throughput (RU/s)** to `400` for both collections.
 
     ![The screenshot shows the Collection setting tab with both sessions and speakers collections selected with Throughput RU/s set to 400 for both collections.](media/dms-collection-setting.png "Throughput RU")
 
-12. Select **Next: Migration summary >>**.
+13. Select **Next: Migration summary >>**.
 
-13. On the **Migration summary** tab, enter `Migrate Data` in the **Activity name** field, then select **Start migration** to initiate the migration of the MongoDB data to Azure Cosmos DB.
+14. On the **Migration summary** tab, enter `MigrateData` in the **Activity name** field, then select **Start migration** to initiate the migration of the MongoDB data to Azure Cosmos DB.
 
     ![The screenshot shows the Migration summary is shown with MigrateData entered in the Activity name field.](media/dms-migration-summary.png "Migration summary")
 
-14. The status for the migration activity will be shown. The migration will only take a few seconds to complete. Select **Refresh** to reload the status to ensure it shows a **Status** of **Complete**.
+15. The status for the migration activity will be shown. The migration will only take a few seconds to complete. Select **Refresh** to reload the status to ensure it shows a **Status** of **Complete**.
 
      ![The screenshot shows the MigrateData activity showing the status has completed.](media/dms-migrate-complete.png "MigrateData activity completed")
 
-15. To verify the data was migrated, navigate to the **Cosmos DB Account** for the lab within the Azure Portal, then select the **Data Explorer**. You will see the `speakers` and `sessions` collections listed within the `contentdb` database, and you will be able to explore the documents within.
+16. To verify the data was migrated, navigate to the **Cosmos DB Account** for the lab within the Azure Portal, then select the **Data Explorer**. You will see the `speakers` and `sessions` collections listed within the `contentdb` database, and you will be able to explore the documents within.
 
     ![The screenshot shows the Cosmos DB is open in the Azure Portal with Data Explorer open showing the data has been migrated.](media/dms-confirm-data-in-cosmosdb.png "Cosmos DB is open")
 
@@ -1095,11 +1100,11 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ![Select workloads under Kubernetes resources.](media/2021-03-25-17-04-35.png "Select workloads under Kubernetes resources")
 
-2. From the Workloads view, with **Deployments** selected (the default) then select **+ Add**.
+4. From the Workloads view, with **Deployments** selected (the default) then select **+ Add**.
 
    ![Selecting + Add to create a deployment.](media/2021-03-25-17-05-05.png "Selecing + Add to create a deployment")
 
-3. In the **Add with YAML** screen that loads paste the following YAML and update the `[LOGINSERVER]` placeholder with the name of the ACR instance.
+5. In the **Add with YAML** screen that loads paste the following YAML and update the `[LOGINSERVER]` placeholder with the name of the ACR instance.
 
    ```yaml
     apiVersion: apps/v1
@@ -1155,37 +1160,37 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
                 terminationGracePeriodSeconds: 30
    ```
 
-4. Select **Add** to initiate the deployment. This can take a few minutes after which you will see the deployment listed.
+6. Select **Add** to initiate the deployment. This can take a few minutes after which you will see the deployment listed.
 
    ![Service is showing as unhealthy](media/2021-03-25-17-05-36.png "Service is showing as unhealthy")
 
-5. Select the **api** deployment to open the Deployment, select **Live logs** and then a Pod from the drop-down. After a few moments the live logs should appear.
+7. Select the **api** deployment to open the Deployment, select **Live logs** and then a Pod from the drop-down. After a few moments the live logs should appear.
 
    ![Service is showing as unhealthy](media/2021-03-25-17-06-09.png "Service is showing as unhealthy")
 
    > **Note:** if the logs don't display it may be the Pod no longer exists. You can use the **View in Log Analytics** to view historical logs regardless of Pod.
 
-6. If you scroll through the log you can see it indicates that the content-api application is once again failing because it cannot find a MongoDB api to communicate with. You will resolve this issue by connecting to Cosmos DB.
+8. If you scroll through the log you can see it indicates that the content-api application is once again failing because it cannot find a MongoDB api to communicate with. You will resolve this issue by connecting to Cosmos DB.
 
    ![This screenshot of the Kubernetes management dashboard shows logs output for the api container.](media/2021-03-25-17-07-13.png "MongoDB communication error")
 
-7. In the Azure Portal navigate to your resource group and find your Cosmos DB. Select the Cosmos DB resource to view details.
+9. In the Azure Portal navigate to your resource group and find your Cosmos DB. Select the Cosmos DB resource to view details.
 
    ![This is a screenshot of the Azure Portal showing the Cosmos DB among existing resources.](media/Ex2-Task1.9.png "Select CosmosDB resource from list")
 
-8. Under **Quick Start** select the **Node.js** tab and copy the **Node.js 3.0 connection string**.
+10. Under **Quick Start** select the **Node.js** tab and copy the **Node.js 3.0 connection string**.
 
-   ![This is a screenshot of the Azure Portal showing the quick start for setting up Cosmos DB with MongoDB API. The copy button is highlighted.](media/Ex2-Task1.10.png "Capture CosmosDB connection string")
+    ![This is a screenshot of the Azure Portal showing the quick start for setting up Cosmos DB with MongoDB API. The copy button is highlighted.](media/Ex2-Task1.10.png "Capture CosmosDB connection string")
 
-9. Modify the copied connection string by adding the database `contentdb` to the URL, along with a replicaSet of `globaldb`. The resulting connection string should look like the below sample.
+11. Modify the copied connection string by adding the database `contentdb` to the URL, along with a replicaSet of `globaldb`. The resulting connection string should look like the below sample.
 
-   > **Note**: Username and password redacted for brevity.
+    > **Note**: Username and password redacted for brevity.
 
-   ```text
-   mongodb://<USERNAME>:<PASSWORD>@fabmedical-<SUFFIX>.documents.azure.com:10255/contentdb?ssl=true&replicaSet=globaldb
-   ```
+    ```text
+    mongodb://<USERNAME>:<PASSWORD>@fabmedical-<SUFFIX>.documents.azure.com:10255/contentdb?ssl=true&replicaSet=globaldb
+    ```
 
-11. You will setup a Kubernetes secret to store the connection string and configure the `content-api` application to access the secret. First, you must base64 encode the secret value. Open your Azure Cloud Shell window and use the following command to encode the connection string and then, copy the output.
+12. You will setup a Kubernetes secret to store the connection string and configure the `content-api` application to access the secret. First, you must base64 encode the secret value. Open your Azure Cloud Shell window and use the following command to encode the connection string and then, copy the output.
 
     > **Note**: Double quote marks surrounding the connection string are required to successfully produce the required output.
 
@@ -1195,9 +1200,9 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ![This is a screenshot of the Azure cloud shell window showing the command to create the base64 encoded secret.  The output to copy is highlighted.](media/hol-2019-10-18_07-12-13.png "Show encoded secret")
 
-12. Return to the AKS blade in the Azure Portal and select **Configuration** under the **Kubernetes resources** section. Select **Secrets** and choose **+ Add**.
+13. Return to the AKS blade in the Azure Portal and select **Configuration** under the **Kubernetes resources** section. Select **Secrets** and choose **+ Add**.
 
-13. In the **Add with YAML** screen, paste following YAML and replace the placeholder with the encoded connection string from your clipboard and choose **Add**. Note that YAML is position sensitive so you must ensure indentation is correct when typing or pasting.
+14. In the **Add with YAML** screen, paste following YAML and replace the placeholder with the encoded connection string from your clipboard and choose **Add**. Note that YAML is position sensitive so you must ensure indentation is correct when typing or pasting.
 
     ```yaml
     apiVersion: v1
@@ -1211,21 +1216,21 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ![This is a screenshot of the Azure Portal for AKS howing the YAML file for creating a deployment.](media/2021-03-25-17-08-06.png "Upload YAML data")
 
-14. Sort the Secrets list by name and you should now see your new secret displayed. 
+15. Sort the Secrets list by name and you should now see your new secret displayed.
 
     ![This is a screenshot of the Azure Portal for AKS showing secrets.](media/2021-03-25-17-08-31.png "Manage Kubernetes secrets")
 
-15. View the details for the **cosmosdb** secret by selected it in the list.
+16. View the details for the **cosmosdb** secret by selected it in the list.
 
     ![This is a screenshot of the Azure Portal for AKS showing the value of a secret.](media/2021-03-25-17-08-54.png "View cosmosdb secret")
 
-16. Next, download the api deployment configuration using the following command in your Azure Cloud Shell window:
+17. Next, download the api deployment configuration using the following command in your Azure Cloud Shell window:
 
     ```bash
     kubectl get -o=yaml deployment api > api.deployment.yml
     ```
 
-17. Edit the downloaded file using cloud shell code editor:
+18. Edit the downloaded file using cloud shell code editor:
 
     ```bash
     code api.deployment.yml
@@ -1244,18 +1249,18 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ![This is a screenshot of the Kubernetes management dashboard showing part of the deployment file.](media/Ex2-Task1.17.png "Edit the api.deployment.yml file")
 
-18. Save your changes and close the editor.
+19. Save your changes and close the editor.
 
     ![This is a screenshot of the code editor save and close actions.](media/Ex2-Task1.17.1.png "Code editor configuration update")
 
-19. Update the api deployment by using `kubectl` to deploy the API.
+20. Update the api deployment by using `kubectl` to deploy the API.
 
-   ```bash
-   kubectl delete deployment api
-   kubectl create -f api.deployment.yml
-   ```
+    ```bash
+    kubectl delete deployment api
+    kubectl create -f api.deployment.yml
+    ```
 
-20. In the Azure Portal return to Live logs (see Step 5). The last log should show as connected to MongoDB.
+21. In the Azure Portal return to Live logs (see Step 5). The last log should show as connected to MongoDB.
 
     ![This is a screenshot of the Kubernetes management dashboard showing logs output.](media/2021-03-25-17-09-24.png "API Logs")
 
@@ -1387,7 +1392,7 @@ In this task, deploy the web service using `kubectl`.
 
     ![AKS services and ingresses shown with External IP highlighted](media/aks-resources-services-ingresses-view.png "AKS services and ingresses shown with External IP highlighted")
 
-14. In the top navigation, select the `speakers` and `sessions` links.
+12. In the top navigation, select the `speakers` and `sessions` links.
 
     ![A screenshot of the web site showing no data displayed.](media/Ex2-Task3.11.png "Web site home page")
 
@@ -1576,7 +1581,6 @@ You will configure a Helm Chart that will be used to deploy and configure the **
     git commit -m "Helm chart added."
     git push
     ```
-
 
 ### Task 5: Configure Continuous Delivery to the Kubernetes Cluster
 
@@ -1851,23 +1855,23 @@ In this task, you will restart containers and validate that the restart does not
 
    ![On the Stats page in the Contoso Neuro web application, two different api host name values are highlighted.](media/image126.png "View web task hostname")
 
-6. After refreshing enough times to see that the `hostName` value is changing, and the service remains healthy, you can open the **Replica Sets** view for the API in the Azure Portal.
+5. After refreshing enough times to see that the `hostName` value is changing, and the service remains healthy, you can open the **Replica Sets** view for the API in the Azure Portal.
 
-7. On this view you can see the hostName value shown in the web application stats page matches the pod names for the pods that are running.
+6. On this view you can see the hostName value shown in the web application stats page matches the pod names for the pods that are running.
 
    ![Viewing replica set in the Azure Portal.](media/2021-03-26-17-31-02.png "Viewing replica set in the Azure Portal")
 
-8. Select two of the Pods at random and choose **Delete**.
+7. Select two of the Pods at random and choose **Delete**.
 
    ![The context menu for a pod in the pod list is expanded with the Delete item selected.](media/2021-03-26-17-31-31.png "Delete running pod instance")
 
-9. Kubernetes will launch new Pods to meet the required replica count. Depending on your view you may see the old instances Terminating and new instances being Created.
+8. Kubernetes will launch new Pods to meet the required replica count. Depending on your view you may see the old instances Terminating and new instances being Created.
 
    ![The first row of the Pods box is highlighted, and the pod has a green check mark and is running.](media/2021-03-26-17-31-54.png "API Pods changing state")
 
-10. Return to the API Deployment and scale it back to `1` replica. See Step 2 above for how to do this if you are unsure.
+9. Return to the API Deployment and scale it back to `1` replica. See Step 2 above for how to do this if you are unsure.
 
-11. Return to the sample web site's stats page in the browser and refresh while Kubernetes is scaling down the number of Pods. You will notice that only one API host name shows up, even though you may still see several running pods in the API replica set view. Even though several pods are running, Kubernetes will no longer send traffic to the pods it has selected to terminate. In a few moments, only one pod will show in the API Replica Set view.
+10. Return to the sample web site's stats page in the browser and refresh while Kubernetes is scaling down the number of Pods. You will notice that only one API host name shows up, even though you may still see several running pods in the API replica set view. Even though several pods are running, Kubernetes will no longer send traffic to the pods it has selected to terminate. In a few moments, only one pod will show in the API Replica Set view.
 
     ![Replica Sets is selected under Workloads in the navigation menu on the left. On the right are the Details and Pods boxes. Only one API host name, which has a green check mark and is listed as running, appears in the Pods box.](media/2021-03-26-17-32-24.png "View replica details")
 
@@ -1877,7 +1881,7 @@ In this task, you will setup Autoscale on Azure Cosmos DB.
 
 1. In the Azure Portal, navigate to the `fabmedical-[SUFFIX]` **Azure Cosmos DB Account**.
 
-2. Select **Data Explorer**. 
+2. Select **Data Explorer**.
 
 3. Within **Data Explorer**, expand the `contentdb` database, then expand the `sessions` collection.
 
@@ -1959,11 +1963,11 @@ In this task, you will update the web service so that it supports dynamic discov
 
 3. First locate the replicas node and update the required count to `4`.
 
-3. Next, scroll to the web containers spec as shown in the screenshot. Remove the hostPort entry for the web container's port mapping.
+4. Next, scroll to the web containers spec as shown in the screenshot. Remove the hostPort entry for the web container's port mapping.
 
    ![This is a screenshot of the Edit a Deployment dialog box with various displayed information about spec, containers, ports, and env. The ports node, containerPort: 3001 and protocol: TCP are highlighted.](media/2021-03-26-18-22-39.png "Remove web container hostPort entry")
 
-4. Select **Review + save** and then confirm the change and **Save**.
+5. Select **Review + save** and then confirm the change and **Save**.
 
 6. Check the status of the scale out by refreshing the web deployment's view. From the navigation menu, select **Pods** from under Workloads. Select the **web** pods. From this view, you should see an error like that shown in the following screenshot.
 
@@ -1979,15 +1983,15 @@ In this task, you will modify the CPU requirements for the web service so that i
 
    ![This is a screenshot of the Edit a Deployment dialog box with various displayed information about ports, env, and resources. The resources node, with cpu: 125m selected, is highlighted.](media/2021-03-26-18-24-06.png "Change cpu value")
 
-4. Select **Review + save**, confirm the change and then select **Save** to update the deployment.
+2. Select **Review + save**, confirm the change and then select **Save** to update the deployment.
 
-5. From the navigation menu, select **Replica Sets** under **Workloads**. From the view's Replica Sets list select the web replica set.
+3. From the navigation menu, select **Replica Sets** under **Workloads**. From the view's Replica Sets list select the web replica set.
 
-6. When the deployment update completes, four web pods should be shown in running state.
+4. When the deployment update completes, four web pods should be shown in running state.
 
    ![Four web pods are listed in the Pods box, and all have green check marks and are listed as Running.](media/2021-03-26-18-24-35.png "Four pods running")
 
-7. Return to the browser tab with the sample web application loaded. Refresh the stats page at /stats to watch the display update to reflect the different api pods by observing the host name refresh.
+5. Return to the browser tab with the sample web application loaded. Refresh the stats page at /stats to watch the display update to reflect the different api pods by observing the host name refresh.
 
 ### Task 3: Perform a rolling update
 
@@ -2044,7 +2048,7 @@ In this task, you will edit the web application source code to add Application I
 
     ![At the top of the list, a new web replica set is listed as a pending deployment in the Replica Set box.](media/2021-03-26-18-25-30.png "Pod deployment is in progress")
 
-11. While the deployment is in progress, you can navigate to the web application and visit the stats page at `/stats`. Refresh the page as the rolling update executes. Observe that the service is running normally, and tasks continue to be load balanced.
+10. While the deployment is in progress, you can navigate to the web application and visit the stats page at `/stats`. Refresh the page as the rolling update executes. Observe that the service is running normally, and tasks continue to be load balanced.
 
     ![On the Stats page, the hostName is highlighted.](media/image145.png "On Stats page hostName is displayed")
 
@@ -2065,7 +2069,8 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
    ```
 
    > **Note**: If you get a "no repositories found." error, then run the following command. This will add back the official Helm "stable" repository.
-   > ```
+   >
+   > ```bash
    > helm repo add stable https://charts.helm.sh/stable 
    > ```
 
@@ -2075,7 +2080,7 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
     kubectl create namespace ingress-demo
     ```
 
-3. Install the Ingress Controller resource to handle ingress requests as they come in. The Ingress Controller will receive a public IP of its own on the Azure Load Balancer and be able to handle requests for multiple services over port 80 and 443.
+4. Install the Ingress Controller resource to handle ingress requests as they come in. The Ingress Controller will receive a public IP of its own on the Azure Load Balancer and be able to handle requests for multiple services over port 80 and 443.
 
    ```bash
    helm install nginx-ingress ingress-nginx/ingress-nginx \
@@ -2086,7 +2091,7 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
     --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
    ```
 
-4. In the Azure Portal under **Services and ingresses** copy the IP Address for the **External IP** for the `nginx-ingress-RANDOM-nginx-ingress` service.
+5. In the Azure Portal under **Services and ingresses** copy the IP Address for the **External IP** for the `nginx-ingress-RANDOM-nginx-ingress` service.
 
    ![A screenshot of the Kubernetes management dashboard showing the ingress controller settings.](media/2021-03-26-18-26-13.png "Copy ingress controller settings")
 
@@ -2111,7 +2116,7 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
    - `[INGRESS PUBLIC IP]`: Replace this with the IP Address copied from step 5.
    - `[AKS NODEPOOL RESOURCE GROUP]`: Replace with the name of the Resource Group copied from step 6.
    - `[SUFFIX]`: Replace this with the same SUFFIX value used previously for this lab.
-   
+
    ```bash
    #!/bin/bash
 
@@ -2133,25 +2138,25 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
 
    ![A screenshot of cloud shell editor showing the updated IP and SUFFIX values.](media/Ex4-Task5.6.png "Update the IP and SUFFIX values")
 
-7. Save changes and close the editor.
+8. Save changes and close the editor.
 
-8. Run the update script.
+9. Run the update script.
 
    ```bash
    bash ./update-ip.sh
    ```
 
-9. Verify the IP update by visiting the URL in your browser.
+10. Verify the IP update by visiting the URL in your browser.
 
-   > **Note**: It is normal to receive a 404 message at this time.
+    > **Note**: It is normal to receive a 404 message at this time.
 
-   ```text
-   http://fabmedical-[SUFFIX]-ingress.[AZURE-REGION].cloudapp.azure.com/
-   ```
+    ```text
+    http://fabmedical-[SUFFIX]-ingress.[AZURE-REGION].cloudapp.azure.com/
+    ```
 
-   ![A screenshot of the fabmedical browser URL.](media/Ex4-Task5.9.png "fabmedical browser URL")
+    ![A screenshot of the fabmedical browser URL.](media/Ex4-Task5.9.png "fabmedical browser URL")
 
-10. Use helm to install `cert-manager`, a tool that can provision SSL certificates automatically from letsencrypt.org.
+11. Use helm to install `cert-manager`, a tool that can provision SSL certificates automatically from letsencrypt.org.
 
     ```bash
     kubectl create namespace cert-manager
@@ -2161,7 +2166,7 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
     kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.1/cert-manager.yaml
     ```
 
-11. Cert manager will need a custom ClusterIssuer resource to handle requesting SSL certificates.
+12. Cert manager will need a custom ClusterIssuer resource to handle requesting SSL certificates.
 
     ```bash
     code clusterissuer.yml
@@ -2190,15 +2195,15 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
               class: nginx
     ```
 
-12. Save changes and close the editor.
+13. Save changes and close the editor.
 
-13. Create the issuer using `kubectl`.
+14. Create the issuer using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f clusterissuer.yml
     ```
 
-14. Now you can create a certificate object.
+15. Now you can create a certificate object.
 
     > **Note**:
     >
@@ -2228,9 +2233,9 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
         kind: ClusterIssuer
     ```
 
-15. Save changes and close the editor.
+16. Save changes and close the editor.
 
-16. Create the certificate using `kubectl`.
+17. Create the certificate using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f certificate.yml
@@ -2250,59 +2255,59 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
 
     It can take between 5 and 30 minutes before the tls-secret becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 
-17. Now you can create an ingress resource for the content applications.
+18. Now you can create an ingress resource for the content applications.
 
-   ```bash
-   code content.ingress.yml
-   ```
+    ```bash
+    code content.ingress.yml
+    ```
 
     Use the following as the contents and update the `[SUFFIX]` and `[AZURE-REGION]` to match your ingress DNS name:
 
-   ```yaml
-   apiVersion: networking.k8s.io/v1beta1
-   kind: Ingress
-   metadata:
-      name: content-ingress
-      annotations:
-         kubernetes.io/ingress.class: nginx
-         nginx.ingress.kubernetes.io/rewrite-target: /$1
-         nginx.ingress.kubernetes.io/use-regex: "true"
-         nginx.ingress.kubernetes.io/ssl-redirect: "false"
-         cert-manager.io/cluster-issuer: letsencrypt-prod
-   spec:
-      tls:
-      - hosts:
-         - fabmedical-sjw-ingress.westus2.cloudapp.azure.com
-         secretName: tls-secret
-      rules:
-         - host: fabmedical-sjw-ingress.westus2.cloudapp.azure.com
-         http:
-            paths:
-            - path: /(.*)
-               backend:
-                  serviceName: web
-                  servicePort: 80
-            - path: /content-api/(.*)
-               backend:            
-                  serviceName: api
-                  servicePort: 3001
-   ```
+    ```yaml
+    apiVersion: networking.k8s.io/v1beta1
+    kind: Ingress
+    metadata:
+       name: content-ingress
+       annotations:
+          kubernetes.io/ingress.class: nginx
+          nginx.ingress.kubernetes.io/rewrite-target: /$1
+          nginx.ingress.kubernetes.io/use-regex: "true"
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+    spec:
+       tls:
+       - hosts:
+          - fabmedical-sjw-ingress.westus2.cloudapp.azure.com
+          secretName: tls-secret
+       rules:
+          - host: fabmedical-sjw-ingress.westus2.cloudapp.azure.com
+          http:
+             paths:
+             - path: /(.*)
+                backend:
+                   serviceName: web
+                   servicePort: 80
+             - path: /content-api/(.*)
+                backend:            
+                   serviceName: api
+                   servicePort: 3001
+    ```
 
-18. Save changes and close the editor.
+19. Save changes and close the editor.
 
-19. Create the ingress using `kubectl`.
+20. Create the ingress using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f content.ingress.yml
     ```
 
-20. Refresh the ingress endpoint in your browser. You should be able to visit the speakers and sessions pages and see all the content.
+21. Refresh the ingress endpoint in your browser. You should be able to visit the speakers and sessions pages and see all the content.
 
-21. Visit the API directly, by navigating to `/content-api/sessions` at the ingress endpoint.
+22. Visit the API directly, by navigating to `/content-api/sessions` at the ingress endpoint.
 
     ![A screenshot showing the output of the sessions content in the browser.](media/Ex4-Task5.19.png "Content api sessions")
 
-22. Test TLS termination by visiting both services again using `https`.
+23. Test TLS termination by visiting both services again using `https`.
 
     > It can take between 5 and 30 minutes before the SSL site becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 
