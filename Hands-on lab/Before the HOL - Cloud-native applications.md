@@ -31,12 +31,11 @@ The names of manufacturers, products, or URLs are provided for informational pur
     - [Task 2: Download Starter Files](#task-2-download-starter-files)
     - [Task 3: Resource Group](#task-3-resource-group)
     - [Task 4: Create an SSH key](#task-4-create-an-ssh-key)
-    - [Task 5: Create a Service Principal](#task-5-create-a-service-principal)
-    - [Task 6: Deploy ARM Template](#task-6-deploy-arm-template)
-    - [Task 7: Create a GitHub repository](#task-7-create-a-github-repository)
-    - [Task 8: Connect securely to the build agent](#task-8-connect-securely-to-the-build-agent)
-    - [Task 9: Complete the build agent setup](#task-9-complete-the-build-agent-setup)
-    - [Task 10: Clone Repositories to the Build Agent](#task-10-clone-repositories-to-the-build-agent)
+    - [Task 5: Deploy ARM Template](#task-6-deploy-arm-template)
+    - [Task 6: Create a GitHub repository](#task-7-create-a-github-repository)
+    - [Task 7: Connect securely to the build agent](#task-8-connect-securely-to-the-build-agent)
+    - [Task 8: Complete the build agent setup](#task-9-complete-the-build-agent-setup)
+    - [Task 9: Clone Repositories to the Build Agent](#task-10-clone-repositories-to-the-build-agent)
 
 <!-- /TOC -->
 
@@ -240,7 +239,7 @@ In this section, you configure and execute an ARM template that creates all the 
 
    > **Note** If you get an error about the Cosmos DB name, ensure that you typed the `ComsosLocation` and `CosmosPairedLocation` without any spaces. Re-run the above command after you have corrected the name.
 
-### Task 7: Create a GitHub repository
+### Task 6: Create a GitHub repository
 
 FabMedical has provided starter files for you. They have taken a copy of the websites for their customer Contoso Neuro and refactored it from a single node.js site into a website with a content API that serves up the speakers and sessions. This refactored code is a starting point to validate the containerization of their websites. Use this to help them complete a POC that validates the development workflow for running the website and API as Docker containers and managing them within the Azure Kubernetes Service environment.
 
@@ -328,7 +327,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
 14. Refresh your GitHub repository, you should now see the code published.
 
-### Task 8: Connect securely to the build agent
+### Task 7: Connect securely to the build agent
 
 In this section, you validate that you can connect to the new build agent
 VM.
@@ -381,7 +380,7 @@ VM.
 
 > **Note**: If you have issues connecting, you may have pasted the SSH public key incorrectly in the ARM template. Unfortunately, if this is the case, you will have to recreate the VM and try again.
 
-### Task 9: Complete the build agent setup
+### Task 8: Complete the build agent setup
 
 In this task, you update the packages and install the Docker engine.
 
@@ -478,7 +477,7 @@ In this task, you update the packages and install the Docker engine.
 
     ![In this screenshot of a Cloud Shell window, docker container ls has been typed and run at the command prompt, as has the docker container ls -a command.](media/b4-image31.png "Display Docker container list")
 
-### Task 10: Clone Repositories to the Build Agent
+### Task 9: Clone Repositories to the Build Agent
 
 In this task, you clone your repositories from GitHub so you can work with them on the build agent.
 
