@@ -1165,7 +1165,7 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
    > **Note:** if the logs don't display it may be the Pod no longer exists. You can use the **View in Log Analytics** to view historical logs regardless of Pod.
 
-6. If you scroll through the the log you can see it indicates that the content-api application is once again failing because it cannot find a MongoDB api to communicate with. You will resolve this issue by connecting to Cosmos DB.
+6. If you scroll through the log you can see it indicates that the content-api application is once again failing because it cannot find a MongoDB api to communicate with. You will resolve this issue by connecting to Cosmos DB.
 
    ![This screenshot of the Kubernetes management dashboard shows logs output for the api container.](media/2021-03-25-17-07-13.png "MongoDB communication error")
 
@@ -1569,7 +1569,7 @@ You will configure a Helm Chart that will be used to deploy and configure the **
 
     ![A screenshot of the web site showing no data displayed.](media/Ex2-Task3.11.png "Web site home page")
 
-26. We will now commit our Helm chart to our GitHubs repository. Execute the following commands in the root folder of your 'fabmedical' clone:
+26. We will now commit our Helm chart to our GitHub repository. Execute the following commands in the root folder of your 'fabmedical' clone:
 
     ```bash
     git add content-web/charts/
