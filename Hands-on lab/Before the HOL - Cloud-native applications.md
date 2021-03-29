@@ -31,11 +31,11 @@ The names of manufacturers, products, or URLs are provided for informational pur
     - [Task 2: Download Starter Files](#task-2-download-starter-files)
     - [Task 3: Resource Group](#task-3-resource-group)
     - [Task 4: Create an SSH key](#task-4-create-an-ssh-key)
-    - [Task 5: Deploy ARM Template](#task-6-deploy-arm-template)
-    - [Task 6: Create a GitHub repository](#task-7-create-a-github-repository)
-    - [Task 7: Connect securely to the build agent](#task-8-connect-securely-to-the-build-agent)
-    - [Task 8: Complete the build agent setup](#task-9-complete-the-build-agent-setup)
-    - [Task 9: Clone Repositories to the Build Agent](#task-10-clone-repositories-to-the-build-agent)
+    - [Task 5: Deploy ARM Template](#task-5-deploy-arm-template)
+    - [Task 6: Create a GitHub repository](#task-6-create-a-github-repository)
+    - [Task 7: Connect securely to the build agent](#task-7-connect-securely-to-the-build-agent)
+    - [Task 8: Complete the build agent setup](#task-8-complete-the-build-agent-setup)
+    - [Task 9: Clone Repositories to the Build Agent](#task-9-clone-repositories-to-the-build-agent)
 
 <!-- /TOC -->
 
