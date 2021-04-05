@@ -1219,6 +1219,8 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
                 terminationGracePeriodSeconds: 30
    ```
 
+   >**Note**: If your YAML code is offset in the Kubernetes Resource View editor, do not worry. Just substitute the required placeholders.
+
 6. Select **Add** to initiate the deployment. This can take a few minutes after which you will see the deployment listed.
 
    ![Service is showing as unhealthy](media/2021-03-25-17-05-36.png "Service is showing as unhealthy")
@@ -1241,7 +1243,7 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
     ![This is a screenshot of the Azure Portal showing the quick start for setting up Cosmos DB with MongoDB API. The copy button is highlighted.](media/Ex2-Task1.10.png "Capture CosmosDB connection string")
 
-11. Modify the copied connection string by adding the database `contentdb` to the URL, along with a replicaSet of `globaldb`. The resulting connection string should look like the below sample.
+11. Modify the copied connection string by adding the database `contentdb` to the URL, along with a replicaSet of `globaldb`. The resulting connection string should look like the below sample. Note that you may need to modify the endpoint URL.
 
     > **Note**: Username and password redacted for brevity.
 
@@ -1277,7 +1279,7 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
 15. Sort the Secrets list by name and you should now see your new secret displayed.
 
-    ![This is a screenshot of the Azure Portal for AKS showing secrets.](media/2021-03-25-17-08-31.png "Manage Kubernetes secrets")
+    ![This is a screenshot of the Azure Portal for AKS showing secrets.](media/find-cosmosdb-secret.png "Manage Kubernetes secrets")
 
 16. View the details for the **cosmosdb** secret by selected it in the list.
 
