@@ -890,33 +890,33 @@ image and pushes it to your ACR instance automatically.
 
    # Jobs define the actions that take place when code is pushed to the master branch
    jobs:
-      build-and-publish-docker-image:
-        name: Build and Push Docker Image
-        runs-on: ubuntu-latest
-        steps:
-        # Checkout the repo
-        - uses: actions/checkout@master
+     build-and-publish-docker-image:
+       name: Build and Push Docker Image
+       runs-on: ubuntu-latest
+       steps:
+       # Checkout the repo
+       - uses: actions/checkout@master
 
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v1
+       - name: Set up Docker Buildx
+         uses: docker/setup-buildx-action@v1
 
-        - name: Login to ACR
-          uses: docker/login-action@v1
-          with:
-            registry: ${{ env.containerRegistry }}
-            username: ${{ secrets.ACR_USERNAME }}
-            password: ${{ secrets.ACR_PASSWORD }}
+       - name: Login to ACR
+         uses: docker/login-action@v1
+         with:
+           registry: ${{ env.containerRegistry }}
+           username: ${{ secrets.ACR_USERNAME }}
+           password: ${{ secrets.ACR_PASSWORD }}
 
-        - name: Build and push an image to container registry
-          uses: docker/build-push-action@v2
-          with:
-            context: ${{ env.dockerfilePath  }}
-            file: "${{ env.dockerfilePath }}/Dockerfile"
-            pull: true
-            push: true
-            tags: |
-              ${{ env.containerRegistry }}/${{ env.imageRepository }}:${{ env.tag }}
-              ${{ env.containerRegistry }}/${{ env.imageRepository }}:latest
+       - name: Build and push an image to container registry
+         uses: docker/build-push-action@v2
+         with:
+           context: ${{ env.dockerfilePath  }}
+           file: "${{ env.dockerfilePath }}/Dockerfile"
+           pull: true
+           push: true
+           tags: |
+             ${{ env.containerRegistry }}/${{ env.imageRepository }}:${{ env.tag }}
+             ${{ env.containerRegistry }}/${{ env.imageRepository }}:latest
     ```
 
 10. Save the file and exit VI by pressing `<Esc>` then `:wq`.
@@ -1650,7 +1650,7 @@ In this task, you will use GitHub Actions workflows to automate the process for 
 1. Navigate to the `.github/workflows` folder of the git repository, and open the `content-web.yml` workflow using `vi`:
 
     ```bash
-    cd ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/developer/.github/workflows
+    cd ~/fabmedical/.github/workflows
     vi content-web.yml
     ```
 
