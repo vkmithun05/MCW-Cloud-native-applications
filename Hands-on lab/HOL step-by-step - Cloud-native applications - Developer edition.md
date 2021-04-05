@@ -117,8 +117,6 @@ Each tenant will have the following containers:
 
      - Is a [Member](https://docs.microsoft.com/azure/active-directory/fundamentals/users-default-permissions#member-and-guest-users) user in the Azure AD tenant you will use. (Guest users will not have the necessary permissions.)
 
-     > **Note** If you do not meet these requirements, you may have to ask another member user with subscription owner rights to login to the portal and execute the create service principal step ahead of time.
-
    - You must have enough cores available in your subscription to create the build agent and Azure Kubernetes Service cluster in Before the Hands-on Lab. You will need eight cores if following the exact instructions in the lab, or more if you choose additional cluster nodes or larger VM sizes. If you execute the steps required before the lab, you will be able to see if you need to request more cores in your sub.
 
 2. Local machine or a virtual machine configured with:
@@ -644,7 +642,7 @@ In this task, you will configure the `web` container to communicate with the API
 4. Observe that the `contentApiUrl` variable can be set with an environment variable.
 
    ```javascript
-   const contentApiUrl = process.env.CONTENT_API_URL || "http://localhost:3001";
+   const contentApiUrl = process.env.CONTENT_API_URL || "http://[VM IP]:3001";
    ```
 
 5. Open the Dockerfile for editing using Vim and press the `i` key to go into edit mode.
@@ -770,7 +768,7 @@ In this task, you will push images to your ACR account, version images with tagg
    docker image ls
    ```
 
-   ![This is a screenshot of a docker images list example.](media/vm-docker-images-list.PNG "Docker image list")
+   ![This is a screenshot of a docker images list example.](./media/tagged-images-for-acr.png "Docker image list")
 
 7. Push the images to your ACR account with the following command:
 
@@ -797,7 +795,7 @@ In this task, you will push images to your ACR account, version images with tagg
     docker image ls
     ```
 
-    ![In this screenshot of the console window is an example of tags being added and displayed.](media/image70.png "View latest image by tag")
+    ![In this screenshot of the console window is an example of tags being added and displayed.](media/newly-tagged-images.png "View latest image by tag")
 
 11. Push the images to your ACR account with the following command:
 
