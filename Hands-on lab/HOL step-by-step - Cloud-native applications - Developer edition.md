@@ -1831,7 +1831,7 @@ In this task, you will increase the number of instances for the API deployment i
 
 3. From the Replica Set view for the API, you will see it is now deploying and that there is one healthy instance and one pending instance.
 
-   ![Replica Sets is selected under Workloads in the navigation menu on the left, and at right, Pods status: 1 pending, 1 running is highlighted. Below that, a red arrow points at the API deployment in the Pods box.](media/2021-03-26-16-50-11.png "View replica details")
+   ![Replica Sets is selected under Workloads in the navigation menu on the left, and at right, Pods status: 1 pending, 1 running is highlighted. Below that, a red arrow points at the API deployment in the Pods box.](media/api-replica-set.png "View replica details")
 
 4. From the navigation menu, select **Workloads**. Note that the api Deployment has an alert and shows a pod count 1 of 2 instances (shown as `1/2`).
 
@@ -1839,7 +1839,7 @@ In this task, you will increase the number of instances for the API deployment i
 
    > **Note**: If you receive an error about insufficient CPU that is OK. We will see how to deal with this in the next Task (Hint: you can use the **Insights** option in the AKS Azure Portal to review the **Node** status and view the Kubernetes event logs).
 
-5. From the Navigation menu, select **Workloads**. From this view, note that the health overview in the right panel of this view. You will see the following:
+   At this point, here is a health overview of the environment:
 
    - One Deployment and one Replica Set are each healthy for the web service.
 
@@ -1847,7 +1847,7 @@ In this task, you will increase the number of instances for the API deployment i
 
    - Two pods are healthy in the 'default' namespace.
 
-6. Open the Contoso Neuro Conference web application. The application should still work without errors as you navigate to Speakers and Sessions pages.
+5. Open the Contoso Neuro Conference web application. The application should still work without errors as you navigate to Speakers and Sessions pages.
 
    - Navigate to the `/stats` page. You will see information about the hosting environment including:
 
@@ -1877,17 +1877,17 @@ In this task, you will resolve the failed API replicas. These failures occur due
 
       ```yaml
       ports:
-         - containerPort: 3001
-         protocol: TCP
+        - containerPort: 3001
+          protocol: TCP
       ```
 
    - Modify the **cpu** and set it to **100m**. CPU is divided between all Pods on a Node.
 
       ```yaml
       resources:
-         requests:
-            cpu: 100m
-            memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
       ```
 
    Select **Review + save** and, when prompted, confirm the changes and select **Save**.
@@ -1896,7 +1896,7 @@ In this task, you will resolve the failed API replicas. These failures occur due
 
 3. Return to the **Workloads** main view on the AKS Azure Portal and you will now see that the Deployment is healthy with two Pods operating.
 
-   ![In the Workload view with the API deployment highlighted.](media/2021-02-17_10-48-19.png "API deployment is now healthy")
+   ![In the Workload view with the API deployment highlighted.](media/healthy-deployment.png "API deployment is now healthy")
 
 ### Task 3: Restart containers and test HA
 
@@ -2051,8 +2051,6 @@ In this task, you will modify the CPU requirements for the web service so that i
 4. When the deployment update completes, four web pods should be shown in running state.
 
    ![Four web pods are listed in the Pods box, and all have green check marks and are listed as Running.](media/2021-03-26-18-24-35.png "Four pods running")
-
-5. Return to the browser tab with the sample web application loaded. Refresh the stats page at /stats to watch the display update to reflect the different api pods by observing the host name refresh.
 
 ### Task 3: Perform a rolling update
 
