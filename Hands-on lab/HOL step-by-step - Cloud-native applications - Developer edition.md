@@ -963,7 +963,7 @@ image and pushes it to your ACR instance automatically.
 
 **Duration**: 20 minutes
 
-At this point, you have the web and API applications running in Azure Kubernetes Service. The next, step is to migrate the MongoDB database data over to Azure Cosmos DB. This exercise will use the Azure Database Migration Service to migrate the data from the MongoDB database into Azure Cosmos DB.
+At this point, you have the web and API applications running in Docker instance (VM - Build Agent). The next, step is to migrate the MongoDB database data over to Azure Cosmos DB. This exercise will use the Azure Database Migration Service to migrate the data from the MongoDB database into Azure Cosmos DB.
 
 ### Task 1: Enable Microsoft.DataMigration resource provider
 
@@ -1218,8 +1218,6 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
                 securityContext: {}
                 terminationGracePeriodSeconds: 30
    ```
-
-   >**Note**: If your YAML code is offset in the Kubernetes Resource View editor, do not worry. Just substitute the required placeholders.
 
 6. Select **Add** to initiate the deployment. This can take a few minutes after which you will see the deployment listed.
 
@@ -2326,7 +2324,7 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
     apiVersion: networking.k8s.io/v1beta1
     kind: Ingress
     metadata:
-      name: tls-example-ingress
+      name: content-ingress
       annotations:
         kubernetes.io/ingress.class: nginx
         nginx.ingress.kubernetes.io/rewrite-target: /$1
