@@ -1,7 +1,7 @@
 ![Microsoft Cloud Workshop](https://github.com/Microsoft/MCW-Template-Cloud-Workshop/raw/main/Media/ms-cloud-workshop.png 'Microsoft Cloud Workshop')
 
 <div class="MCWHeader1">
-Cloud-native applications - Developer edition
+Cloud-native applications
 </div>
 
 <div class="MCWHeader2">
@@ -25,7 +25,7 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
 **Contents**
 
 <!-- TOC -->
-- [Cloud-native applications - Developer edition hands-on lab step-by-step](#cloud-native-applications---developer-edition-hands-on-lab-step-by-step)
+- [Cloud-native applications - Hands-on lab step-by-step](#cloud-native-applications---hands-on-lab-step-by-step)
   - [Abstract and learning objectives](#abstract-and-learning-objectives)
   - [Prerequisites](#prerequisites)
   - [Overview](#overview)
@@ -55,7 +55,7 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
 
 <!-- /TOC -->
 
-# Cloud-native applications - Developer edition hands-on lab step-by-step
+# Cloud-native applications - Hands-on lab step-by-step
 
 ## Abstract and learning objectives
 
@@ -127,7 +127,7 @@ Each tenant will have the following containers:
 
 ## Exercise 1: Migrate MongoDB to Cosmos DB using Azure Database Migration Service
 
-**Duration**: 20 minutes
+**Duration**: 40 minutes
 
 At this point, you have the web and API applications running in Docker instance (VM - Build Agent). The next, step is to migrate the MongoDB database data over to Azure Cosmos DB. This exercise will use the Azure Database Migration Service to migrate the data from the MongoDB database into Azure Cosmos DB.
 
@@ -255,7 +255,7 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
 ## Exercise 2: Deploy the solution to Azure Kubernetes Service
 
-**Duration**: 30 minutes
+**Duration**: 1 hour
 
 In this exercise, you will connect to the Azure Kubernetes Service cluster you created before the hands-on lab and deploy the Docker application to the cluster using Kubernetes.
 
@@ -665,7 +665,7 @@ In this task, you will access and review the various logs and dashboards made av
 
 ## Exercise 3: Scale the application and test HA
 
-**Duration**: 20 minutes
+**Duration**: 40 minutes
 
 At this point, you have deployed a single instance of the web and API service containers. In this exercise, you will increase the number of container instances for the web service and scale the front-end on the existing cluster.
 
@@ -860,7 +860,7 @@ In this task, you will run a performance test script that will test the Autoscal
 
 ## Exercise 4: Working with services and routing application traffic
 
-**Duration**: 1 hour
+**Duration**: 2 hours
 
 In the previous exercise, we introduced a restriction to the scale properties of the service. In this exercise, you will configure the api deployments to create pods that use dynamic port mappings to eliminate the port resource constraint during scale activities.
 
