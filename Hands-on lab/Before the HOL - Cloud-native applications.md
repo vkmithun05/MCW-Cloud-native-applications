@@ -51,7 +51,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
 
 ## Overview
 
-Before the hands-on lab, you will need to prepare the environment by deploying the database and the application locally on a virtual machine by leveraging Docker and MongoDB. Creating a fork of the GitHub repository containing lab specific is also necessary to be allowsetup the CI/CD pipeline in preparation of the hands-on lab.
+Before the hands-on lab, you will need to prepare the environment by deploying the database and the application locally on a virtual machine using Docker and MongoDB. You'll also need to fork the GitHub repository containing the lab to your own GitHub account to be able to setup the CI/CD pipeline.
 
 ## Requirements
 

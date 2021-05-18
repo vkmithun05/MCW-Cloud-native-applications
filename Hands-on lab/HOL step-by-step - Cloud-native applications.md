@@ -71,7 +71,7 @@ The lab assumes some basic knowledge of Docker containers and Kubernetes. The fo
 - https://docs.microsoft.com/en-us/learn/modules/build-and-store-container-images/
 - https://docs.microsoft.com/en-us/learn/modules/intro-to-kubernetes/
 
-The lab also requires the completion of the steps outlined in the [Before the HOL - Cloud-native applications](https://cloudworkshop.blob.core.windows.net/containers-devops/Hands-on%20lab/Before%20the%20HOL%20-%20Cloud-native%20applications.html) document in order to prepare an appropriate environment to execute the exercises in this lab. 
+The lab also requires the completion of the steps outlined in the [Before the HOL - Cloud-native applications](Before%20the%20HOL%20-%20Cloud-native%20applications.md) document in order to prepare an appropriate environment to execute the exercises in this lab. 
 
 ## Overview
 
