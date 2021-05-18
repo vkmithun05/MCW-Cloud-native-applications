@@ -25,6 +25,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
 <!-- TOC -->
 
 - [Cloud-native applications before the hands-on lab setup guide](#cloud-native-applications-before-the-hands-on-lab-setup-guide)
+  - [Overview](#overview)
   - [Requirements](#requirements)
   - [Before the hands-on lab](#before-the-hands-on-lab)
     - [Task 1: Setup Azure Cloud Shell](#task-1-setup-azure-cloud-shell)
@@ -47,6 +48,10 @@ The names of manufacturers, products, or URLs are provided for informational pur
 <!-- /TOC -->
 
 # Cloud-native applications before the hands-on lab setup guide
+
+## Overview
+
+Before the hands-on lab, you will need to prepare the environment by deploying the database and the application locally on a virtual machine by leveraging Docker and MongoDB. Creating a fork of the GitHub repository containing lab specific is also necessary to be allowsetup the CI/CD pipeline in preparation of the hands-on lab.
 
 ## Requirements
 
