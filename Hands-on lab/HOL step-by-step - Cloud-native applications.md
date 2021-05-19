@@ -415,6 +415,13 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
     mongodb://<USERNAME>:<PASSWORD>@fabmedical-<SUFFIX>.documents.azure.com:10255/contentdb?ssl=true&replicaSet=globaldb
     ```
 
+    > **Note**: This lab has referenced the Cosmos DB API version 3.2. However, if your copied connection string has the endpoint suffix `.mongo.cosmos.azure.com`, feel free to use it, as that will reference the 3.6 API. The lab is compatible with both versions. Here is how the connection string shown above will appear with the 3.6 API:
+
+    ```text
+    mongodb://<USERNAME>:<PASSWORD>@fabmedical-<SUFFIX>.mongo.cosmos.azure.com:10255/contentdb?ssl=true&replicaSet=globaldb
+    ```
+
+
 12. You will setup a Kubernetes secret to store the connection string and configure the `content-api` application to access the secret. First, you must base64 encode the secret value. Open your Azure Cloud Shell window and use the following command to encode the connection string and then, copy the output.
 
     > **Note**: Double quote marks surrounding the connection string are required to successfully produce the required output.
