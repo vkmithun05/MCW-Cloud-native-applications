@@ -532,7 +532,7 @@ You should follow all steps provided _before_ performing the Hands-on lab.
 
 In this task, you will take the starter files and run the node.js application as a Docker application.  You will build the Docker images from the existing files and run containers to test and execute the application.
 
-1. From Azure Cloud Shell, connect to your buidl agent if you are not already connected.
+1. From Azure Cloud Shell, connect to your build agent if you are not already connected.
 
 2. Type the following command to create a Docker network named `fabmedical`:
 
