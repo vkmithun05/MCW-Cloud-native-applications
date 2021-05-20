@@ -736,7 +736,7 @@ In this task, you will build the Docker images for the application --- one for t
    docker image ls
    ```
 
-2. From the content-api folder containing the API application files and the new Dockerfile you created, type the following command to create a Docker image for the API application. This command does the following:
+2. From the content-api (`cd ~/Fabmedical/content-api`) folder containing the API application files and a Dockerfile, type the following command to create a Docker image for the API application. This command does the following:
 
    - Executes the Docker build command to produce the image
 
@@ -758,24 +758,14 @@ In this task, you will build the Docker images for the application --- one for t
 
    ![The node image (node) and your container image (content-api) are visible in this screenshot of the console window.](media/image59.png "List Docker images")
 
-4. Commit and push the new Dockerfile before continuing.
-
-   ```bash
-   git add .
-   git commit -m "Added Dockerfile"
-   git push
-   ```
-
-   Enter credentials if prompted.
-
-5. Navigate to the content-web folder again and list the files. Note that this folder already has a Dockerfile.
+4. Navigate to the content-web folder again and list the files. Note that this folder also has a Dockerfile.
 
    ```bash
    cd ../content-web
    ll
    ```
 
-6. View the Dockerfile contents -- which are similar to the file you created previously in the API folder. Type the following command:
+5. View the Dockerfile contents. Type the following command:
 
    ```bash
    cat Dockerfile
@@ -783,32 +773,32 @@ In this task, you will build the Docker images for the application --- one for t
 
    > Notice that the `content-web` Dockerfile build stage includes additional tools for a front-end Angular application in addition to installing npm packages.
 
-7. Type the following command to create a Docker image for the web application.
+6. Type the following command to create a Docker image for the web application.
 
    ```bash
    docker image build -t content-web .
    ```
 
-8. Navigate to the content-init folder again and list the files. Note that this folder already has a Dockerfile.
+7. Navigate to the content-init folder again and list the files. Note that this folder already has a Dockerfile.
 
    ```bash
    cd ../content-init
    ll
    ```
 
-9. View the Dockerfile contents -- which are similar to the file you created previously in the API folder. Type the following command:
+8. View the Dockerfile contents. Type the following command:
 
    ```bash
    cat Dockerfile
    ```
 
-10. Type the following command to create a Docker image for the init application.
+9.  Type the following command to create a Docker image for the init application.
 
       ```bash
       docker image build -t content-init .
       ```
 
-11. When complete, you will see eight images now exist when you run the Docker images command.
+10. When complete, you will see eight images now exist when you run the Docker images command.
 
    ```bash
    docker image ls
@@ -998,6 +988,7 @@ In this task, you will configure the `web` container to communicate with the API
 14. Commit your changes and push to the repository.
 
     ```bash
+    cd ~/Fabmedical
     git add .
     git commit -m "Setup Environment Variables"
     git push
@@ -1233,13 +1224,13 @@ image and pushes it to your ACR instance automatically.
 
     ![The screenshot shows the content-api.yml with the environment variables highlighted.](media/2020-08-25-15-59-56.png "content-api.yml environment variables highlighted")
 
-19. Save the file, then navigate to the repositories in GitHub, select Actions, and then manually run the **content-api** workflow.
-
-20. Commit and push the changes to the Git repository:
+19. Commit and push the changes to the Git repository:
 
    ```bash
    git add .
    git commit -m "Updated workflow YAML"
    git push
    ```
+
+20. Save the file, then navigate to the repositories in GitHub, select Actions, and then manually run the **content-api** workflow.
 
