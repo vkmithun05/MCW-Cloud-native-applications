@@ -247,7 +247,7 @@ In this section, you configure and execute an ARM template that creates all the 
 
    This command takes 30 to 60 minutes to deploy all lab resources. You can continue to the next task to setup GitHub while the deployment runs.
 
-   > **Note** If you get an error about the Cosmos DB name, ensure that you typed the `ComsosLocation` and `CosmosPairedLocation` without any spaces. Re-run the above command after you have corrected the name.
+   > **Note**: If you get an error about the Cosmos DB name, ensure that you typed the `ComsosLocation` and `CosmosPairedLocation` without any spaces. Re-run the above command after you have corrected the name.
 
 ### Task 6: Create a GitHub repository
 
@@ -523,10 +523,6 @@ In this task, you clone your repositories from GitHub so you can work with them 
    > ```bash
    > sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
    > ```
-
-You should follow all steps provided _before_ performing the Hands-on lab.
-
-[logo]: https://github.com/Microsoft/MCW-Template-Cloud-Workshop/raw/master/Media/ms-cloud-workshop.png
 
 ### Task 10: Test the Starter Application
 
@@ -1226,11 +1222,13 @@ image and pushes it to your ACR instance automatically.
 
 19. Commit and push the changes to the Git repository:
 
-   ```bash
-   git add .
-   git commit -m "Updated workflow YAML"
-   git push
-   ```
+    ```bash
+    git add .
+    git commit -m "Updated workflow YAML"
+    git push
+    ```
 
 20. Save the file, then navigate to the repositories in GitHub, select Actions, and then manually run the **content-api** workflow.
+
+You should follow all steps provided _before_ performing the Hands-on lab.
 
