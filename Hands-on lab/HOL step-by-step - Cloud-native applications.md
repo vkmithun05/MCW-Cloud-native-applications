@@ -65,7 +65,7 @@ At the end of this lab, you will be better able to build and deploy containerize
 
 ## Prerequisites
 
-The lab assumes some basic knowledge of Docker containers and Kubernetes. The following modules on Microsoft Learn would be heplful:
+The lab assumes some basic knowledge of Docker containers and Kubernetes. The following modules on Microsoft Learn would be helpful:
 - https://docs.microsoft.com/en-us/learn/modules/intro-to-docker-containers/
 - https://docs.microsoft.com/en-us/learn/modules/intro-to-containers/
 - https://docs.microsoft.com/en-us/learn/modules/build-and-store-container-images/
@@ -256,7 +256,7 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
 ## Exercise 2: Deploy the solution to Azure Kubernetes Service
 
-**Duration**: 1 hour
+**Duration**: 60 minutes
 
 In this exercise, you will connect to the Azure Kubernetes Service cluster you created before the hands-on lab and deploy the Docker application to the cluster using Kubernetes.
 
@@ -390,7 +390,7 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 
    ![Service is showing as unhealthy](media/2021-03-25-17-05-36.png "Service is showing as unhealthy")
 
-7. Select the **api** deployment to open the Deployment, select **Live logs** and then a Pod from the drop-down. After a few moments the live logs should appear.
+7. Select the **api** deployment to open the Deployment, select **Live logs** and then a Pod from the drop-down. After a few moments, the live logs should appear.
 
    ![Service is showing as unhealthy](media/2021-03-25-17-06-09.png "Service is showing as unhealthy")
 
@@ -653,13 +653,13 @@ In this task, you will access and review the various logs and dashboards made av
 
    ![In this screenshot, the containers are filtered by container named web.](media/monitor_3.png "Filter data by container and web")
 
-6. By default, the CPU Usage metric will be selected displaying all cpu information for the selected container, to switch to another metric open the metric dropdown list and select a different metric.
+6. By default, the CPU Usage metric will be selected displaying all CPU information for the selected container, to switch to another metric open the metric dropdown list and select a different metric.
 
    ![In this screenshot, the various metric options are shown.](media/monitor_2.png "Filter by CPU usage")
 
 7. Upon selecting any pod, all the information related to the selected metric will be displayed on the right panel, and that would be the case when selecting any other metric, the details will be displayed on the right panel for the selected pod.
 
-   ![In this screenshot, the pod cpu usage details are shown.](media/monitor_4.png "POD CPU details")
+   ![In this screenshot, the pod CPU usage details are shown.](media/monitor_4.png "POD CPU details")
 
 8. To display the logs for any container simply select it and view the right panel and you will find "View container logs" option which will list all logs for this specific container.
 
@@ -870,7 +870,7 @@ In this task, you will run a performance test script that will test the Autoscal
 
 ## Exercise 4: Working with services and routing application traffic
 
-**Duration**: 2 hours
+**Duration**: 120 minutes
 
 In the previous exercise, we introduced a restriction to the scale properties of the service. In this exercise, you will configure the api deployments to create pods that use dynamic port mappings to eliminate the port resource constraint during scale activities.
 
@@ -926,7 +926,7 @@ In this task, you will edit the web application source code to add Application I
 
    Copy this value. You will use it later.
 
-   > **Note:** if you have a blank result check that the command you issued refers to the right resource.
+   > **Note**: if you have a blank result check that the command you issued refers to the right resource.
 
 2. On your lab VM update your fabmedical repository files by pulling the latest changes from the git repository:
 
@@ -1230,7 +1230,7 @@ In this task you will setup a Kubernetes Ingress using an [nginx proxy server](h
 
 23. Test TLS termination by visiting both services again using `https`.
 
-    > It can take between 5 and 30 minutes before the SSL site becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
+    > **Note**: It can take between 5 and 30 minutes before the SSL site becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 
 ## After the hands-on lab
 
@@ -1245,6 +1245,3 @@ In this exercise, you will de-provision any Azure resources created in support o
    - Confirm the deletion by re-typing the resource group name and selecting Delete.
 
 You should follow all steps provided _after_ attending the Hands-on lab.
-
-[logo]: https://github.com/Microsoft/MCW-Template-Cloud-Workshop/raw/master/Media/ms-cloud-workshop.png
-[portal]: https://portal.azure.com
