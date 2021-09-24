@@ -957,6 +957,14 @@ In this task, you will edit the web application source code to add Application I
 
 5. Save changes and close the editor.
 
+> **Note**: Ensure the following files from [Exercise 2](#exercise-2-deploy-the-solution-to-azure-kubernetes-service), Tasks [2](#task-2-deploy-a-service-using-the-azure-portal) and [3](#task-3-deploy-a-service-using-kubectl) are present in the git repository root.
+   ```
+   api.deployment.yml
+   api.service.yml
+   web.deployment.yml
+   web.service.yml
+   ```
+
 6. Push these changes to your repository so that GitHub Actions CI will build and deploy a new Container image.
 
    ```bash

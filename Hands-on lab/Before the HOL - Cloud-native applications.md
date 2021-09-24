@@ -1189,6 +1189,35 @@ image and pushes it to your ACR instance automatically.
            tags: |
              ${{ env.containerRegistry }}/${{ env.imageRepository }}:${{ env.tag }}
              ${{ env.containerRegistry }}/${{ env.imageRepository }}:latest
+       
+       - name: Create ingress-demo namespace
+         run: |
+           kubectl create namespace ingress-demo --dry-run -o json | kubectl apply -f -
+
+       - name: Create ACR credentials secret
+         uses: azure/k8s-create-secret@v1
+         with:
+           container-registry-url: ${{ env.containerRegistry }}.azurecr.io
+           container-registry-username: ${{ secrets.ACR_USERNAME }}
+           container-registry-password: ${{ secrets.ACR_PASSWORD }}
+           secret-name: ingress-demo-secret
+           namespace: ingress-demo
+           arguments: --force true
+
+       - name: Deploy to AKS
+         uses: azure/k8s-deploy@v1
+         with:
+           manifests: |
+             api.deployment.yml
+             api.service.yml
+             web.deployment.yml
+             web.service.yml
+           images: |
+             ${{ env.containerRegistry }}.azurecr.io/${{ env.imageRepository }}:${{ env.tag }}
+           imagepullsecrets: |
+             ingress-demo-secret
+           namespace: ingress-demo
+      
     ```
 
 10. Save the file and exit VI by pressing `<Esc>` then `:wq`.
