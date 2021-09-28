@@ -1108,6 +1108,25 @@ image and pushes it to your ACR instance automatically.
 
     ![Secrets screen with both the ACR_USERNAME and ACR_PASSWORD secrets created.](media/2020-08-24-21-51-24.png "Secrets screen")
 
+6. In your Azure Cloud Shell, run `az ad sp create-for-rbac --sdk-auth` in to generate an Azure Active Directory service principal with credentials.  Copy the output JSON (example below) for the next step.
+
+   ```json
+   {
+      "clientId": "<client id>",
+      "clientSecret": "<client secret>",
+      "subscriptionId": "<subscription id>",
+      "tenantId": "<tenant id>",
+      "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+      "resourceManagerEndpointUrl": "https://management.azure.com/",
+      "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+      "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+      "galleryEndpointUrl": "https://gallery.azure.com/",
+      "managementEndpointUrl": "https://management.core.windows.net/"
+   }
+   ```
+
+7. Add another Secret named `AZURE_CREDENTIALS` and use the JSON output from the previous step as the value.
+
 6. In your Azure Cloud Shell session connected to the build agent VM, navigate to the `~/Fabmedical` directory:
 
    ```bash
@@ -1155,6 +1174,7 @@ image and pushes it to your ACR instance automatically.
    env:
      imageRepository: 'content-web'
      resourceGroupName: 'fabmedical-[SHORT_SUFFIX]'
+     clusterName: 'fabmedical-[SHORT_SUFFIX]'
      containerRegistryName: 'fabmedical[SHORT_SUFFIX]'
      containerRegistry: 'fabmedical[SHORT_SUFFIX].azurecr.io'
      dockerfilePath: './content-web'
@@ -1190,6 +1210,13 @@ image and pushes it to your ACR instance automatically.
              ${{ env.containerRegistry }}/${{ env.imageRepository }}:${{ env.tag }}
              ${{ env.containerRegistry }}/${{ env.imageRepository }}:latest
        
+       - name: Set Kubernetes Context
+         uses: azure/aks-set-context@v1
+         with:
+           creds: '${{ secrets.AZURE_CREDENTIALS }}' # Azure credentials
+           resource-group: '${{ env.resourceGroupName }}'
+           cluster-name: '${{ env.clusterName }}'
+
        - name: Create ingress-demo namespace
          run: |
            kubectl create namespace ingress-demo --dry-run -o json | kubectl apply -f -
