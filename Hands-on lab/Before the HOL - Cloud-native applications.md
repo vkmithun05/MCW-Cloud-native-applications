@@ -1245,7 +1245,7 @@ image and pushes it to your ACR instance automatically.
              ingress-demo-secret
            namespace: ingress-demo
       
-    ```
+   ```
 
 12. Save the file and exit VI by pressing `<Esc>` then `:wq`.
 
