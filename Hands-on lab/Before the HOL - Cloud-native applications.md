@@ -1231,19 +1231,20 @@ image and pushes it to your ACR instance automatically.
            namespace: ingress-demo
            arguments: --force true
 
-       - name: Deploy to AKS
-         uses: azure/k8s-deploy@v1
-         with:
-           manifests: |
-             api.deployment.yml
-             api.service.yml
-             web.deployment.yml
-             web.service.yml
-           images: |
-             ${{ env.containerRegistry }}.azurecr.io/${{ env.imageRepository }}:${{ env.tag }}
-           imagepullsecrets: |
-             ingress-demo-secret
-           namespace: ingress-demo
+   # This task will be important in Task 3 of Exercise 4
+   #   - name: Deploy to AKS
+   #     uses: azure/k8s-deploy@v1
+   #     with:
+   #       manifests: |
+   #         api.deployment.yml
+   #         api.service.yml
+   #         web.deployment.yml
+   #         web.service.yml
+   #       images: |
+   #         ${{ env.containerRegistry }}.azurecr.io/${{ env.imageRepository }}:${{ env.tag }}
+   #       imagepullsecrets: |
+   #         ingress-demo-secret
+   #       namespace: ingress-demo
       
    ```
 
