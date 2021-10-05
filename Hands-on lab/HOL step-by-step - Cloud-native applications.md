@@ -957,6 +957,24 @@ In this task, you will edit the web application source code to add Application I
 
 5. Save changes and close the editor.
 
+6. Add the following task to the `content-web.yml` workflow file in the `.github/workflows` folder. Be sure to keep indention of the task within the file consistent with the rest of the `content-web.yml` file.
+
+  ```
+        - name: Deploy to AKS
+          uses: azure/k8s-deploy@v1
+          with:
+            manifests: |
+              api.deployment.yml
+              api.service.yml
+              web.deployment.yml
+              web.service.yml
+            images: |
+              ${{ env.containerRegistry }}.azurecr.io/${{ env.imageRepository }}:${{ env.tag }}
+            imagepullsecrets: |
+              ingress-demo-secret
+            namespace: ingress-demo
+  ```
+
 > **Note**: Ensure the following files from [Exercise 2](#exercise-2-deploy-the-solution-to-azure-kubernetes-service), Tasks [2](#task-2-deploy-a-service-using-the-azure-portal) and [3](#task-3-deploy-a-service-using-kubectl) are present in the git repository root.
    ```
    api.deployment.yml
