@@ -1237,7 +1237,6 @@ image and pushes it to your ACR instance automatically.
    #     with:
    #       manifests: |
    #         api.deployment.yml
-   #         api.service.yml
    #         web.deployment.yml
    #         web.service.yml
    #       images: |
