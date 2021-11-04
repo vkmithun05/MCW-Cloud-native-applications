@@ -968,7 +968,7 @@ In this task, you will edit the web application source code to add Application I
               web.deployment.yml
               web.service.yml
             images: |
-              ${{ env.containerRegistry }}.azurecr.io/${{ env.imageRepository }}:${{ env.tag }}
+              ${{ env.containerRegistry }}/${{ env.imageRepository }}:${{ env.tag }}
             imagepullsecrets: |
               ingress-demo-secret
             namespace: ingress-demo
