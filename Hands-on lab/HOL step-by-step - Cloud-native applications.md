@@ -9,7 +9,7 @@ Hands-on lab step-by-step
 </div>
 
 <div class="MCWHeader3">
-May 2021
+November 2021
 </div>
 
 Information in this document, including URL and other Internet Web site references, is subject to change without notice. Unless otherwise noted, the example companies, organizations, products, domain names, e-mail addresses, logos, people, places, and events depicted herein are fictitious, and no association with any real company, organization, product, domain name, e-mail address, logo, person, place or event is intended or should be inferred. Complying with all applicable copyright laws is the responsibility of the user. Without limiting the rights under copyright, no part of this document may be reproduced, stored in or introduced into a retrieval system, or transmitted in any form or by any means (electronic, mechanical, photocopying, recording, or otherwise), or for any purpose, without the express written permission of Microsoft Corporation.
@@ -59,9 +59,9 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
 
 ## Abstract and learning objectives
 
-This hands-on lab is designed to guide you through the process of building and deploying Docker images to the Kubernetes platform hosted on Azure Kubernetes Services (AKS), in addition to learning how to work with dynamic service discovery, service scale-out, and high-availability.
+This hands-on lab is designed to guide you through the process of building and deploying Docker images to the Kubernetes platform hosted on Azure Kubernetes Services (AKS). Additionally, you will learn how to work with dynamic service discovery, service scale-out, and high-availability in the context of AKS hosted services.
 
-At the end of this lab, you will be better able to build and deploy containerized applications to Azure Kubernetes Service and perform common DevOps procedures.
+At the conclusion of this lab, you have a solid understanding of how to build and deploy containerized applications to Azure Kubernetes Service and perform common DevOps tasks and procedures.
 
 ## Prerequisites
 
@@ -75,7 +75,7 @@ The lab assumes some basic knowledge of Docker containers and Kubernetes. The fo
 | Introduction to Kubernetes | https://docs.microsoft.com/en-us/learn/modules/intro-to-kubernetes/              |
 |||
 
-The lab also requires the completion of the steps outlined in the [Before the HOL - Cloud-native applications](Before%20the%20HOL%20-%20Cloud-native%20applications.md) document in order to prepare an appropriate environment to execute the exercises in this lab. 
+Completion of the steps outlined in the [Before the HOL - Cloud-native applications](Before%20the%20HOL%20-%20Cloud-native%20applications.md) document is required before undertaking any of the exercises in this lab.
 
 ## Overview
 
@@ -337,57 +337,63 @@ In this task, you will deploy the API application to the Azure Kubernetes Servic
 5. In the **Add with YAML** screen that loads paste the following YAML and update the `[LOGINSERVER]` placeholder with the name of the ACR instance.
 
    ```yaml
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      labels:
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
         app: api
-      name: api
-    spec:
-      replicas: 1
-      selector:
+    name: api
+  spec:
+    replicas: 2
+    selector:
         matchLabels:
           app: api
-      strategy:
+    strategy:
         rollingUpdate:
-        maxSurge: 1
-        maxUnavailable: 1
+          maxSurge: 1
+          maxUnavailable: 1
         type: RollingUpdate
-      template:
+    template:
         metadata:
           labels:
-            app: api
-            name: api
+              app: api
+          name: api
         spec:
           containers:
-            - name: api
-              image: [LOGINSERVER].azurecr.io/content-api
-              imagePullPolicy: Always
-              livenessProbe:
-                httpGet:
+          - image: [LOGINSERVER].azurecr.io/content-api
+            env:
+              - name: MONGODB_CONNECTION
+                valueFrom:
+                  secretKeyRef:
+                    name: dbcosmo
+                    key: db
+            name: api
+            imagePullPolicy: Always
+            livenessProbe:
+              httpGet:
                   path: /
                   port: 3001
-                initialDelaySeconds: 30
-                periodSeconds: 20
-                timeoutSeconds: 10
-                failureThreshold: 3
-              ports:
-                - containerPort: 3001
-                  hostPort: 3001
-                  protocol: TCP
-              resources:
-                requests:
-                  cpu: 1
+              initialDelaySeconds: 30
+              periodSeconds: 20
+              timeoutSeconds: 10
+              failureThreshold: 3
+            ports:
+              - containerPort: 3001
+                hostPort: 3001
+                protocol: TCP
+            resources:
+              requests:
+                  cpu: 100m
                   memory: 128Mi
-              securityContext:
-                privileged: false
-                terminationMessagePath: /dev/termination-log
-                terminationMessagePolicy: File
-                dnsPolicy: ClusterFirst
-                restartPolicy: Always
-                schedulerName: default-scheduler
-                securityContext: {}
-                terminationGracePeriodSeconds: 30
+            securityContext:
+              privileged: false
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
    ```
 
 6. Select **Add** to initiate the deployment. This can take a few minutes after which you will see the deployment listed.
