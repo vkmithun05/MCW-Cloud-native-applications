@@ -70,8 +70,6 @@ git add .
 git commit -m "Initial Commit"
 git remote add origin $MCW_GITHUB_URL
 git config --global http.$(modules_repo_url).extraHeader "Authorization: Basic $AUTH"
-git branch -m master main
-git push -u origin main
 
 # Configuring github workflows
 cd ~/Fabmedical
@@ -99,6 +97,10 @@ AZURE_CREDENTIALS=$(az ad sp create-for-rbac --sdk-auth)
 ghs secrets:set --input="$ACR_USERNAME" --org="$MCW_GITHUB_USERNAME" --repo="Fabmedical" --secret="ACR_USERNAME" -t="$MCW_GITHUB_TOKEN"
 ghs secrets:set --input="$ACR_PASSWORD" --org="$MCW_GITHUB_USERNAME" --repo="Fabmedical" --secret="ACR_PASSWORD" -t="$MCW_GITHUB_TOKEN"
 ghs secrets:set --input="$AZURE_CREDENTIALS" --org="$MCW_GITHUB_USERNAME" --repo="Fabmedical" --secret="AZURE_CREDENTIALS" -t="$MCW_GITHUB_TOKEN"
+
+cd ~/Fabmedical
+git branch -m master main
+git push -u origin main
 
 # Get public IP of build agent VM
 VM_PUBLIC_IP=$(az vm show -d -g fabmedical-$MCW_SUFFIX -n fabmedical-$MCW_SUFFIX --query publicIps -o tsv)
