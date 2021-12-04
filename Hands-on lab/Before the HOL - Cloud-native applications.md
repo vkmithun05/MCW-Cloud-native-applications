@@ -156,10 +156,16 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    > Note: The following environment variables can also be set if their defaults are not appropriate for the lab setting or environment.
 
       - MCW_GITHUB_URL - Defaults to `https://github.com/$MCW_GITHUB_USERNAME/Fabmedical`
-      - MCW_PRIMARY_LOCATION - Defaults to `westus`
-      - MCW_PRIMARY_LOCATION_NAME - Defaults to `West US`
-      - MCW_SECONDARY_LOCATION - Defaults to `eastus`
-      - MCW_SECONDARY_LOCATION_NAME - Defaults to `East US`
+      - MCW_PRIMARY_LOCATION - Defaults to `northcentralus`
+      - MCW_PRIMARY_LOCATION_NAME - Defaults to `North Central US`
+      - MCW_SECONDARY_LOCATION - Defaults to `southcentralus`
+      - MCW_SECONDARY_LOCATION_NAME - Defaults to `South Central US`
+
+   > Note: If you run into the error below, you may have to either use a different regional pair or increase your regional core quotas in your current regions. An up to date list of Azure Region Pairs can be found at [this link](https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions#azure-regional-pairs "Azure Region Pairs")
+
+      ```bash
+      {"error":{"code":"InvalidTemplateDeployment","message":"The template deployment 'azuredeploy' is not valid according to the validation procedure. The tracking id is '3d4adbc2-647b-4741-8d98-fe20495e0541'. See inner errorsfor details.","details":[{"code":"QuotaExceeded","message":"Provisioning of resource(s) for container service fabmedical-??? in resource group fabmedical-??? failed. Message: {\n  \"code\": \"QuotaExceeded\",\n  \"message\": \"Provisioning of resource(s) for container service fabmedical-??? in resource group fabmedical-??? failed. Message: Operation could not be completed as it results in exceeding approved Total Regional Cores quota. Additional details - Deployment Model: Resource Manager, Location: eastus, Current Limit: 10, Current Usage: 8, Additional Required: 4, (Minimum) New Limit Required: 12. Submit a request for Quota increase at https://aka.ms/ProdportalCRP/#blade/Microsoft_Azure_Capacity/UsageAndQuota.ReactView/Parameters/%7B%22subscriptionId%22:%228c924580-ce70-48d0-a031-1b21726acc1a%22,%22command%22:%22openQuotaApprovalBlade%22,%22quotas%22:[%7B%22location%22:%22eastus%22,%22providerId%22:%22Microsoft.Compute%22,%22resourceName%22:%22cores%22,%22quotaRequest%22:%7B%22properties%22:%7B%22limit%22:12,%22unit%22:%22Count%22,%22name%22:%7B%22value%22:%22cores%22%7D%7D%7D%7D]%7D by specifying parameters listed in the ‘Details’ section for deployment to succeed. Please read more about quota limits at https://docs.microsoft.com/en-us/azure/azure-supportability/regional-quota-requests. Details: \"\n }. Details: "}]}}
+      ```
 
 2. Run the `create_azure_resources.sh` script in the `MCW-Cloud-native-applications` repository that was cloned in a previous step.
 
