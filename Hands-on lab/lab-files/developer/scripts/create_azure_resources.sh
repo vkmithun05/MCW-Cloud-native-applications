@@ -69,7 +69,7 @@ git init
 git add .
 git commit -m "Initial Commit"
 git remote add origin $MCW_GITHUB_URL
-git config --global http.$(modules_repo_url).extraHeader "Authorization: Basic $AUTH"
+git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $AUTH"
 
 # Configuring github workflows
 cd ~/Fabmedical
