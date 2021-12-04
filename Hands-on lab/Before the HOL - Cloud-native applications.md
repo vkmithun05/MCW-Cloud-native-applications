@@ -199,11 +199,59 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    git clone https://github.com/<GITHUB_USERNAME>/Fabmedical
    ```
 
-3. Run the script to set up the build agent VM environment.
+3. Set the following environment variables in the active SSH session to the build agent VM. Use the same Github access token used in a previous task.
+
+   ```bash
+   export MCW_SUFFIX=<SUFFIX>                   # Needs to be a unique three letter string
+   export MCW_GITHUB_USERNAME=<GITHUB USERNAME> # Your Github account username
+   export MCW_GITHUB_TOKEN=<GITHUB PAT>         # A personal access token for your Github account
+   ```
+
+4. Run the `create_build_environment.sh` script to set up the build agent VM environment.
 
    ```bash
    cd ~/Fabmedical/scripts
    bash create_build_environment.sh
+   ```
+
+5. After the script completes execution, type `exit` to exit the SSH session. We will need to join a new SSH session to ensure the docker environment on the build agent VM has completed set up.
+
+   ```bash
+   adminfabmedical@fabmedical-???:~/Fabmedical/scripts$ exit
+   logout
+   Connection to 20.123.9.212 closed.
+   matt@Azure:~$ ssh -i ~/.ssh/fabmedical adminfabmedical@20.123.9.212
+   matt@Azure:~$ ssh -i .ssh/fabmedical adminfabmedical@20.123.9.212
+   Welcome to Ubuntu 16.04.7 LTS (GNU/Linux 4.15.0-1113-azure x86_64)
+
+   * Documentation:  https://help.ubuntu.com
+   * Management:     https://landscape.canonical.com
+   * Support:        https://ubuntu.com/advantage
+
+   UA Infra: Extended Security Maintenance (ESM) is not enabled.
+
+   0 updates can be applied immediately.
+
+   65 additional security updates can be applied with UA Infra: ESM
+   Learn more about enabling UA Infra: ESM service for Ubuntu 16.04 at
+   https://ubuntu.com/16-04
+
+   Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+   applicable law.
+
+   New release '18.04.6 LTS' available.
+   Run 'do-release-upgrade' to upgrade to it.
+
+
+   Last login: Sat Dec  4 11:47:31 2021 from 23.100.27.176
+   adminfabmedical@fabmedical-mgy:~$
+   ```
+
+6. After reestablishing an SSH session to the build agent VM, run the `create_and_seed_database.sh` script to create and seed the MongoDB database for use in the workshop.
+
+   ```bash
+   cd ~/Fabmedical/scripts
+   bash create_and_seed_database.sh
    ```
 
 You should follow all steps provided _before_ performing the Hands-on lab.
