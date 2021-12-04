@@ -52,8 +52,8 @@ az group create -l "${MCW_PRIMARY_LOCATION}" -n "fabmedical-${MCW_SUFFIX}"
 SSH_PUBLIC_KEY=$(cat ~/.ssh/fabmedical.pub)
 
 # Committing repository
-GIT_AUTH==$(echo -n "$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN" | openssl base64 | tr -d '\n')
-git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $AUTH"
+GIT_AUTH=$(echo -n "$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN" | openssl base64 | tr -d '\n')
+git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $GIT_AUTH"
 
 # Create Fabmedical repository
 if [[ ! -e ~/Fabmedical ]]; then

@@ -51,7 +51,8 @@ sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
 
 # Create Fabmedical repository
 if [[ ! -e ~/Fabmedical ]]; then
-    git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $AUTH"
+    GIT_AUTH=$(echo -n "$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN" | openssl base64 | tr -d '\n')
+    git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $GIT_AUTH"
     git clone https://github.com/$MCW_GITHUB_USERNAME/Fabmedical ~/Fabmedical
 fi
 

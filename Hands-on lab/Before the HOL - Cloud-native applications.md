@@ -30,8 +30,9 @@ The names of manufacturers, products, or URLs are provided for informational pur
   - [Before the hands-on lab](#before-the-hands-on-lab)
     - [Task 1: Setup Azure Cloud Shell](#task-1-setup-azure-cloud-shell)
     - [Task 2: Download Starter Files](#task-2-download-starter-files)
-    - [Task 3: Setup Azure Cloud Shell Environment](#task-3-setup-azure-cloud-shell-environment)
-    - [Task 4: Complete the build agent setup](#task-4-complete-the-build-agent-setup)
+    - [Task 3: Create a Github Repository](#task-3-create-a-github-repository)
+    - [Task 4: Setup Azure Cloud Shell Environment](#task-4-setup-azure-cloud-shell-environment)
+    - [Task 5: Complete the build agent setup](#task-5-complete-the-build-agent-setup)
 
 <!-- /TOC -->
 
@@ -143,7 +144,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
     ![Quick setup screen is displayed with the copy button next to the GitHub URL textbox selected.](media/2020-08-23-18-15-45.png "Quick setup screen")
 
-### Task 3: Setup Azure Cloud Shell Environment
+### Task 4: Setup Azure Cloud Shell Environment
 
 1. Set the following environment variables in an Azure Cloud Shell terminal. Set up of Azure resources and lab repository require these environment variables. A Github personal access token with appropriate permissions is required to set up and complete this lab - [Click here](https://github.com/settings/tokens/new?scopes=repo&description=GitHub%20Secrets%20CLI) to quickly set up a Github personal access token with the required permissions.
 
@@ -188,7 +189,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
    ![In this screenshot of a Cloud Shell window, ssh -i .ssh/fabmedical adminfabmedical@52.174.141.11 has been typed and run at the command prompt. The information detailed above appears in the window.](media/b4-image27.png "Azure Cloud Shell Connect to Host")
 
-### Task 4: Complete the build agent setup
+### Task 5: Complete the build agent setup
 
 1. From an Azure Cloud Shell terminal, use the SSH command output from the previous task and start an active SSH session to the build agent VM.
 
