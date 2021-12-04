@@ -39,14 +39,11 @@ mkdir -p ~/bin
 
 # Install the git-credential-env npm package
 npm install git-credential-env
-ln -s ~/node_modules/git-credential-env/helper.js ~/bin/git-credential-env
+ln -sf ~/node_modules/git-credential-env/helper.js ~/bin/git-credential-env
 
 # Install the github-secrets-cli npm package
 npm install @anomalyhq/github-secrets-cli
-ln -s ~/node_modules/@anomalyhq/github-secrets-cli/bin/run ~/bin/ghs
-
-# Create resource group
-az group create -l "${MCW_PRIMARY_REGION}" -n "fabmedical-${MCW_SUFFIX}"
+ln -sf ~/node_modules/@anomalyhq/github-secrets-cli/bin/run ~/bin/ghs
 
 # Create SSH key
 if [[ ! -e ~/.ssh ]]; then
@@ -54,6 +51,9 @@ if [[ ! -e ~/.ssh ]]; then
 fi
 
 ssh-keygen -t RSA -b 2048 -C admin@fabmedical -N "" -f ~/.ssh/fabmedical
+
+# Create resource group
+az group create -l "${MCW_PRIMARY_LOCATION}" -n "fabmedical-${MCW_SUFFIX}"
 
 SSH_PUBLIC_KEY=$(cat ~/.ssh/fabmedical.pub)
 
