@@ -24,7 +24,7 @@ if [[ -z "${MCW_GITHUB_TOKEN}" ]]; then
 fi
 
 if [[ -z "${MCW_GITHUB_URL}" ]]; then
-    MCW_GITHUB_URL=https://github.com/$MCW_GITHUB_USERNAME/Fabmedical.git
+    MCW_GITHUB_URL=https://$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN@github.com/$MCW_GITHUB_USERNAME/Fabmedical.git
 fi
 
 if [[ -z "${MCW_PRIMARY_LOCATION}" ]]; then
@@ -50,10 +50,6 @@ fi
 az group create -l "${MCW_PRIMARY_LOCATION}" -n "fabmedical-${MCW_SUFFIX}"
 
 SSH_PUBLIC_KEY=$(cat ~/.ssh/fabmedical.pub)
-
-# Committing repository
-GIT_AUTH=$(echo -n "$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN" | openssl base64 | tr -d '\n')
-git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $GIT_AUTH"
 
 # Create Fabmedical repository
 if [[ ! -e ~/Fabmedical ]]; then
@@ -91,11 +87,12 @@ AZURE_CREDENTIALS=$(az ad sp create-for-rbac --sdk-auth)
 
 GITHUB_TOKEN=$MCW_GITHUB_TOKEN
 cd ~/Fabmedical
-gh auth login --hostname github.com
+echo $GITHUB_TOKEN | gh auth login --with-token
 gh secret set ACR_USERNAME -b "$ACR_USERNAME"
 gh secret set ACR_PASSWORD -b "$ACR_PASSWORD"
 gh secret set AZURE_CREDENTIALS -b "$AZURE_CREDENTIALS" 
 
+# Committing repository
 cd ~/Fabmedical
 git branch -m master main
 git push -u origin main
