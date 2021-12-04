@@ -16,6 +16,10 @@ if [[ -z "${{MCW_GITHUB_TOKEN}}" ]]; then
     exit 1
 fi
 
+if [[ -z "${MCW_GITHUB_URL}" ]]; then
+    MCW_GITHUB_URL=https://github.com/$MCW_GITHUB_USERNAME/Fabmedical.git
+fi
+
 # Install essentials
 sudo apt-get update -y
 sudo apt install -y \
@@ -36,6 +40,12 @@ docker version
 nodejs --version
 npm -version
 
+# Install the github-secrets-cli npm package
+cd ~
+mkdir -p ~/bin
+npm install @anomalyhq/github-secrets-cli
+ln -sf ~/node_modules/@anomalyhq/github-secrets-cli/bin/run ~/bin/ghs
+
 # Install Angular
 sudo npm install -g @angular/cli
 
@@ -47,6 +57,7 @@ sudo chown -R $USER:$(id -gn $USER) /home/adminfabmedical/.config
 
 # Create Fabmedical repository
 if [[ ! -e ~/Fabmedical ]]; then
+    git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $AUTH"
     git clone https://github.com/$MCW_GITHUB_USERNAME/Fabmedical ~/Fabmedical
 fi
 
