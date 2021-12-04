@@ -1,7 +1,11 @@
 #!/bin/bash
 
 function replace_json_field {
-    tmpfile=/tmp/tmp.json; cp $1 "$tmpfile" && jq --arg mcwField "$2" --arg mcwValue "$3" '$mcwField |= $mcwValue' "$tmpfile" > $1 && mv "$tmpfile" $1 && rm -f "$tmpfile"
+    tmpfile=/tmp/tmp.json
+    cp $1 $tmpfile
+    echo "jq \"$2 |= \\\"$3\\\"\" $tmpfile > $1"
+    jq "$2 |= \"$3\"" $tmpfile > $1
+    rm "$tmpfile"
 }
 
 # Check if SUFFIX envvar exists
@@ -59,9 +63,7 @@ SSH_PUBLIC_KEY=$(cat ~/.ssh/fabmedical.pub)
 
 # Create Fabmedical repository
 if [[ ! -e ~/Fabmedical ]]; then
-    mkdir ~/Fabmedical
-    cd ~/Fabmedical
-    cp -r ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/developer/* ./
+    cp -R ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/developer ~/Fabmedical
 fi
 
 # Committing repository
@@ -76,18 +78,18 @@ git push -u origin main
 
 # Configuring github workflows
 cd ~/Fabmedical
-sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ./.github/workflows/content-init.yml
-sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ./.github/workflows/content-api.yml
-sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ./.github/workflows/content-web.yml
+sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ~/Fabmedical/.github/workflows/content-init.yml
+sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ~/Fabmedical/.github/workflows/content-api.yml
+sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ~/Fabmedical/.github/workflows/content-web.yml
 
 # Configure ARM deployment
 cd ~/Fabmedical/scripts
-replace_json_field azuredeploy.parameters.json .parameters.Suffix.value $MCW_SUFFIX
-replace_json_field azuredeploy.parameters.json .parameters.VirtualMachineAdminPublicKeyLinux.value $SSH_PUBLIC_KEY
-replace_json_field azuredeploy.parameters.json .parameters.CosmosLocation.value $MCW_PRIMARY_LOCATION
-replace_json_field azuredeploy.parameters.json .parameters.CosmosLocationName.value $MCW_PRIMARY_LOCATION_NAME
-replace_json_field azuredeploy.parameters.json .parameters.CosmosPairedLocation.value $MCW_SECONDARY_LOCATION
-replace_json_field azuredeploy.parameters.json .parameters.CosmosPairedLocationName.value $MCW_SECONDARY_LOCATION_NAME
+replace_json_field ~/Fabmedical/scripts/azuredeploy.parameters.json .parameters.Suffix.value "$MCW_SUFFIX"
+replace_json_field ~/Fabmedical/scripts/azuredeploy.parameters.json .parameters.VirtualMachineAdminPublicKeyLinux.value "$SSH_PUBLIC_KEY"
+replace_json_field ~/Fabmedical/scripts/azuredeploy.parameters.json .parameters.CosmosLocation.value "$MCW_PRIMARY_LOCATION"
+replace_json_field ~/Fabmedical/scripts/azuredeploy.parameters.json .parameters.CosmosLocationName.value "$MCW_PRIMARY_LOCATION_NAME"
+replace_json_field ~/Fabmedical/scripts/azuredeploy.parameters.json .parameters.CosmosPairedLocation.value "$MCW_SECONDARY_LOCATION"
+replace_json_field ~/Fabmedical/scripts/azuredeploy.parameters.json .parameters.CosmosPairedLocationName.value "$MCW_SECONDARY_LOCATION_NAME"
 
 # Create ARM deployment
 az deployment group create --resource-group fabmedical-$MCW_SUFFIX --template-file ./azuredeploy.json --parameters azuredeploy.parameters.json
