@@ -42,7 +42,7 @@ npm install @anomalyhq/github-secrets-cli
 ln -s ~/node_modules/@anomalyhq/github-secrets-cli/bin/run ~/bin/ghs
 
 # Create resource group
-az group create -l '${MCW_PRIMARY_REGION}' -n 'fabmedical-${MCW_SUFFIX}'
+az group create -l "${MCW_PRIMARY_REGION}" -n "fabmedical-${MCW_SUFFIX}"
 
 # Create SSH key
 if [[ ! -e ~/.ssh ]]; then
