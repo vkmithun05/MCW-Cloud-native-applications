@@ -41,10 +41,6 @@ fi
 cd ~
 mkdir -p ~/bin
 
-# Install the git-credential-env npm package
-npm install git-credential-env
-ln -sf ~/node_modules/git-credential-env/helper.js ~/bin/git-credential-env
-
 # Install the github-secrets-cli npm package
 npm install @anomalyhq/github-secrets-cli
 ln -sf ~/node_modules/@anomalyhq/github-secrets-cli/bin/run ~/bin/ghs
@@ -67,12 +63,13 @@ if [[ ! -e ~/Fabmedical ]]; then
 fi
 
 # Committing repository
+GIT_AUTH==$(echo -n "$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN" | openssl base64 | tr -d '\n')
 cd ~/Fabmedical
 git init
 git add .
 git commit -m "Initial Commit"
 git remote add origin $MCW_GITHUB_URL
-git config --global credential.helper "env --username=MCW_GITHUB_USERNAME --password=MCW_GITHUB_TOKEN"
+git config --global http.$(modules_repo_url).extraHeader "Authorization: Basic $AUTH"
 git branch -m master main
 git push -u origin main
 
