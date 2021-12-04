@@ -82,12 +82,12 @@ sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ./.github/workflows/content-web.yml
 
 # Configure ARM deployment
 cd ~/Fabmedical/scripts
-replace_json_field "azuredeploy.parameters.json" .parameters.Suffix.value $MCW_SUFFIX
-replace_json_field "azuredeploy.parameters.json" .parameters.VirtualMachineAdminPublicKeyLinux.value $SSH_PUBLIC_KEY
-replace_json_field "azuredeploy.parameters.json" .parameters.CosmosLocation.value $MCW_PRIMARY_LOCATION
-replace_json_field "azuredeploy.parameters.json" .parameters.CosmosLocationName.value $MCW_PRIMARY_LOCATION_NAME
-replace_json_field "azuredeploy.parameters.json" .parameters.CosmosPairedLocation.value $MCW_SECONDARY_LOCATION
-replace_json_field "azuredeploy.parameters.json" .parameters.CosmosPairedLocationName.value $MCW_SECONDARY_LOCATION_NAME
+replace_json_field azuredeploy.parameters.json .parameters.Suffix.value $MCW_SUFFIX
+replace_json_field azuredeploy.parameters.json .parameters.VirtualMachineAdminPublicKeyLinux.value $SSH_PUBLIC_KEY
+replace_json_field azuredeploy.parameters.json .parameters.CosmosLocation.value $MCW_PRIMARY_LOCATION
+replace_json_field azuredeploy.parameters.json .parameters.CosmosLocationName.value $MCW_PRIMARY_LOCATION_NAME
+replace_json_field azuredeploy.parameters.json .parameters.CosmosPairedLocation.value $MCW_SECONDARY_LOCATION
+replace_json_field azuredeploy.parameters.json .parameters.CosmosPairedLocationName.value $MCW_SECONDARY_LOCATION_NAME
 
 # Create ARM deployment
 az deployment group create --resource-group fabmedical-$MCW_SUFFIX --template-file ./azuredeploy.json --parameters azuredeploy.parameters.json
