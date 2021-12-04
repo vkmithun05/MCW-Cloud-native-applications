@@ -30,20 +30,8 @@ The names of manufacturers, products, or URLs are provided for informational pur
   - [Before the hands-on lab](#before-the-hands-on-lab)
     - [Task 1: Setup Azure Cloud Shell](#task-1-setup-azure-cloud-shell)
     - [Task 2: Download Starter Files](#task-2-download-starter-files)
-    - [Task 3: Resource Group](#task-3-resource-group)
-    - [Task 4: Create an SSH key](#task-4-create-an-ssh-key)
-    - [Task 5: Deploy ARM Template](#task-5-deploy-arm-template)
-    - [Task 6: Create a GitHub repository](#task-6-create-a-github-repository)
-    - [Task 7: Connect securely to the build agent](#task-7-connect-securely-to-the-build-agent)
-    - [Task 8: Complete the build agent setup](#task-8-complete-the-build-agent-setup)
-    - [Task 9: Clone Repositories to the Build Agent](#task-9-clone-repositories-to-the-build-agent)
-    - [Task 10: Test the Starter Application](#task-10-test-the-starter-application)
-    - [Task 11: Build the Docker Images](#task-11-build-the-docker-images)
-    - [Task 12: Run Docker Containers](#task-12-run-docker-containers)
-    - [Task 13: Setup Environment Variables](#task-13-setup-environment-variables)
-    - [Task 14: Push Images to Azure Container Registry](#task-14-push-images-to-azure-container-registry)
-    - [Task 15: Setup CI Pipeline to Push Images](#task-15-setup-ci-pipeline-to-push-images)
-
+    - [Task 3: Setup Azure Cloud Shell Environment](#task-3-setup-azure-cloud-shell-environment)
+    - [Task 4: Complete the build agent setup](#task-4-complete-the-build-agent-setup)
 
 <!-- /TOC -->
 
@@ -163,7 +151,7 @@ You should follow all of the steps provided in this section _before_ taking part
    Command to create an active session to the build agent VM:
 
        ssh -i .ssh/fabmedical adminfabmedical@<PUBLIC IP OF VM>
-   ...
+   ```
 
 4. Use the SSH command output in the previous step to establish an SSH session to the build agent VM.  You should be presented with a prompt similar to the following:
 
@@ -171,7 +159,7 @@ You should follow all of the steps provided in this section _before_ taking part
 
    ![In this screenshot of a Cloud Shell window, ssh -i .ssh/fabmedical adminfabmedical@52.174.141.11 has been typed and run at the command prompt. The information detailed above appears in the window.](media/b4-image27.png "Azure Cloud Shell Connect to Host")
 
-### Task 8: Complete the build agent setup
+### Task 4: Complete the build agent setup
 
 1. From an Azure Cloud Shell terminal, use the SSH command output from the previous task and start an active SSH session to the build agent VM.
 
@@ -188,6 +176,4 @@ You should follow all of the steps provided in this section _before_ taking part
    bash create_build_environment.sh
    ```
 
-
 You should follow all steps provided _before_ performing the Hands-on lab.
-

@@ -21,13 +21,13 @@ if [[ -z "${{MCW_GITHUB_TOKEN}}" ]]; then
 fi
 
 if [[ -z "${MCW_PRIMARY_LOCATION}" ]]; then
-    MCW_PRIMARY_LOCATION="westus"
-    MCW_PRIMARY_LOCATION_NAME="West US"
+    MCW_PRIMARY_LOCATION="eastus"
+    MCW_PRIMARY_LOCATION_NAME="East US"
 fi
 
 if [[ -z "${MCW_SECONDARY_LOCATION}" ]]; then
-    MCW_SECONDARY_LOCATION="eastus"
-    MCW_SECONDARY_LOCATION_NAME="East US"
+    MCW_SECONDARY_LOCATION="westus"
+    MCW_SECONDARY_LOCATION_NAME="West US"
 fi
 
 # Install the git-credential-env npm package
