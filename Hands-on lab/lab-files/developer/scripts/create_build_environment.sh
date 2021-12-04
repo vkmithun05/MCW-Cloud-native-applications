@@ -40,12 +40,6 @@ docker version
 nodejs --version
 npm -version
 
-# Install the github-secrets-cli npm package
-cd ~
-mkdir -p ~/bin
-npm install @anomalyhq/github-secrets-cli
-ln -sf ~/node_modules/@anomalyhq/github-secrets-cli/bin/run ~/bin/ghs
-
 # Install Angular
 sudo npm install -g @angular/cli
 
