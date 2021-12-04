@@ -101,4 +101,4 @@ git push -u origin main
 VM_PUBLIC_IP=$(az vm show -d -g fabmedical-$MCW_SUFFIX -n fabmedical-$MCW_SUFFIX --query publicIps -o tsv)
 echo "Command to create an active session to the build agent VM:"
 echo ""
-echo "    ssh -i .ssh/fabmedical adminfabmedical@$VM_PUBLIC_IP"
+echo "    ssh -i ~/.ssh/fabmedical adminfabmedical@$VM_PUBLIC_IP"
