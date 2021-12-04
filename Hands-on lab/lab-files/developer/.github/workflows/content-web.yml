@@ -52,17 +52,6 @@ jobs:
         tags: |
           ${{ env.containerRegistry }}/${{ env.imageRepository }}:${{ env.tag }}
           ${{ env.containerRegistry }}/${{ env.imageRepository }}:latest
-   
-    - name: Set Kubernetes Context
-      uses: azure/aks-set-context@v1
-      with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}' # Azure credentials
-        resource-group: '${{ env.resourceGroupName }}'
-        cluster-name: '${{ env.clusterName }}'
-
-    - name: Create ingress-demo namespace
-      run: |
-        kubectl create namespace ingress-demo --dry-run -o json | kubectl apply -f -
 
     - name: Create ACR credentials secret
       uses: azure/k8s-create-secret@v1
@@ -77,8 +66,8 @@ jobs:
     # - uses: Azure/aks-set-context@v1
     #   with:
     #     creds: '${{ secrets.AZURE_CREDENTIALS }}'
-    #     cluster-name: fabmedical-[SUFFIX]
-    #     resource-group: fabmedical-[SUFFIX]
+    #     cluster-name: '${{ env.resourceGroupName }}'
+    #     resource-group: '${{ env.clusterName }}'
         
     # - name: Deploy to AKS
     #   uses: azure/k8s-deploy@v1

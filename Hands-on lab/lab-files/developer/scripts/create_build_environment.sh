@@ -17,7 +17,7 @@ if [[ -z "${{MCW_GITHUB_TOKEN}}" ]]; then
 fi
 
 if [[ -z "${MCW_GITHUB_URL}" ]]; then
-    MCW_GITHUB_URL=https://github.com/$MCW_GITHUB_USERNAME/Fabmedical.git
+    MCW_GITHUB_URL=https://$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN@github.com/$MCW_GITHUB_USERNAME/Fabmedical.git
 fi
 
 # Install essentials
