@@ -20,6 +20,10 @@ if [[ -z "${MCW_GITHUB_TOKEN}" ]]; then
     exit 1
 fi
 
+if [[ -z "${MCW_GITHUB_URL}" ]]; then
+    MCW_GITHUB_URL=https://github.com/$MCW_GITHUB_USERNAME/Fabmedical
+fi
+
 if [[ -z "${MCW_PRIMARY_LOCATION}" ]]; then
     MCW_PRIMARY_LOCATION="eastus"
     MCW_PRIMARY_LOCATION_NAME="East US"
@@ -60,6 +64,16 @@ if [[ ! -e ~/Fabmedical ]]; then
     cp -r ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/developer/* ./
 fi
 
+# Committing repository
+cd ~/Fabmedical
+git init
+git add .
+git commit -m "Initial Commit"
+git remote add origin $MCW_GITHUB_URL
+git config --global credential.helper "env --username=MCW_GITHUB_USERNAME --password=MCW_GITHUB_TOKEN"
+git branch -m master main
+git push -u origin main
+
 # Configuring github workflows
 cd ~/Fabmedical
 sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ./.github/workflows/content-init.yml
@@ -86,16 +100,6 @@ AZURE_CREDENTIALS=$(az ad sp create-for-rbac --sdk-auth)
 ghs secrets:set --input="$ACR_USERNAME" --org="$MCW_GITHUB_USERNAME" --repo="Fabmedical" --secret="ACR_USERNAME" -t="$MCW_GITHUB_TOKEN"
 ghs secrets:set --input="$ACR_PASSWORD" --org="$MCW_GITHUB_USERNAME" --repo="Fabmedical" --secret="ACR_PASSWORD" -t="$MCW_GITHUB_TOKEN"
 ghs secrets:set --input="$AZURE_CREDENTIALS" --org="$MCW_GITHUB_USERNAME" --repo="Fabmedical" --secret="AZURE_CREDENTIALS" -t="$MCW_GITHUB_TOKEN"
-
-# Committing repository
-cd ~/Fabmedical
-git init
-git add .
-git commit -m "Initial Commit"
-git remote add origin https://github.com/$MCW_GITHUB_USERNAME/Fabmedical
-git config --global credential.helper "env --username=MCW_GITHUB_USERNAME --password=MCW_GITHUB_TOKEN"
-git branch -m master main
-git push -u origin main
 
 # Get public IP of build agent VM
 VM_PUBLIC_IP=$(az vm show -d -g fabmedical-$MCW_SUFFIX -n fabmedical-$MCW_SUFFIX --query publicIps -o tsv)

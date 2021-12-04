@@ -121,6 +121,28 @@ You should follow all of the steps provided in this section _before_ taking part
 
    ![In this screenshot of a Bash window, git clone has been typed and run at the command prompt. The output from git clone is shown.](media/b4-2019-09-30_21-25-06.png "Bash Git Clone")
 
+### Task 3: Create a GitHub repository
+
+FabMedical has provided starter files for you. They have taken a copy of the websites for their customer Contoso Neuro and refactored it from a single node.js site into a website with a content API that serves up the speakers and sessions. This refactored code is a starting point to validate the containerization of their websites. Use this to help them complete a POC that validates the development workflow for running the website and API as Docker containers and managing them within the Azure Kubernetes Service environment.
+
+1. Open a web browser and navigate to <https://www.github.com>. Log in using your GitHub account credentials.
+
+2. In the upper-right corner, expand the user drop down menu and select **Your repositories**.
+
+    ![The user menu is expanded with the Your repositories item selected.](media/2020-08-23-18-03-40.png "User menu, your repositories")
+
+3. Next to the search criteria, locate and select the **New** button.
+
+    ![The GitHub Find a repository search criteria is shown with the New button selected.](media/2020-08-23-18-08-02.png "New repository button")
+
+4. On the **Create a new repository** screen, name the repository **Fabmedical** and select the **Create repository** button.
+
+    ![Create a new repository page with Repository name field and Create repository button highlighted.](media/2020-08-23-18-11-38.png "Create a new repository")
+
+5. On the **Quick setup** screen, copy the **HTTPS** GitHub URL for your new repository, paste this in notepad for future use.
+
+    ![Quick setup screen is displayed with the copy button next to the GitHub URL textbox selected.](media/2020-08-23-18-15-45.png "Quick setup screen")
+
 ### Task 3: Setup Azure Cloud Shell Environment
 
 1. Set the following environment variables in an Azure Cloud Shell terminal. Set up of Azure resources and lab repository require these environment variables. A Github personal access token with appropriate permissions is required to set up and complete this lab - [Click here](https://github.com/settings/tokens/new?scopes=repo&description=GitHub%20Secrets%20CLI) to quickly set up a Github personal access token with the required permissions.
@@ -133,6 +155,7 @@ You should follow all of the steps provided in this section _before_ taking part
 
    > Note: The following environment variables can also be set if their defaults are not appropriate for the lab setting or environment.
 
+      - MCW_GITHUB_URL - Defaults to `https://github.com/$MCW_GITHUB_USERNAME/Fabmedical`
       - MCW_PRIMARY_LOCATION - Defaults to `westus`
       - MCW_PRIMARY_LOCATION_NAME - Defaults to `West US`
       - MCW_SECONDARY_LOCATION - Defaults to `eastus`
