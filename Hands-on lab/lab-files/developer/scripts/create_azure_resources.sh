@@ -37,38 +37,33 @@ if [[ -z "${MCW_SECONDARY_LOCATION}" ]]; then
     MCW_SECONDARY_LOCATION_NAME="West US"
 fi
 
-cd ~
-mkdir -p ~/bin
-
-# Install the github-secrets-cli npm package
-npm install @anomalyhq/github-secrets-cli
-ln -sf ~/node_modules/@anomalyhq/github-secrets-cli/bin/run ~/bin/ghs
-
 # Create SSH key
 if [[ ! -e ~/.ssh ]]; then
     mkdir ~/.ssh
 fi
 
-ssh-keygen -t RSA -b 2048 -C admin@fabmedical -N "" -f ~/.ssh/fabmedical
+if [[ ! -e ~/.ssh/fabmedical ]]; then
+    ssh-keygen -t RSA -b 2048 -C admin@fabmedical -N "" -f ~/.ssh/fabmedical
+fi
 
 # Create resource group
 az group create -l "${MCW_PRIMARY_LOCATION}" -n "fabmedical-${MCW_SUFFIX}"
 
 SSH_PUBLIC_KEY=$(cat ~/.ssh/fabmedical.pub)
 
+# Committing repository
+GIT_AUTH==$(echo -n "$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN" | openssl base64 | tr -d '\n')
+git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $AUTH"
+
 # Create Fabmedical repository
 if [[ ! -e ~/Fabmedical ]]; then
     cp -R ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/developer ~/Fabmedical
+    cd ~/Fabmedical
+    git init
+    git add .
+    git commit -m "Initial Commit"
+    git remote add origin $MCW_GITHUB_URL
 fi
-
-# Committing repository
-GIT_AUTH==$(echo -n "$MCW_GITHUB_USERNAME:$MCW_GITHUB_TOKEN" | openssl base64 | tr -d '\n')
-cd ~/Fabmedical
-git init
-git add .
-git commit -m "Initial Commit"
-git remote add origin $MCW_GITHUB_URL
-git config --global http.$MCW_GITHUB_URL.extraHeader "Authorization: Basic $AUTH"
 
 # Configuring github workflows
 cd ~/Fabmedical
