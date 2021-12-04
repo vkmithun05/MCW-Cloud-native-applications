@@ -34,7 +34,7 @@ fi
 npm install -g git-credential-env
 
 # Install the github-secrets-cli npm package
-npm install -g github-secrets-cli
+npm install -g @anomalyhq/github-secrets-cli
 
 # Create resource group
 az group create -l '${MCW_PRIMARY_REGION}' -n 'fabmedical-${MCW_SUFFIX}'
