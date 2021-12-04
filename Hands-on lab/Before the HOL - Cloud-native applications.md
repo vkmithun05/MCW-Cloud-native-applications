@@ -180,7 +180,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    ```bash
    Command to create an active session to the build agent VM:
 
-       ssh -i .ssh/fabmedical adminfabmedical@<PUBLIC IP OF VM>
+       ssh -i ~/.ssh/fabmedical adminfabmedical@<PUBLIC IP OF VM>
    ```
 
 4. Use the SSH command output in the previous step to establish an SSH session to the build agent VM.  You should be presented with a prompt similar to the following:

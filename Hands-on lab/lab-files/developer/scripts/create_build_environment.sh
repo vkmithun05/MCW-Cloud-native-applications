@@ -6,12 +6,12 @@ if [[ -z "${MCW_SUFFIX}" ]]; then
     exit 1
 fi
 
-if [[ -z "${{MCW_GITHUB_USERNAME}}" ]]; then
+if [[ -z "${MCW_GITHUB_USERNAME}" ]]; then
     echo "Please set the MCW_GITHUB_USERNAME environment variable to your Github Username"
     exit 1
 fi
 
-if [[ -z "${{MCW_GITHUB_TOKEN}}" ]]; then
+if [[ -z "${MCW_GITHUB_TOKEN}" ]]; then
     echo "Please set the MCW_GITHUB_TOKEN environment variable to your Github Token"
     exit 1
 fi
