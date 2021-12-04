@@ -3,7 +3,6 @@
 function replace_json_field {
     tmpfile=/tmp/tmp.json
     cp $1 $tmpfile
-    echo "jq \"$2 |= \\\"$3\\\"\" $tmpfile > $1"
     jq "$2 |= \"$3\"" $tmpfile > $1
     rm "$tmpfile"
 }
