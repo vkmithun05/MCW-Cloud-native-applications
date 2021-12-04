@@ -30,11 +30,16 @@ if [[ -z "${MCW_SECONDARY_LOCATION}" ]]; then
     MCW_SECONDARY_LOCATION_NAME="West US"
 fi
 
+cd ~
+mkdir -p ~/bin
+
 # Install the git-credential-env npm package
-sudo npm install -g git-credential-env
+npm install git-credential-env
+ln -s ~/node_modules/git-credential-env/helper.js ~/bin/git-credential-env
 
 # Install the github-secrets-cli npm package
-sudo npm install -g @anomalyhq/github-secrets-cli
+npm install @anomalyhq/github-secrets-cli
+ln -s ~/node_modules/@anomalyhq/github-secrets-cli/bin/run ~/bin/ghs
 
 # Create resource group
 az group create -l '${MCW_PRIMARY_REGION}' -n 'fabmedical-${MCW_SUFFIX}'
@@ -44,7 +49,7 @@ if [[ ! -e ~/.ssh ]]; then
     mkdir ~/.ssh
 fi
 
-ssh-keygen -t RSA -b 2048 -C admin@fabmedical -N "" -f fabmedical
+ssh-keygen -t RSA -b 2048 -C admin@fabmedical -N "" -f ~/.ssh/fabmedical
 
 SSH_PUBLIC_KEY=$(cat ~/.ssh/fabmedical.pub)
 
