@@ -31,10 +31,10 @@ if [[ -z "${MCW_SECONDARY_LOCATION}" ]]; then
 fi
 
 # Install the git-credential-env npm package
-npm install -g git-credential-env
+sudo npm install -g git-credential-env
 
 # Install the github-secrets-cli npm package
-npm install -g @anomalyhq/github-secrets-cli
+sudo npm install -g @anomalyhq/github-secrets-cli
 
 # Create resource group
 az group create -l '${MCW_PRIMARY_REGION}' -n 'fabmedical-${MCW_SUFFIX}'
