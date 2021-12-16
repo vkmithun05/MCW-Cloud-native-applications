@@ -342,13 +342,15 @@ _High-level architecture_
 
 2. Without getting into the details (the following sections will address the particular details), diagram your initial vision of the container platform, the containers that should be deployed (for a single tenant), and the data tier.
 
-_Choosing a container platform on Azure_
+_Choosing a container platform_
 
 1. List the potential platform choices for deploying containers to Azure.
 
 2. Which would you recommend and why?
 
 3. Describe how the customer can provision their Azure Kubernetes Service (AKS) environment to get their POC started.
+
+4. Discuss the potential of a multi-cloud approach for Kubernetes and the ability to leverage a variety of cloud resources from multiple vendors.
 
 _Containers, discovery, and load balancing_
 
