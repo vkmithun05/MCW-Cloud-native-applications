@@ -59,7 +59,7 @@ Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/int
 
 ## Abstract and learning objectives
 
-This hands-on lab will guide the student through the process of deploying a web application and API microservice to a Kubernetes platform hosted on Azure Kubernetes Services (AKS), instructing them on configuring the behavior of these services through dynamic service discovery, service scale-out, and high-availability in the context of AKS hosted services. Through demonstration of key Kubernetes concepts, the student will gain experience with deployment and service Kubernetes resources, creating them manually through the Azure Portal and manipulating their configurations to scale the associated microservice instances up and down as well as managing their CPU and memory resource allocations with the Kubernetes cluster.
+This hands-on lab will guide the student through deploying a web application and API microservice to a Kubernetes platform hosted on Azure Kubernetes Services (AKS). In addition, the lab will instruct the student on configuring the behavior of these services through dynamic service discovery, service scale-out, and high availability in the context of AKS-hosted services. By demonstrating crucial Kubernetes concepts, the student will gain experience with the Kubernetes deployment and service resource types. The student will create them manually through the Azure Portal and manipulate their configurations to scale the associated microservice instances up and down and manage their CPU and memory resource allocations with the Kubernetes cluster.
 
 At the conclusion of this lab, you have a solid understanding of how to build and deploy containerized applications to Azure Kubernetes Service and perform common DevOps tasks and procedures.
 
@@ -79,7 +79,7 @@ Completion of the steps outlined in the [Before the HOL - Cloud-native applicati
 
 ## Overview
 
-Fabrikam Medical Conferences (FabMedical) provides conference website services tailored to the medical community. They are refactoring their application code based on node.js to run as a Docker application. They want to implement a POC that will help them get familiar with the development process, lifecycle of deployment, and critical aspects of the hosting environment. They will be deploying their applications to Azure Kubernetes Service and want to learn how to deploy containers in a dynamically load-balanced manner, discover containers, and scale them on demand.
+Fabrikam Medical Conferences (FabMedical) provides conference website services tailored to the medical community. They are refactoring their application to run as a Docker application. They want to implement a proof of concept that will help them get familiar with the development process, lifecycle of deployment, and critical aspects of the hosting environment. They will be deploying their applications to Azure Kubernetes Service and want to learn how to deploy containers in a dynamically load-balanced manner, discover containers, and scale them on demand.
 
 In this hands-on lab, you will assist with completing this POC with a subset of the application codebase. You will create a build agent based on Linux and an Azure Kubernetes Service cluster for running deployed applications. You will be helping them to complete the Docker setup for their application, test locally, push to an image repository, deploy to the cluster, and test load-balancing and scale.
 
@@ -89,13 +89,13 @@ In this hands-on lab, you will assist with completing this POC with a subset of 
 
 Below is a diagram of the solution architecture you will build in this lab. Please study this carefully to understand the whole of the solution as you are working on the various components.
 
-The solution will use Azure Kubernetes Service (AKS), which means the number of requested nodes dictates the container cluster topology provisioned by AKS. The proposed containers deployed to the cluster are illustrated below with Cosmos DB as a managed service.
+The proposed containers deployed to the cluster are illustrated below with Cosmos DB as a managed service.
 
 ![A diagram showing the solution, using Azure Kubernetes Service with a Cosmos DB back end.](media/solution-topology.png "Solution architecture diagram")
 
 Each tenant will have the following containers:
 
-- **Conference Web site**: The SPA application that uses configuration settings to handle custom styles for the tenant.
+- **Conference Web site**: The single page application (SPA) application that uses configuration settings to handle custom styles for the tenant.
 
 - **Admin Web site**: The SPA application that conference owners use to manage conference configuration details, attendee registrations, campaigns, and communications with attendees.
 
@@ -120,11 +120,11 @@ Each tenant will have the following containers:
 
      - Is a [Member](https://docs.microsoft.com/azure/active-directory/fundamentals/users-default-permissions#member-and-guest-users) user in the Azure AD tenant you will use. (Guest users will not have the necessary permissions.)
 
-   - You must have enough cores available in your subscription to create the build agent and Azure Kubernetes Service cluster in Before the Hands-on Lab. You will need eight cores if following the exact instructions in the lab or more if you choose additional cluster nodes or larger VM sizes. If you execute the steps required before the lab, you will see if you need to request more cores in your sub.
+   - You must have enough cores available in your subscription to create the build agent and Azure Kubernetes Service cluster in Before the Hands-on Lab. This lab requires a minimum of eight cores which may demand more cluster resources than your current quota will allow. In such cases, you can request a CPU core quota increase to deploy the AKS cluster.
 
 2. Local machine or a virtual machine configured with:
 
-   - A browser, preferably Chrome, for consistency with the lab implementation tests.
+   - A browser, such as Microsoft Edge or Google Chrome, for consistency with the lab implementation tests.
 
 3. You will install other tools throughout the exercises.
 
@@ -134,7 +134,7 @@ Each tenant will have the following containers:
 
 **Duration**: 40 minutes
 
-Having verified that the web and API applications run in a Docker instance on the build agent VM in preparation for this lab, the next step is to migrate the MongoDB database data to Azure Cosmos DB. This exercise will use the Azure Database Migration Service to migrate the data from the MongoDB database into Azure Cosmos DB.
+The next step is to migrate the MongoDB database data to Azure Cosmos DB. This exercise will use the Azure Database Migration Service to migrate the data from the MongoDB database into Azure Cosmos DB.
 
 ### Task 1: Enable Microsoft.DataMigration resource provider
 
