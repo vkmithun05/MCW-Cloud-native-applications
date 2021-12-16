@@ -156,7 +156,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    export MCW_GITHUB_TOKEN=<GITHUB PAT>         # A personal access token for your Github account
    ```
 
-   > Note: The following environment variables can also be set if their defaults are not appropriate for the lab setting or environment.
+   > **Note**: The following environment variables can also be set if their defaults are not appropriate for the lab setting or environment.
 
       - MCW_GITHUB_URL - Defaults to `https://github.com/$MCW_GITHUB_USERNAME/Fabmedical`
       - MCW_PRIMARY_LOCATION - Defaults to `northeurope`
