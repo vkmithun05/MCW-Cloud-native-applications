@@ -522,7 +522,7 @@ They also decided to move forward with GitHub Actions for container DevOps workf
 
 ![A diagram showing the solution, using Azure Kubernetes Service with a Cosmos DB back end.](media/solution-topology.png)
 
-*Choosing a container platform on Azure*
+*Choosing a container platform*
 
 1. List the potential platform choices for deploying containers to Azure.
 
@@ -559,6 +559,10 @@ They also decided to move forward with GitHub Actions for container DevOps workf
 3. Describe how the customer can provision their Azure Kubernetes Service (AKS) environment to get their POC started.
 
     - The Azure Kubernetes Service (AKS) environment is deployed using a few simple Azure CLI commands.
+
+4. Discuss the potential of a multi-cloud approach for Kubernetes and the ability to leverage a variety of cloud resources from multiple vendors.
+
+    - Using a Kubernetes platform like the Azure Kubernetes Service (AKS) allows for the leveraging of multi-cloud architectures that also provide Kubernetes services.
 
 *Containers, discovery and load-balancing*
 
