@@ -28,7 +28,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
   - [Overview](#overview)
   - [Requirements](#requirements)
   - [Before the hands-on lab](#before-the-hands-on-lab)
-    - [Task 1: Setup Azure Cloud Shell](#task-1-setup-azure-cloud-shell)
+    - [Task 1: Set up Azure Cloud Shell](#task-1-set-up-azure-cloud-shell)
     - [Task 2: Download Starter Files](#task-2-download-starter-files)
     - [Task 3: Create a GitHub Repository](#task-3-create-a-github-repository)
     - [Task 4: Set up Azure Cloud Shell environment](#task-4-set-up-azure-cloud-shell-environment)
