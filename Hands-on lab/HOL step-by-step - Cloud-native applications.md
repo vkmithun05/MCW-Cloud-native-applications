@@ -18,7 +18,7 @@ Microsoft may have patents, patent applications, trademarks, copyrights, or othe
 
 The names of manufacturers, products, or URLs are provided for informational purposes only and Microsoft makes no representations and warranties, either expressed, implied, or statutory, regarding these manufacturers or the use of the products with any Microsoft technologies. The inclusion of a manufacturer or product does not imply endorsement of Microsoft of the manufacturer or product. Links may be provided to third party sites. Such sites are not under the control of Microsoft and Microsoft is not responsible for the contents of any linked site or any link contained in a linked site, or any changes or updates to such sites. Microsoft is not responsible for webcasting or any other form of transmission received from any linked site. Microsoft is providing these links to you only as a convenience, and the inclusion of any link does not imply endorsement of Microsoft of the site or the products contained therein.
 
-© 2020 Microsoft Corporation. All rights reserved.
+© 2021 Microsoft Corporation. All rights reserved.
 
 Microsoft and the trademarks listed at https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/Usage/General.aspx are trademarks of the Microsoft group of companies. All other trademarks are property of their respective owners.
 
@@ -166,9 +166,9 @@ This task will deploy an instance of the Azure Database Migration Service used t
 
 5. On the **Basics** tab of the **Create Migration Service** pane, enter the following values:
 
-    - Resource group: Select the Resource Group created with this lab.
-    - Migration service name: Enter a name, such as `fabmedical[SUFFIX]`.
-    - Location: Choose the Azure Region used for the Resource Group.
+    - **Resource group**: Select the Resource Group created with this lab.
+    - **Migration service name**: Enter a name, such as `fabmedical[SUFFIX]`.
+    - **Location**: Choose the Azure Region used for the Resource Group.
 
     ![The screenshot shows the Create Migration Service Basics tab with all values entered.](media/dms-create-basics.png "Create Migration Basics Tab")
 
@@ -198,10 +198,10 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
 4. On the **New migration project** pane, enter the following values, then select **Create and run activity**:
 
-    - Project name: `fabmedical`
-    - Source server type: `MongoDB`
-    - Target server type: `CosmosDB (MongoDB API)`
-    - Choose type of activity: `Offline data migration`
+    - **Project name**: fabmedical
+    - **Source server type**: MongoDB
+    - **Target server type**: CosmosDB (MongoDB API)
+    - **Choose type of activity**: Offline data migration
 
     ![The screenshot shows the New migration project pane with values entered.](media/dms-new-migration-project.png "New migration project pane")
 
@@ -209,10 +209,10 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
 5. On the **MongoDB to Azure Database for CosmosDB Offline Migration Wizard** pane, enter the following values for the **Select source** tab:
 
-    - Mode: **Standard mode**
-    - Source server name: Enter the Private IP Address of the Build Agent VM used in this lab.
-    - Server port: `27017`
-    - Require SSL: Unchecked
+    - **Mode**: Standard mode
+    - **Source server name**: Enter the Private IP Address of the Build Agent VM used in this lab.
+    - **Server port**: 27017
+    - **Require SSL**: Unchecked
 
     > **Note:** Leave the **User Name** and **Password** blank as the MongoDB instance on the Build Agent VM for this lab does not have authentication turned on. The Azure Database Migration Service resides in the same VNet as the Build Agent VM, so it can communicate within the VNet directly to the VM without exposing the MongoDB service to the Internet. In production scenarios, you should always have authentication enabled on MongoDB.
 
@@ -222,11 +222,11 @@ In this task, you will create a **Migration project** within Azure Database Migr
 
 7. On the **Select target** pane, select the following values:
 
-    - Mode: **Select Cosmos DB target**
+    - **Mode**: Select Cosmos DB target
 
-    - Subscription: Select the Azure subscription you're using for this lab.
+    - **Subscription**: Select the Azure subscription you're using for this lab.
 
-    - Select Cosmos DB name: Select the `fabmedical-[SUFFIX]` Cosmos DB instance.
+    - **Select Cosmos DB name**: Select the `fabmedical-[SUFFIX]` Cosmos DB instance.
 
     ![The Select target tab with values selected.](media/dms-select-target.png "MongoDB to Azure Database for CosmosDB - Select target")
 
@@ -723,7 +723,7 @@ This task will access and review the various logs and dashboards made available 
 
     ![In this screenshot, the containers are filtered by container named web.](media/monitor_1.png "Filter data by container and web")
 
-6. The CPU Usage metric is selected by default, displaying all CPU information for the selected container. To switch to another metric open the metric dropdown list and select a different metric.
+6. The CPU Usage metric is selected by default, displaying all CPU information for the selected container. To switch to another metric, open the metric dropdown list and select a different metric.
 
     ![In this screenshot, the various metric options are shown.](media/monitor_2.png "Filter by CPU usage")
 
@@ -751,7 +751,7 @@ This task will increase the number of instances for the API deployment in the AK
 
 1. In the AKS blade in the Azure Portal, select **Workloads** and then select the **API** deployment.
 
-2. Select **YAML** in the window that loads, and scroll down until you find **replicas**. Change the number of replicas to **2**, then select **Review + save**. Finally, check **Confirm manifest change** and select **Save**when prompted.
+2. Select **YAML** in the window that loads and scroll down until you find **replicas**. Change the number of replicas to **2**, then select **Review + save**. Finally, check **Confirm manifest change** and select **Save** when prompted.
 
     ![In the edit YAML dialog, 2 is entered in the desired number of replicas.](media/2021-03-26-16-49-32.png "Setting replicas to 2")
 
@@ -818,7 +818,7 @@ This task will resolve the failed API replicas. These failures occur due to the 
           memory: 128Mi
       ```
 
-   Select **Review + save** and, when prompted, confirm the changes and select **Save**.
+   Select **Review + save** and, when prompted, confirm the changes, and select **Save**.
 
       ![In the edit YAML dialog, showing two changes required.](media/2021-03-26-16-56-28.png "Modify deployment manifest")
 
@@ -928,7 +928,7 @@ This task will run a performance test script that will test the Autoscale featur
 
 10. Once the script has completed, navigate back to the **Cosmos DB account** in the Azure portal.
 
-11. Scroll down on the **Overview** pane of the **Cosmos DB account** blade, and locate the **Request Charge** graph.
+11. Scroll down on the **Overview** pane of the **Cosmos DB account** blade and locate the **Request Charge** graph.
 
     > **Note:** It may take 2 - 5 minutes for the activity on the Cosmos DB collection to appear in the activity log. Wait a few minutes and refresh the pane if the recent Request charge doesn't show up immediately.
 
@@ -994,7 +994,7 @@ This task will edit the web application source code to add Application Insights 
 
     Copy this value. You will use it later.
 
-    > Note: We must execute commands for this and later steps from an Azure Cloud Shell terminal that does not have an active SSH session with the build agent VM. This step and the following steps require the existence of the `api.deployment.yml`, `web.deployment.yml`, and `web.service.yml` files in your `~/Fabmedical` repository root; we should have generated these files in the `~/Fabmedical` repository root via previous steps in this lab from your Azure Cloud Shell terminal, and not on the build agent VM. If these files are not present at that location, please review previous lab steps up to this point and ensure the creation of these files in the correct place before proceeding.
+    > **Note**: We must execute commands for this and later steps from an Azure Cloud Shell terminal that does not have an active SSH session with the build agent VM. This step and the following steps require the existence of the `api.deployment.yml`, `web.deployment.yml`, and `web.service.yml` files in your `~/Fabmedical` repository root; we should have generated these files in the `~/Fabmedical` repository root via previous steps in this lab from your Azure Cloud Shell terminal, and not on the build agent VM. If these files are not present at that location, please review previous lab steps up to this point and ensure the creation of these files in the correct place before proceeding.
 
 2. From an Azure Cloud Shell terminal that does **NOT** have an active SSH session to the build agent VM update your Fabmedical repository files by pulling the latest changes from the git repository and then updating deployment YAML files.
 
@@ -1005,7 +1005,7 @@ This task will edit the web application source code to add Application Insights 
     git pull
     ```
 
-    > Note: The calls to `kubectl` are necessary to fetch recent changes to the port and CPU resource configurations made in previous steps for the `web` and `api` deployments.
+    > **Note**: The calls to `kubectl` are necessary to fetch recent changes to the port and CPU resource configurations made in previous steps for the `web` and `api` deployments.
 
 3. Install support for Application Insights.
 
@@ -1013,7 +1013,7 @@ This task will edit the web application source code to add Application Insights 
     npm install applicationinsights --save
     ```
 
-    > Note: Make sure to include the `--save` argument. Without this, a reference to the `applicationinsights` npm package will not get added to the `package.json` file of the `content-web` nodejs project, resulting in a deployment failure in later steps.
+    > **Note**: Make sure to include the `--save` argument. Without this, a reference to the `applicationinsights` npm package will not get added to the `package.json` file of the `content-web` nodejs project, resulting in a deployment failure in later steps.
 
 4. Edit the `app.js` file using Vim or Visual Studio Code remote and add the following lines immediately after `express` is instantiated on line 6:
 
@@ -1098,13 +1098,14 @@ This task will edit the web application source code to add Application Insights 
     ```
 
     > **Note**: Ensure the following files from [Exercise 2](#exercise-2-deploy-the-solution-to-azure-kubernetes-service), Tasks [2](#task-2-deploy-a-service-using-the-azure-portal) and [3](#task-3-deploy-a-service-using-kubectl), are present in the git repository root.
+
     ```bash
     api.deployment.yml
     web.deployment.yml
     web.service.yml
     ```
 
-7. Push these changes to your repository so that GitHub Actions CI will build and deploy a new Container image.
+10. Push these changes to your repository so that GitHub Actions CI will build and deploy a new Container image.
 
    ```bash
    git add .
@@ -1114,15 +1115,15 @@ This task will edit the web application source code to add Application Insights 
    git push
    ```
 
-8. Visit the `content-web` and `content-api` Actions for your GitHub Fabmedical repository and observe the images being built and deployed into the Kubernetes cluster.
+11. Visit the `content-web` and `content-api` Actions for your GitHub Fabmedical repository and observe the images being built and deployed into the Kubernetes cluster.
 
-9. While the pipelines rune, return the Azure Portal in the browser.
+12. While the pipelines rune, return the Azure Portal in the browser.
 
-10. From the navigation menu, select **Replica Sets** under **Workloads**. From this view, you will see a new replica set for the web, which may still be in the process of deploying (as shown below) or already fully deployed.
+13. From the navigation menu, select **Replica Sets** under **Workloads**. From this view, you will see a new replica set for the web, which may still be in the process of deploying (as shown below) or already fully deployed.
 
     ![At the top of the list, a new web replica set is listed as a pending deployment in the Replica Set box.](media/2021-03-26-18-25-30.png "Pod deployment is in progress")
 
-11. While the deployment is in progress, you can navigate to the web application and visit the stats page at `/stats`. Refresh the page as the rolling update executes. Observe that the service is running normally, and tasks continue to be load balanced.
+14. While the deployment is in progress, you can navigate to the web application and visit the stats page at `/stats`. Refresh the page as the rolling update executes. Observe that the service is running normally, and tasks continue to be load balanced.
 
     ![On the Stats page, the hostName is highlighted.](media/image145.png "On Stats page hostName is displayed")
 
@@ -1148,7 +1149,7 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
    > helm repo add stable https://charts.helm.sh/stable 
    > ```
 
-4. Install the Ingress Controller resource to handle ingress requests as they come in. The Ingress Controller will receive a public IP of its own on the Azure Load Balancer and handle requests for multiple services over ports 80 and 443.
+3. Install the Ingress Controller resource to handle ingress requests as they come in. The Ingress Controller will receive a public IP of its own on the Azure Load Balancer and handle requests for multiple services over ports 80 and 443.
 
    ```bash
    helm install nginx-ingress ingress-nginx/ingress-nginx \
@@ -1159,7 +1160,7 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
     --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux
    ```
 
-5. In the Azure Portal under **Services and ingresses**, copy the IP Address for the **External IP** for the `nginx-ingress-RANDOM-nginx-ingress` service.
+4. In the Azure Portal under **Services and ingresses**, copy the IP Address for the **External IP** for the `nginx-ingress-RANDOM-nginx-ingress` service.
 
    ![A screenshot of the Kubernetes management dashboard showing the ingress controller settings.](media/2021-03-26-18-26-13.png "Copy ingress controller settings")
 
@@ -1171,9 +1172,9 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
     >
    ![A screenshot of Azure Cloud Shell showing the command output.](media/Ex4-Task5.5a.png "View the ingress controller LoadBalancer")
 
-6. Open the [Azure Portal Resource Groups blade](https://portal.azure.com/?feature.customPortal=false#blade/HubsExtension/BrowseResourceGroups) and locate the Resource Group automatically created to host the Node Pools for AKS. It will have the naming format of `MC_fabmedical-[SUFFIX]_fabmedical-[SUFFIX]_[REGION]`.
+5. Open the [Azure Portal Resource Groups blade](https://portal.azure.com/?feature.customPortal=false#blade/HubsExtension/BrowseResourceGroups) and locate the Resource Group automatically created to host the Node Pools for AKS. It will have the naming format of `MC_fabmedical-[SUFFIX]_fabmedical-[SUFFIX]_[REGION]`.
 
-7. Within the Azure Cloud Shell, create a script to update the public DNS name for the external ingress IP.
+6. Within the Azure Cloud Shell, create a script to update the public DNS name for the external ingress IP.
 
    ```bash
    cd ~/Fabmedical
@@ -1182,9 +1183,9 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
 
    Paste the following as the contents. Be sure to replace the following placeholders in the script:
 
-   - `[INGRESS PUBLIC IP]`: Replace this with the IP Address copied from step 5.
-   - `[AKS NODEPOOL RESOURCE GROUP]`: Replace with the name of the Resource Group copied from step 6.
-   - `[SUFFIX]`: Replace this with the same SUFFIX value used previously for this lab.
+   - **[INGRESS PUBLIC IP]**: Replace this with the IP Address copied from step 5.
+   - **[AKS NODEPOOL RESOURCE GROUP]**: Replace with the name of the Resource Group copied from step 6.
+   - **[SUFFIX]**: Replace this with the same SUFFIX value used previously for this lab.
 
    ```bash
    #!/bin/bash
@@ -1207,15 +1208,15 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
 
    ![A screenshot of cloud shell editor showing the updated IP and SUFFIX values.](media/Ex4-Task5.6.png "Update the IP and SUFFIX values")
 
-8. Save changes and close the editor.
+7. Save changes and close the editor.
 
-9. Run the update script.
+8. Run the update script.
 
    ```bash
    bash ./update-ip.sh
    ```
 
-10. Verify the IP update by visiting the URL in your browser.
+9. Verify the IP update by visiting the URL in your browser.
 
     > **Note**: It is normal to receive a 404 message at this time.
 
@@ -1225,7 +1226,7 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
 
     ![A screenshot of the fabmedical browser URL.](media/Ex4-Task5.9.png "fabmedical browser URL")
 
-11. Use helm to install `cert-manager`, a tool that can provision SSL certificates automatically from letsencrypt.org.
+10. Use helm to install `cert-manager`, a tool that can provision SSL certificates automatically from letsencrypt.org.
 
     ```bash
     kubectl create namespace cert-manager
@@ -1233,7 +1234,7 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
     kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.1/cert-manager.yaml
     ```
 
-12. Create a custom `ClusterIssuer` resource for the `cert-manager` service to use when handling requests for SSL certificates.
+11. Create a custom `ClusterIssuer` resource for the `cert-manager` service to use when handling requests for SSL certificates.
 
     ```bash
     cd ~/Fabmedical
@@ -1261,15 +1262,15 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
               class: nginx
     ```
 
-13. Save changes and close the editor.
+12. Save changes and close the editor.
 
-14. Create the issuer using `kubectl`.
+13. Create the issuer using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f clusterissuer.yml
     ```
 
-15. Now you can create a certificate object.
+14. Now you can create a certificate object.
 
     > **Note**:
     >
@@ -1300,9 +1301,9 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
         kind: ClusterIssuer
     ```
 
-16. Save changes and close the editor.
+15. Save changes and close the editor.
 
-17. Create the certificate using `kubectl`.
+16. Create the certificate using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f certificate.yml
@@ -1322,7 +1323,7 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
 
     It can take between 5 and 30 minutes before the tls-secret becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 
-18. Now you can create an ingress resource for the content applications.
+17. Now you can create an ingress resource for the content applications.
 
     ```bash
     cd ~/Fabmedical
@@ -1362,21 +1363,21 @@ This task will set up a Kubernetes Ingress using an [Nginx proxy server](https:/
               servicePort: 3001
     ```
 
-19. Save changes and close the editor.
+18. Save changes and close the editor.
 
-20. Create the ingress using `kubectl`.
+19. Create the ingress using `kubectl`.
 
     ```bash
     kubectl create --save-config=true -f content.ingress.yml
     ```
 
-21. Refresh the ingress endpoint in your browser. You should be able to visit the speakers and sessions pages and see all the content.
+20. Refresh the ingress endpoint in your browser. You should be able to visit the speakers and sessions pages and see all the content.
 
-22. Visit the API directly, by navigating to `/content-api/sessions` at the ingress endpoint.
+21. Visit the API directly, by navigating to `/content-api/sessions` at the ingress endpoint.
 
     ![A screenshot showing the output of the sessions content in the browser.](media/Ex4-Task5.19.png "Content api sessions")
 
-23. Test TLS termination by visiting both services again using `https`.
+22. Test TLS termination by visiting both services again using `https`.
 
     > **Note**: It can take between 5 and 30 minutes before the SSL site becomes available. This is due to the delay involved with provisioning a TLS cert from letsencrypt.
 

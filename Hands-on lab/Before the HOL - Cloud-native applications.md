@@ -9,7 +9,7 @@ Before the hands-on lab setup guide
 </div>
 
 <div class="MCWHeader3">
-May 2021
+November 2021
 </div>
 
 Information in this document, including URL and other Internet Web site references, is subject to change without notice. Unless otherwise noted, the example companies, organizations, products, domain names, e-mail addresses, logos, people, places, and events depicted herein are fictitious, and no association with any real company, organization, product, domain name, e-mail address, logo, person, place or event is intended or should be inferred. Complying with all applicable copyright laws is the responsibility of the user. Without limiting the rights under copyright, no part of this document may be reproduced, stored in or introduced into a retrieval system, or transmitted in any form or by any means (electronic, mechanical, photocopying, recording, or otherwise), or for any purpose, without the express written permission of Microsoft Corporation.
@@ -18,7 +18,7 @@ Microsoft may have patents, patent applications, trademarks, copyrights, or othe
 
 The names of manufacturers, products, or URLs are provided for informational purposes only and Microsoft makes no representations and warranties, either expressed, implied, or statutory, regarding these manufacturers or the use of the products with any Microsoft technologies. The inclusion of a manufacturer or product does not imply endorsement of Microsoft of the manufacturer or product. Links may be provided to third party sites. Such sites are not under the control of Microsoft and Microsoft is not responsible for the contents of any linked site or any link contained in a linked site, or any changes or updates to such sites. Microsoft is not responsible for webcasting or any other form of transmission received from any linked site. Microsoft is providing these links to you only as a convenience, and the inclusion of any link does not imply endorsement of Microsoft of the site or the products contained therein.
 
-© 2020 Microsoft Corporation. All rights reserved.
+© 2021 Microsoft Corporation. All rights reserved.
 
 **Contents**
 
@@ -28,10 +28,10 @@ The names of manufacturers, products, or URLs are provided for informational pur
   - [Overview](#overview)
   - [Requirements](#requirements)
   - [Before the hands-on lab](#before-the-hands-on-lab)
-    - [Task 1: Setup Azure Cloud Shell](#task-1-setup-azure-cloud-shell)
+    - [Task 1: Set up Azure Cloud Shell](#task-1-set-up-azure-cloud-shell)
     - [Task 2: Download Starter Files](#task-2-download-starter-files)
-    - [Task 3: Create a Github Repository](#task-3-create-a-github-repository)
-    - [Task 4: Setup Azure Cloud Shell Environment](#task-4-setup-azure-cloud-shell-environment)
+    - [Task 3: Create a GitHub Repository](#task-3-create-a-github-repository)
+    - [Task 4: Set up Azure Cloud Shell environment](#task-4-set-up-azure-cloud-shell-environment)
     - [Task 5: Complete the build agent setup](#task-5-complete-the-build-agent-setup)
 
 <!-- /TOC -->
@@ -40,7 +40,7 @@ The names of manufacturers, products, or URLs are provided for informational pur
 
 ## Overview
 
-Before the hands-on lab, you will need to prepare the environment by deploying the database and the application locally on a virtual machine using Docker and MongoDB. You will also need to fork the GitHub repository containing the lab to your own GitHub account to be able to setup the CI/CD pipeline.
+Before the hands-on lab, you will need to prepare the environment by deploying the database and the application locally on a virtual machine using Docker and MongoDB. You will also need to fork the GitHub repository containing the lab to your own GitHub account to be able to set up the CI/CD pipeline.
 
 ## Requirements
 
@@ -68,9 +68,9 @@ Before the hands-on lab, you will need to prepare the environment by deploying t
 
 **Duration**: 60 minutes
 
-You should follow all of the steps provided in this section _before_ taking part in the hands-on lab ahead of time as some of these steps take time.
+You should follow all the steps provided in this section _before_ taking part in the hands-on lab ahead of time as some of these steps take time.
 
-### Task 1: Setup Azure Cloud Shell
+### Task 1: Set up Azure Cloud Shell
 
 1. Open a cloud shell by selecting the cloud shell icon in the menu bar.
 
@@ -80,7 +80,7 @@ You should follow all of the steps provided in this section _before_ taking part
 
    ![This is a screenshot of the cloud shell opened in a browser window. Bash was selected.](media/b4-image36.png "Cloud Shell Bash Window")
 
-3. You should make sure to set your default subscription correctly. To view your current subscription type:
+3. Make sure to set your default subscription correctly. To view your current subscription type:
 
    ```bash
    az account show
@@ -88,7 +88,7 @@ You should follow all of the steps provided in this section _before_ taking part
 
    ![In this screenshot of a Bash window, az account show has been typed and run at the command prompt. Some subscription information is visible in the window, and some information is obscured.](media/b4-image37.png "Bash Shell AZ Account Show")
 
-4. If the subscription that is displayed in the previous step is not the subscription you plan on using for this workshop, you will need to set the current subscription to your desired subscription. To set your default subscription to something other than the current selection, type the following, replacing {id} with the desired subscription id value:
+4. If the subscription displayed in the previous step is not the subscription you plan on using for this workshop, you will need to set the current subscription to your desired subscription. To set your default subscription to something other than the current selection, type the following, replacing {id} with the desired subscription id value:
 
    ```bash
    az account set --subscription {id}
@@ -104,9 +104,9 @@ You should follow all of the steps provided in this section _before_ taking part
 
 ### Task 2: Download Starter Files
 
-> **Note**: You will need access to your Azure subscription via Azure Cloud Shell to proceed further in the workshop.  If you don't have a cloud shell available, refer back to [Task 1: Setup Azure Cloud Shell](#task-1-setup-azure-cloud-shell) for setup instructions.
+> **Note**: You will need access to your Azure subscription via Azure Cloud Shell to proceed further in the workshop.  If you don't have a cloud shell available, refer back to [Task 1: Set up Azure Cloud Shell](#task-1-set-up-azure-cloud-shell) for set up instructions.
 
-1. Check out the starter files from the MCW Cloud native applications Github repository and detach it from the existing remote repository via the following commands.
+1. Check out the starter files from the MCW Cloud-native applications GitHub repository and detach them from the existing remote repository via the following commands:
 
    ```bash
    cd ~
@@ -118,7 +118,7 @@ You should follow all of the steps provided in this section _before_ taking part
    cd MCW-Cloud-native-applications
    ```
 
-   > **Note**: If you do not have enough free space, you may need to remove extra files from your cloud shell environment.  Try running `azcopy jobs clean` to remove any `azcopy` jobs and data you do not need.
+   > **Note**: If you do not have enough free space, you may need to remove extra files from your Cloud Shell environment.  Try running `azcopy jobs clean` to remove any `azcopy` jobs and data you do not need.
 
    ![In this screenshot of a Bash window, git clone has been typed and run at the command prompt. The output from git clone is shown.](media/b4-2019-09-30_21-25-06.png "Bash Git Clone")
 
@@ -128,7 +128,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
 1. Open a web browser and navigate to <https://www.github.com>. Log in using your GitHub account credentials.
 
-2. In the upper-right corner, expand the user drop down menu and select **Your repositories**.
+2. In the upper-right corner, expand the user drop-down menu and select **Your repositories**.
 
     ![The user menu is expanded with the Your repositories item selected.](media/2020-08-23-18-03-40.png "User menu, your repositories")
 
@@ -140,13 +140,13 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
     ![Create a new repository page with Repository name field and Create repository button highlighted.](media/2020-08-23-18-11-38.png "Create a new repository")
 
-5. On the **Quick setup** screen, copy the **HTTPS** GitHub URL for your new repository, paste this in notepad for future use.
+5. On the **Quick setup** screen, copy the **HTTPS** GitHub URL for your new repository, paste this into notepad for future use.
 
     ![Quick setup screen is displayed with the copy button next to the GitHub URL textbox selected.](media/2020-08-23-18-15-45.png "Quick setup screen")
 
-### Task 4: Setup Azure Cloud Shell Environment
+### Task 4: Set up Azure Cloud Shell environment
 
-1. A Github personal access token (PAT) with appropriate permissions is required to set up and complete this lab - [Click here](https://github.com/settings/tokens/new?scopes=repo&description=GitHub%20Secrets%20CLI) to quickly set up a Github personal access token with the required permissions. Save the obtained PAT as it will be needed by future steps.
+1. A GitHub personal access token (PAT) with appropriate permissions is required to set up and complete this lab - [Follow this link](https://github.com/settings/tokens/new?scopes=repo&description=GitHub%20Secrets%20CLI) to quickly set up a GitHub personal access token with the required permissions. Save the obtained PAT as it will be needed by future steps.
 
 2. Set the following environment variables in an Azure Cloud Shell terminal.
 
@@ -156,7 +156,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    export MCW_GITHUB_TOKEN=<GITHUB PAT>         # A personal access token for your Github account
    ```
 
-   > Note: The following environment variables can also be set if their defaults are not appropriate for the lab setting or environment.
+   > **Note**: The following environment variables can also be set if their defaults are not appropriate for the lab setting or environment.
 
       - MCW_GITHUB_URL - Defaults to `https://github.com/$MCW_GITHUB_USERNAME/Fabmedical`
       - MCW_PRIMARY_LOCATION - Defaults to `northeurope`
@@ -164,7 +164,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
       - MCW_SECONDARY_LOCATION - Defaults to `westeurope`
       - MCW_SECONDARY_LOCATION_NAME - Defaults to `West Europe`
 
-   > Note: If you run into the error below, you may have to either use a different regional pair or increase your regional core quotas in your current regions. This lab's cloud resources require at least eight available cores in your regional core quota. An up to date list of Azure Region Pairs can be found at [this link](https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions#azure-regional-pairs "Azure Region Pairs")
+   > **Note**: If you run into the error below, you may have to either use a different regional pair or increase your regional core quotas in your current regions. This lab's cloud resources require at least eight available cores in your regional core quota. An up to date list of Azure Region Pairs can be found at [this link](https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions#azure-regional-pairs "Azure Region Pairs").
 
       ```bash
       {"error":{"code":"InvalidTemplateDeployment","message":"The template deployment 'azuredeploy' is not valid according to the validation procedure. The tracking id is '3d4adbc2-647b-4741-8d98-fe20495e0541'. See inner errorsfor details.","details":[{"code":"QuotaExceeded","message":"Provisioning of resource(s) for container service fabmedical-??? in resource group fabmedical-??? failed. Message: {\n  \"code\": \"QuotaExceeded\",\n  \"message\": \"Provisioning of resource(s) for container service fabmedical-??? in resource group fabmedical-??? failed. Message: Operation could not be completed as it results in exceeding approved Total Regional Cores quota. Additional details - Deployment Model: Resource Manager, Location: eastus, Current Limit: 10, Current Usage: 8, Additional Required: 4, (Minimum) New Limit Required: 12. Submit a request for Quota increase at https://aka.ms/ProdportalCRP/#blade/Microsoft_Azure_Capacity/UsageAndQuota.ReactView/Parameters/%7B%22subscriptionId%22:%228c924580-ce70-48d0-a031-1b21726acc1a%22,%22command%22:%22openQuotaApprovalBlade%22,%22quotas%22:[%7B%22location%22:%22eastus%22,%22providerId%22:%22Microsoft.Compute%22,%22resourceName%22:%22cores%22,%22quotaRequest%22:%7B%22properties%22:%7B%22limit%22:12,%22unit%22:%22Count%22,%22name%22:%7B%22value%22:%22cores%22%7D%7D%7D%7D]%7D by specifying parameters listed in the ‘Details’ section for deployment to succeed. Please read more about quota limits at https://docs.microsoft.com/en-us/azure/azure-supportability/regional-quota-requests. Details: \"\n }. Details: "}]}}
@@ -195,13 +195,13 @@ FabMedical has provided starter files for you. They have taken a copy of the web
 
 1. From an Azure Cloud Shell terminal, use the SSH command output from the previous task and start an active SSH session to the build agent VM.
 
-2. Clone the Fabmedical Github repository created in the previous task.
+2. Clone the FabMedical GitHub repository created in the previous task.
 
    ```bash
    git clone https://github.com/<GITHUB_USERNAME>/Fabmedical
    ```
 
-3. Set the following environment variables in the active SSH session to the build agent VM. Use the same Github access token used in a previous task.
+3. Set the following environment variables in the active SSH session to the build agent VM. Use the same GitHub access token used in a previous task.
 
    ```bash
    export MCW_SUFFIX=<SUFFIX>                   # Needs to be a unique three letter string
