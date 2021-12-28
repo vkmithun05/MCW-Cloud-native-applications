@@ -421,9 +421,9 @@ This task will deploy the API application to the Azure Kubernetes Service cluste
 
     ![Pod is showing as unhealthy](media/failing-pod.png "Service pod is showing as unhealthy")
 
-10. Select the failing pod from the list of pods in the `api` deployment and select **Events**.  Observe that the pod is failing to start because the `dbcomso` secret is not present.
+10. Select the failing pod from the list of pods in the `api` deployment and select **Events**.  Observe that the pod is failing to start because the `cosmosdb` secret is not present.
 
-    ![dbcosmo secret is missing](media/missing-secret-event.png "Pod is failing because of a missing secret")
+    ![cosmosdb secret is missing](media/missing-secret-event.png "Pod is failing because of a missing secret")
 
 11. Navigate to your resource group in the Azure Portal and find your Cosmos DB. Select the Cosmos DB resource to view details.
 
@@ -483,7 +483,7 @@ This task will deploy the API application to the Azure Kubernetes Service cluste
 
     ![This is a screenshot of the Azure Portal for AKS showing the value of a secret.](media/2021-03-25-17-08-54.png "View cosmosdb secret")
 
-18. Create a new deployment manifest, `api.deployment.yml` and add the YAML content below to the file.
+18. Create a new deployment manifest, `api.deployment.yml` and add the YAML content below to the file. Modify the `LOGINSERVER` placeholder for ACR.
 
     ```bash
     cd ~/Fabmedical
@@ -515,7 +515,7 @@ This task will deploy the API application to the Azure Kubernetes Service cluste
           name: api
         spec:
           containers:
-          - image: fabmedicalmgr.azurecr.io/content-api
+          - image: [LOGINSERVER].azurecr.io/content-api
             env:
               - name: MONGODB_CONNECTION
                 valueFrom:
@@ -551,18 +551,18 @@ This task will deploy the API application to the Azure Kubernetes Service cluste
           terminationGracePeriodSeconds: 30    
     ```
 
-20. Save the file and close the editor.
+19. Save the file and close the editor.
 
     ![This is a screenshot of the code editor save and close actions.](media/Ex2-Task1.17.1.png "Code editor configuration update")
 
-21. Update the api deployment by using `kubectl` to deploy the API.
+20. Update the api deployment by using `kubectl` to deploy the API.
 
     ```bash
     kubectl delete deployment api -n ingress-demo 
     kubectl create -f api.deployment.yml
     ```
 
-22. In the Azure Portal return to Events blade of the deployed pod in the api deployment (see Step 5). The last log should show as connected to MongoDB.
+21. In the Azure Portal return to Events blade of the deployed pod in the api deployment (see Step 5). The last log should show as connected to MongoDB.
 
     ![This is a screenshot of the Kubernetes management dashboard showing pod events.](media/2021-03-25-17-09-24.png "Pod Events")
 
