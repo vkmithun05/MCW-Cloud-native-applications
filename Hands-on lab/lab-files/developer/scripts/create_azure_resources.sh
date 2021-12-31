@@ -56,8 +56,6 @@ if [[ ! -e ~/Fabmedical ]]; then
     cp -R ~/MCW-Cloud-native-applications/Hands-on\ lab/lab-files/developer ~/Fabmedical
     cd ~/Fabmedical
     git init
-    git add .
-    git commit -m "Initial Commit"
     git remote add origin $MCW_GITHUB_URL
 fi
 
@@ -66,6 +64,10 @@ cd ~/Fabmedical
 sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ~/Fabmedical/.github/workflows/content-init.yml
 sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ~/Fabmedical/.github/workflows/content-api.yml
 sed -i "s/\[SUFFIX\]/$MCW_SUFFIX/g" ~/Fabmedical/.github/workflows/content-web.yml
+
+# Commit changes
+git add .
+git commit -m "Initial Commit"
 
 # Configure ARM deployment
 cd ~/Fabmedical/scripts

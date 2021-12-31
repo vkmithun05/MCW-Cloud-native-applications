@@ -30,9 +30,10 @@ The names of manufacturers, products, or URLs are provided for informational pur
   - [Before the hands-on lab](#before-the-hands-on-lab)
     - [Task 1: Set up Azure Cloud Shell](#task-1-set-up-azure-cloud-shell)
     - [Task 2: Download Starter Files](#task-2-download-starter-files)
-    - [Task 3: Create a GitHub Repository](#task-3-create-a-github-repository)
+    - [Task 3: Create a GitHub repository](#task-3-create-a-github-repository)
     - [Task 4: Set up Azure Cloud Shell environment](#task-4-set-up-azure-cloud-shell-environment)
     - [Task 5: Complete the build agent setup](#task-5-complete-the-build-agent-setup)
+    - [Task 6: Build Docker Images](#task-6-build-docker-images)
 
 <!-- /TOC -->
 
@@ -161,6 +162,7 @@ FabMedical has provided starter files for you. They have taken a copy of the web
       - MCW_GITHUB_URL - Defaults to `https://github.com/$MCW_GITHUB_USERNAME/Fabmedical`
       - MCW_PRIMARY_LOCATION - Defaults to `northeurope`
       - MCW_PRIMARY_LOCATION_NAME - Defaults to `North Europe`
+        - Note that the value needs to be placed in quotes (e.g. `export MCW_PRIMARY_LOCATION_NAME="West US"`)
       - MCW_SECONDARY_LOCATION - Defaults to `westeurope`
       - MCW_SECONDARY_LOCATION_NAME - Defaults to `West Europe`
 
@@ -216,6 +218,8 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    bash create_build_environment.sh
    ```
 
+   > **Note**: Ignore any errors you encounter regarding the Docker client. That will be resolved after joining a new SSH session in the following steps.
+
 5. After the script completes execution, type `exit` to exit the SSH session. We will need to join a new SSH session to ensure the docker environment on the build agent VM has completed set up.
 
    ```bash
@@ -254,6 +258,37 @@ FabMedical has provided starter files for you. They have taken a copy of the web
    ```bash
    cd ~/Fabmedical/scripts
    bash create_and_seed_database.sh
+   ```
+
+### Task 6: Build Docker Images
+
+1. Navigate to the `content-api` directory and build the `content-api` container image using the Dockerfile in the directory. Note how the deployed Azure Container Registry is referenced. Replace the `SUFFIX` placeholder in the command.
+
+   ```bash
+   cd ~/Fabmedical/content-api
+   docker image build -t fabmedical[SUFFIX].azurecr.io/content-api:latest .
+   ```
+
+2. Repeat this step for the `content-web` image, which serves as the application front-end.
+
+   ```bash
+   cd ~/Fabmedical/content-web
+   docker image build -t fabmedical[SUFFIX].azurecr.io/content-web:latest .
+   ```
+
+3. Observe the built Docker images by running `docker image ls`. The images were tagged with `latest`, but it is possible to use other tag values for versioning.
+
+   ![This image demonstrates the tagged Docker images: content-api and content-web.](./media/docker-images.png "Tagged Docker images")
+
+4. Log in to Azure Container Registry using `docker login fabmedical[SUFFIX].azurecr.io`. Fetch the credentials from the **Access keys** tab of the ACR instance in the Azure portal.
+
+   ![This image demonstrates the credentials for Azure Container Registry.](./media/acr-credentials.png "ACR credentials")
+
+5. Push the two images you built.
+
+   ```bash
+   docker image push fabmedical[SUFFIX].azurecr.io/content-api:latest
+   docker image push fabmedical[SUFFIX].azurecr.io/content-web:latest
    ```
 
 You should follow all steps provided _before_ performing the Hands-on lab.
