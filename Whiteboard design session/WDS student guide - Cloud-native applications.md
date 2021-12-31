@@ -316,3 +316,4 @@ Directions: Reconvene with the larger group to hear the facilitator/SME share th
 | Azure Cosmos DB                 | <https://docs.microsoft.com/azure/cosmos-db/introduction> |
 | Azure Database for PostgreSQL   | <https://azure.microsoft.com/services/postgresql/> |
 | Azure Cognitive Services        | <https://azure.microsoft.com/services/cognitive-services/> |
+| Azure Arc-enabled Kubernetes    | <https://docs.microsoft.com/azure/azure-arc/kubernetes/overview/> |

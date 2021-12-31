@@ -440,6 +440,7 @@ Directions: Reconvene with the larger group to hear the facilitator/SME share th
 | Azure Cosmos DB                 | <https://docs.microsoft.com/azure/cosmos-db/introduction> |
 | Azure Database for PostgreSQL   | <https://azure.microsoft.com/services/postgresql/> |
 | Azure Cognitive Services        | <https://azure.microsoft.com/services/cognitive-services/> |
+| Azure Arc-enabled Kubernetes    | <https://docs.microsoft.com/azure/azure-arc/kubernetes/overview/> |
 
 # Cloud-native applications whiteboard design session trainer guide
 
@@ -560,7 +561,7 @@ They also decided to move forward with GitHub Actions for container DevOps workf
 
 4. Discuss the potential of a multi-cloud approach for Kubernetes and the ability to leverage a variety of cloud resources from multiple vendors.
 
-    - Using a Kubernetes platform like the Azure Kubernetes Service (AKS) allows for the leveraging of multi-cloud architectures that also provide Kubernetes services.
+    - Containerizing an application also enables hosting flexibility.  Using Azure **Arc-enabled** Kubernetes Service (AKS) allows companies to leverage multi-cloud K8s architectures. Organizations may want the flexibility to deploy to a vendor environment that have specific capabilities or data centers geographically located close to their customers. Developers can deploy to different cloud service providers using Git Actions.  Organizations can view and monitor their K8s clusters using Azure Monitor. Microsoft Defender for Containers is the cloud-native solution for securing their Cloud Native Computing Foundation (CNCF) certified Kubernetes clusters.
 
 *Containers, discovery, and load-balancing*
 
