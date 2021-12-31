@@ -561,7 +561,7 @@ They also decided to move forward with GitHub Actions for container DevOps workf
 
 4. Discuss the potential of a multi-cloud approach for Kubernetes and the ability to leverage a variety of cloud resources from multiple vendors.
 
-    - Containerizing an application also enables hosting flexibility.  Using Azure **Arc-enabled** Kubernetes Service (AKS) allows companies to leverage multi-cloud K8s architectures. Organizations may want the flexibility to deploy to a vendor environment that have specific capabilities or data centers geographically located close to their customers. Developers can deploy to different cloud service providers using Git Actions.  Organizations can view and monitor their K8s clusters using Azure Monitor. Microsoft Defender for Containers is the cloud-native solution for securing their Cloud Native Computing Foundation (CNCF) certified Kubernetes clusters.
+    - Containerizing an application also enables hosting flexibility.  Using Azure **Arc-enabled** Kubernetes Service (AKS) allows companies to leverage multi-cloud K8s architectures. Organizations may want the flexibility to deploy to a vendor environment that has specific capabilities or data centers geographically located close to their customers. Developers can deploy to different cloud service providers using Git Actions.  Organizations can view and monitor their K8s clusters using Azure Monitor. Microsoft Defender for Containers is the cloud-native solution for securing their Cloud Native Computing Foundation (CNCF) certified Kubernetes clusters.
 
 *Containers, discovery, and load-balancing*
 
