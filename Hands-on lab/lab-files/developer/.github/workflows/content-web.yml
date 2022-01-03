@@ -53,6 +53,12 @@ jobs:
           ${{ env.containerRegistry }}/${{ env.imageRepository }}:${{ env.tag }}
           ${{ env.containerRegistry }}/${{ env.imageRepository }}:latest
 
+    - uses: Azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: '${{ env.clusterName }}'
+        resource-group: '${{ env.resourceGroupName }}'
+
     - name: Create ACR credentials secret
       uses: azure/k8s-create-secret@v1
       with:
@@ -62,12 +68,6 @@ jobs:
         secret-name: ingress-demo-secret
         namespace: ingress-demo
         arguments: --force true
-
-    # - uses: Azure/aks-set-context@v1
-    #   with:
-    #     creds: '${{ secrets.AZURE_CREDENTIALS }}'
-    #     cluster-name: '${{ env.resourceGroupName }}'
-    #     resource-group: '${{ env.clusterName }}'
         
     # - name: Deploy to AKS
     #   uses: azure/k8s-deploy@v1

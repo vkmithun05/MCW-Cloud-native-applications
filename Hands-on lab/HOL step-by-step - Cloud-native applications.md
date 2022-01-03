@@ -773,7 +773,7 @@ This task will increase the number of instances for the API deployment in the AK
 
     - The api Deployment and Replica Set are in a warning state.
 
-    - Two pods are healthy in the 'default' namespace.
+    - Two pods are healthy in the 'ingress-demo' namespace.
 
 5. Open the Contoso Neuro Conference web application. The application should still work without errors as you navigate to Speakers and Sessions pages.
 
@@ -892,7 +892,7 @@ This task will run a performance test script that will test the Autoscale featur
 
 2. Select **Connection String** under **Settings**.
 
-3. On the **Connection String** pane, copy the **HOST**, **USERNAME**, and **PRIMARY PASSWORD** values. Save these for use later.
+3. On the **Connection String** pane, copy the **HOST**, **USERNAME**, and **PRIMARY PASSWORD** values from the **Read-write Keys** selector. Save these for use later.
 
     ![The Cosmos DB account Connection String pane with the fields to copy highlighted.](media/cosmos-connection-string-pane.png "View CosmosDB connection string")
 
@@ -906,7 +906,7 @@ This task will run a performance test script that will test the Autoscale featur
     cd ~/Fabmedical
     ```
 
-6. Run the following command to open the `perftest.sh` script for editing in Vim.
+6. Run the following command to open the `perftest.sh` script for editing in Vi.
 
     ```bash
     vi perftest.sh
@@ -916,7 +916,11 @@ This task will run a performance test script that will test the Autoscale featur
 
     ![The screenshot shows Vim with perftest.sh file open and variables set to Cosmos DB Connection String values.](media/cosmos-perf-test-variables.png "Modify the connection information in Vim")
 
+    > Press `i` on your keyboard to enter insert mode, where you can alter the file.
+
 8. Save the file and exit Vim.
+
+    > You can do this by pressing the `Esc` key on your keyboard, followed by `:wq`.
 
 9. Run the following command to execute the `perftest.sh` script to run a small load test against Cosmos DB. This script will consume RU's in Cosmos DB by inserting many documents into the Sessions container.
 
@@ -1040,15 +1044,9 @@ This task will edit the web application source code to add Application Insights 
         - web.service.yml     # entries here
     ```
 
-7. Add the following task to the `content-web.yml` workflow file in the `.github/workflows` folder. Be sure to indent the YAML formatting of the task to be consistent with the formatting of the existing file. Remember to replace `[SUFFIX]` with the appropriate value.
+7. Uncomment the following task in the `content-web.yml` workflow file in the `.github/workflows` folder. Be sure to indent the YAML formatting of the task to be consistent with the formatting of the existing file.
 
-    ```yaml
-          - uses: Azure/aks-set-context@v1
-            with:
-              creds: '${{ secrets.AZURE_CREDENTIALS }}'
-              cluster-name: fabmedical-[SUFFIX]
-              resource-group: fabmedical-[SUFFIX]
-              
+    ```yaml 
           - name: Deploy to AKS
             uses: azure/k8s-deploy@v1
             with:
@@ -1075,14 +1073,14 @@ This task will edit the web application source code to add Application Insights 
         - api.service.yml     # entries here
     ```
 
-9. Add the following task to the `content-api.yml` workflow file in the `.github/workflows` folder. Be sure to indent the YAML formatting of the task to be consistent with the formatting of the existing file. Remember to replace `[SUFFIX]` with the appropriate value.
+9. Uncomment the following tasks in the `content-api.yml` workflow file in the `.github/workflows` folder. Be sure to indent the YAML formatting of the task to be consistent with the formatting of the existing file.
 
     ```yaml
           - uses: Azure/aks-set-context@v1
             with:
               creds: '${{ secrets.AZURE_CREDENTIALS }}'
-              cluster-name: fabmedical-[SUFFIX]
-              resource-group: fabmedical-[SUFFIX]
+              cluster-name: '${{ env.clusterName }}'
+              resource-group: '${{ env.resourceGroupName }}'
               
           - name: Deploy to AKS
             uses: azure/k8s-deploy@v1
