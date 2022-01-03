@@ -1044,15 +1044,9 @@ This task will edit the web application source code to add Application Insights 
         - web.service.yml     # entries here
     ```
 
-7. Uncomment the following tasks in the `content-web.yml` workflow file in the `.github/workflows` folder. Be sure to indent the YAML formatting of the task to be consistent with the formatting of the existing file. Remember to replace `[SUFFIX]` with the appropriate value.
+7. Uncomment the following task in the `content-web.yml` workflow file in the `.github/workflows` folder. Be sure to indent the YAML formatting of the task to be consistent with the formatting of the existing file.
 
-    ```yaml
-          - uses: Azure/aks-set-context@v1
-            with:
-              creds: '${{ secrets.AZURE_CREDENTIALS }}'
-              cluster-name: '${{ env.clusterName }}'
-              resource-group: '${{ env.resourceGroupName }}'
-              
+    ```yaml 
           - name: Deploy to AKS
             uses: azure/k8s-deploy@v1
             with:
